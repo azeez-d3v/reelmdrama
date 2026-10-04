@@ -1,0 +1,3470 @@
+{
+  "requests": [
+    {
+      "label": "all-platforms",
+      "data": [
+        {
+          "name": "ShortMax",
+          "logo": "/logos/shortmax.webp",
+          "count": 3346
+        },
+        {
+          "name": "NetShort",
+          "logo": "/logos/netshort.webp",
+          "count": 5961
+        },
+        {
+          "name": "DramaBox",
+          "logo": "/logos/dramabox.webp",
+          "count": 6142
+        },
+        {
+          "name": "DramaWave",
+          "logo": "/logos/dramawave.webp",
+          "count": 3017
+        },
+        {
+          "name": "ReelShort",
+          "logo": "/logos/reelshort.webp",
+          "count": 3250
+        },
+        {
+          "name": "StarDust",
+          "logo": "/logos/stardust.webp",
+          "count": 993
+        },
+        {
+          "name": "DramaBite",
+          "logo": "/logos/dramabite.webp",
+          "count": 411
+        },
+        {
+          "name": "FlexTV",
+          "logo": "/logos/flextv.webp",
+          "count": 578
+        },
+        {
+          "name": "FreeReels",
+          "logo": "/logos/freereels.webp",
+          "count": 753
+        },
+        {
+          "name": "RapidTV",
+          "logo": "/logos/rapidtv.webp",
+          "count": 95
+        },
+        {
+          "name": "SodaReels",
+          "logo": "/logos/sodareels.webp",
+          "count": 85
+        },
+        {
+          "name": "VibeShort",
+          "logo": "/logos/vibeshort.webp",
+          "count": 28
+        },
+        {
+          "name": "ShortBox",
+          "logo": "/logos/shortbox.webp",
+          "count": 56
+        },
+        {
+          "name": "PineDrama",
+          "logo": "/logos/pinedrama.webp",
+          "count": 648
+        },
+        {
+          "name": "StarShort",
+          "logo": "/logos/starshort.webp",
+          "count": 191
+        },
+        {
+          "name": "ShortWave",
+          "logo": "/logos/shortwave.webp",
+          "count": 1334
+        },
+        {
+          "name": "BiliTV",
+          "logo": "/logos/bilitv.png",
+          "count": 14
+        },
+        {
+          "name": "Storyreel",
+          "logo": "/logos/storyreel.png",
+          "count": 507
+        },
+        {
+          "name": "FlickReels",
+          "logo": "/logos/flickreels.webp",
+          "count": 1336
+        },
+        {
+          "name": "GoldDrama",
+          "logo": "/logos/golddrama.webp",
+          "count": 98
+        },
+        {
+          "name": "GoodShort",
+          "logo": "/logos/goodshort.webp",
+          "count": 193
+        },
+        {
+          "name": "Joyreels",
+          "logo": "/logos/joyreels.webp",
+          "count": 105
+        },
+        {
+          "name": "TopDrama",
+          "logo": "/logos/topdrama.webp",
+          "count": 0
+        },
+        {
+          "name": "KalosTV",
+          "logo": "/logos/kalostv.webp",
+          "count": 615
+        },
+        {
+          "name": "HappyShort",
+          "logo": "/logos/happyshort.webp",
+          "count": 223
+        },
+        {
+          "name": "RaptDrama",
+          "logo": "/logos/raptdrama.webp",
+          "count": 310
+        },
+        {
+          "name": "FlareFlow",
+          "logo": "/logos/flareflow.webp",
+          "count": 305
+        },
+        {
+          "name": "SerialPlus",
+          "logo": "/logos/serialplus.webp",
+          "count": 453
+        },
+        {
+          "name": "Reelife",
+          "logo": "/logos/reelife.webp",
+          "count": 23
+        },
+        {
+          "name": "iDrama",
+          "logo": "/logos/idrama.webp",
+          "count": 42
+        },
+        {
+          "name": "Vigloo",
+          "logo": "/logos/vigloo.webp",
+          "count": 13
+        },
+        {
+          "name": "MoboReels",
+          "logo": "/logos/moboreels.webp",
+          "count": 321
+        },
+        {
+          "name": "Playlet",
+          "logo": null,
+          "count": 8
+        },
+        {
+          "name": "DramaPops",
+          "logo": null,
+          "count": 0
+        },
+        {
+          "name": "CubeTV",
+          "logo": null,
+          "count": 35
+        },
+        {
+          "name": "ShotShort",
+          "logo": "/logos/shotshort.webp",
+          "count": 350
+        },
+        {
+          "name": "RadReels",
+          "logo": "/logos/radreels.webp",
+          "count": 326
+        },
+        {
+          "name": "BonusTV",
+          "logo": "/logos/bonustv.webp",
+          "count": 232
+        },
+        {
+          "name": "MicroDrama",
+          "logo": "/logos/microdrama.webp",
+          "count": 93
+        },
+        {
+          "name": "DramaRush",
+          "logo": "/logos/dramarush.webp",
+          "count": 21
+        },
+        {
+          "name": "Shorten",
+          "logo": "/logos/shorten.webp",
+          "count": 28
+        },
+        {
+          "name": "MeloShort",
+          "logo": "/logos/meloshort.webp",
+          "count": 25
+        },
+        {
+          "name": "Melolo",
+          "logo": "/logos/melolo.webp",
+          "count": 0
+        }
+      ]
+    },
+    {
+      "label": "detail:eternal-illumination",
+      "data": {
+        "id": "154805",
+        "slug": "eternal-illumination",
+        "title": "Eternal Illumination",
+        "cover": "/covers/154805.webp",
+        "platform": "MeloShort",
+        "total_episodes": 55,
+        "available_episodes": 55,
+        "is_new": true,
+        "is_popular": false,
+        "description": "After a mistaken hotel encounter, brilliant law student Lily becomes pregnant with William’s child. Sold into marriage by her stepmother and trapped with an abusive husband, she seeks a divorce while facing slander, custody warfare, and a ruthless courtroom ambush. William rescues her, slowly realizes he is the baby’s father, and becomes her strongest ally. Together they expose forced marriage, domestic violence, and legal corruption. Just as Lily finds freedom and a new family, an obsessed former fiancée steals the newborn. Love, justice, and a hard-won home must survive one final battle.",
+        "language": "en",
+        "genre": "Modern",
+        "views": 0,
+        "is_featured": false,
+        "release_date": null,
+        "tags": [
+          {
+            "slug": "anime",
+            "name": "Anime"
+          },
+          {
+            "slug": "comeback",
+            "name": "Comeback"
+          },
+          {
+            "slug": "escape-while-being-pregnant",
+            "name": "Escape While Being Pregnant"
+          },
+          {
+            "slug": "external-org",
+            "name": "external_org"
+          },
+          {
+            "slug": "kickass-heroine",
+            "name": "Kickass Heroine"
+          },
+          {
+            "slug": "modern",
+            "name": "Modern"
+          },
+          {
+            "slug": "romance",
+            "name": "Romance"
+          }
+        ],
+        "episodes_in_db": 55,
+        "similar": [
+          {
+            "id": "154781",
+            "slug": "my-fatal-marriage-to-the-female-ceo",
+            "title": "My Fatal Marriage to the Female CEO",
+            "cover": "/covers/154781.webp",
+            "platform": "MeloShort",
+            "total_episodes": 71,
+            "available_episodes": 71,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154670",
+            "slug": "the-brides-path-to-redemption",
+            "title": "The Bride’s Path to Redemption",
+            "cover": "/covers/154670.webp",
+            "platform": "MeloShort",
+            "total_episodes": 51,
+            "available_episodes": 51,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154642",
+            "slug": "tempted-by-the-devils-fruit",
+            "title": "Tempted by the Devil’s Fruit",
+            "cover": "/covers/154642.webp",
+            "platform": "MeloShort",
+            "total_episodes": 40,
+            "available_episodes": 40,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154626",
+            "slug": "the-billionaires-missing-wife",
+            "title": "The Billionaire’s Missing Wife",
+            "cover": "/covers/154626.webp",
+            "platform": "MeloShort",
+            "total_episodes": 45,
+            "available_episodes": 45,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154592",
+            "slug": "the-rejected-heiress-taken-by-the-beasts",
+            "title": "The Rejected Heiress: Taken by the Beasts",
+            "cover": "/covers/154592.webp",
+            "platform": "MeloShort",
+            "total_episodes": 20,
+            "available_episodes": 20,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "109132",
+            "slug": "the-blondes-counterattack",
+            "title": "The Blonde's Counterattack",
+            "cover": "/covers/109132.webp",
+            "platform": "ShortWave",
+            "total_episodes": 40,
+            "available_episodes": 40,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "94859",
+            "slug": "loved-by-my-exs-rival-after-divorce",
+            "title": "Loved by My Ex’s Rival After Divorce",
+            "cover": "/covers/94859.webp",
+            "platform": "ShortWave",
+            "total_episodes": 60,
+            "available_episodes": 60,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "94126",
+            "slug": "his-blind-mistake-the-queens-return",
+            "title": "His Blind Mistake: The Queen's Return",
+            "cover": "/covers/94126.webp",
+            "platform": "ShortWave",
+            "total_episodes": 30,
+            "available_episodes": 30,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "93880",
+            "slug": "true-heiress-returns-twins-for-my-sightless-billionaire",
+            "title": "True Heiress Returns: Twins for My Sightless Billionaire",
+            "cover": "/covers/93880.webp",
+            "platform": "ShortWave",
+            "total_episodes": 80,
+            "available_episodes": 80,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154800",
+            "slug": "f-rank-rabbits-beast-sanctuary",
+            "title": "F-Rank Rabbit's Beast Sanctuary",
+            "cover": "/covers/154800.webp",
+            "platform": "MeloShort",
+            "total_episodes": 40,
+            "available_episodes": 40,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154741",
+            "slug": "seer-of-death-and-the-fated-heir",
+            "title": "Seer of Death and the Fated Heir",
+            "cover": "/covers/154741.webp",
+            "platform": "MeloShort",
+            "total_episodes": 45,
+            "available_episodes": 45,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154732",
+            "slug": "ten-years-preceding-my-revenge",
+            "title": "Ten Years Preceding My Revenge",
+            "cover": "/covers/154732.webp",
+            "platform": "MeloShort",
+            "total_episodes": 40,
+            "available_episodes": 40,
+            "is_new": true,
+            "is_popular": false
+          }
+        ],
+        "like_count": 0,
+        "metin": {
+          "dil": "Subtitled",
+          "dilKucuk": "subtitled",
+          "ad": "Eternal Illumination",
+          "title": "Watch Eternal Illumination Subtitled — 55 Episodes | DramaDünyam",
+          "desc": "Watch the short drama Eternal Illumination free and subtitled: all 55 episodes are unlocked and no app is needed.",
+          "bolumler": "Episodes",
+          "sikSorulanlar": "Frequently asked",
+          "sss": [
+            [
+              "Where can I watch Eternal Illumination?",
+              "Every episode plays on DramaDünyam, free, with no app to install and subtitled; when an episode ends the next one opens by itself."
+            ],
+            [
+              "How many episodes does Eternal Illumination have?",
+              "The series has 55 episodes; each runs a few minutes in vertical short-drama format."
+            ],
+            [
+              "Is Eternal Illumination dubbed?",
+              "It is subtitled; subtitle size and position are set from the player. For dubbed titles, see <a href=\"/en/browse/dubbed\">dubbed series</a>."
+            ],
+            [
+              "Can I pick up where I left off?",
+              "With a free account we save the episode and the second you stopped at, so you can start on a phone and carry on at a computer, and you can add the series to your list."
+            ],
+            [
+              "Why are the episodes so short?",
+              "The vertical short-drama format was made for phones: one to three minutes, a single scene, and a cliffhanger at the end. 55 episodes add up to about the length of a feature film; if you like, you can set the player to 1.5× or 2×."
+            ],
+            [
+              "The video will not start or keeps buffering — what should I do?",
+              "Refresh the page and try again; if it continues, switch your connection (Wi-Fi ↔ mobile data) or clear your browser cache. If the episode still will not play, send the series name and episode number to <a href=\"https://t.me/dramadunyam1\" target=\"_blank\" rel=\"noopener\">our support line</a> and we will look into it quickly."
+            ],
+            [
+              "How do I turn subtitles on or make them bigger?",
+              "The subtitle button on the player's bottom bar turns them on and off; on dubbed series they are off by default. Size and position are set from the same menu, and your choice carries over to later episodes."
+            ]
+          ],
+          "bolumTitleKalip": "Watch Eternal Illumination Episode {b} — Subtitled | DramaDünyam",
+          "bolumNoKalip": "Episode {b}",
+          "ozet": "Eternal Illumination is a subtitled vertical short drama in 55 episodes, built around Anime, Comeback, Escape While Being Pregnant. Each episode runs a few minutes and ends on a cliffhanger; when one finishes the next opens by itself. Watch every episode of Eternal Illumination free on DramaDünyam, no app needed."
+        }
+      }
+    },
+    {
+      "label": "home-catalogue-page-1",
+      "data": {
+        "data": [
+          {
+            "id": "154864",
+            "slug": "disabled-customer-is-the-real-boss",
+            "title": "DISABLED CUSTOMER IS THE REAL BOSS",
+            "cover": "/covers/154864.webp",
+            "platform": "Shorten",
+            "total_episodes": 10,
+            "available_episodes": 10,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154863",
+            "slug": "homeless-girl-won-rich-mans-heart",
+            "title": "HOMELESS GIRL WON RICH MAN’S HEART",
+            "cover": "/covers/154863.webp",
+            "platform": "Shorten",
+            "total_episodes": 10,
+            "available_episodes": 10,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154860",
+            "slug": "the-double-life-of-the-true-successor",
+            "title": "THE DOUBLE LIFE OF THE TRUE SUCCESSOR",
+            "cover": "/covers/154860.webp",
+            "platform": "Shorten",
+            "total_episodes": 63,
+            "available_episodes": 63,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154859",
+            "slug": "the-billionaire-is-my-substitute-groom",
+            "title": "THE BILLIONAIRE IS MY SUBSTITUTE GROOM",
+            "cover": "/covers/154859.webp",
+            "platform": "Shorten",
+            "total_episodes": 46,
+            "available_episodes": 46,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154858",
+            "slug": "stunning-waitress-becomes-mr-presidents-wife",
+            "title": "STUNNING WAITRESS BECOMES MR. PRESIDENT'S WIFE",
+            "cover": "/covers/154858.webp",
+            "platform": "Shorten",
+            "total_episodes": 45,
+            "available_episodes": 45,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154857",
+            "slug": "the-fireman-who-burned-my-heart",
+            "title": "THE FIREMAN WHO BURNED MY HEART",
+            "cover": "/covers/154857.webp",
+            "platform": "Shorten",
+            "total_episodes": 72,
+            "available_episodes": 72,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154856",
+            "slug": "the-cinderella-maid-becomes-millionaires-wife",
+            "title": "THE CINDERELLA MAID BECOMES MILLIONAIRE’S WIFE",
+            "cover": "/covers/154856.webp",
+            "platform": "Shorten",
+            "total_episodes": 14,
+            "available_episodes": 14,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154855",
+            "slug": "double-life-of-my-homeless-husband",
+            "title": "DOUBLE LIFE OF MY HOMELESS HUSBAND",
+            "cover": "/covers/154855.webp",
+            "platform": "Shorten",
+            "total_episodes": 29,
+            "available_episodes": 29,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154854",
+            "slug": "my-stepbrother-my-deadly-crush",
+            "title": "MY STEPBROTHER, MY DEADLY CRUSH",
+            "cover": "/covers/154854.webp",
+            "platform": "Shorten",
+            "total_episodes": 61,
+            "available_episodes": 61,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154853",
+            "slug": "genius-wifes-legendary-comeback",
+            "title": "GENIUS WIFE’S LEGENDARY COMEBACK",
+            "cover": "/covers/154853.webp",
+            "platform": "Shorten",
+            "total_episodes": 61,
+            "available_episodes": 61,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154852",
+            "slug": "xxl-superstar-destroys-the-fake-diva",
+            "title": "XXL SUPERSTAR DESTROYS THE FAKE DIVA",
+            "cover": "/covers/154852.webp",
+            "platform": "Shorten",
+            "total_episodes": 60,
+            "available_episodes": 60,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154851",
+            "slug": "bombshell-baby",
+            "title": "BOMBSHELL BABY",
+            "cover": "/covers/154851.webp",
+            "platform": "Shorten",
+            "total_episodes": 17,
+            "available_episodes": 17,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154850",
+            "slug": "mom-help-dad-is-killing-me",
+            "title": "MOM, HELP… DAD IS KILLING ME!",
+            "cover": "/covers/154850.webp",
+            "platform": "Shorten",
+            "total_episodes": 54,
+            "available_episodes": 54,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154849",
+            "slug": "i-can-hear-my-bosss-thoughts",
+            "title": "I CAN HEAR MY BOSS'S THOUGHTS!",
+            "cover": "/covers/154849.webp",
+            "platform": "Shorten",
+            "total_episodes": 35,
+            "available_episodes": 35,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154848",
+            "slug": "how-to-seduce-my-exs-dad",
+            "title": "HOW TO SEDUCE MY EX'S DAD",
+            "cover": "/covers/154848.webp",
+            "platform": "Shorten",
+            "total_episodes": 52,
+            "available_episodes": 52,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154847",
+            "slug": "three-billionaire-fiancs-for-a-delivery-girl",
+            "title": "THREE BILLIONAIRE FIANCÉS FOR A DELIVERY GIRL",
+            "cover": "/covers/154847.webp",
+            "platform": "Shorten",
+            "total_episodes": 54,
+            "available_episodes": 54,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154846",
+            "slug": "the-baby-champion-of-snooker",
+            "title": "THE BABY CHAMPION OF SNOOKER",
+            "cover": "/covers/154846.webp",
+            "platform": "Shorten",
+            "total_episodes": 46,
+            "available_episodes": 46,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154845",
+            "slug": "american-sniper-king-of-guns",
+            "title": "AMERICAN SNIPER: KING OF GUNS",
+            "cover": "/covers/154845.webp",
+            "platform": "Shorten",
+            "total_episodes": 23,
+            "available_episodes": 23,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154844",
+            "slug": "the-ugly-cinderella-the-homeless-heir",
+            "title": "THE UGLY CINDERELLA & THE HOMELESS HEIR",
+            "cover": "/covers/154844.webp",
+            "platform": "Shorten",
+            "total_episodes": 54,
+            "available_episodes": 54,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154843",
+            "slug": "the-silent-ceos-transmigrated-bride",
+            "title": "THE SILENT CEO’S TRANSMIGRATED BRIDE",
+            "cover": "/covers/154843.webp",
+            "platform": "Shorten",
+            "total_episodes": 60,
+            "available_episodes": 60,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154842",
+            "slug": "virgins-highest-bidder-is-not-a-stranger",
+            "title": "VIRGIN'S HIGHEST BIDDER IS NOT A STRANGER",
+            "cover": "/covers/154842.webp",
+            "platform": "Shorten",
+            "total_episodes": 26,
+            "available_episodes": 26,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154841",
+            "slug": "too-late-to-want-me-back-shorten-en",
+            "title": "TOO LATE TO WANT ME BACK",
+            "cover": "/covers/154841.webp",
+            "platform": "Shorten",
+            "total_episodes": 50,
+            "available_episodes": 50,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154840",
+            "slug": "reborn-to-ruin-my-heartless-husband",
+            "title": "REBORN TO RUIN MY HEARTLESS HUSBAND!",
+            "cover": "/covers/154840.webp",
+            "platform": "Shorten",
+            "total_episodes": 58,
+            "available_episodes": 58,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154839",
+            "slug": "my-stepbrother-is-my-crush",
+            "title": "MY STEPBROTHER IS MY CRUSH",
+            "cover": "/covers/154839.webp",
+            "platform": "Shorten",
+            "total_episodes": 30,
+            "available_episodes": 30,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154838",
+            "slug": "the-betrayed-brides-seven-days-of-revenge",
+            "title": "THE BETRAYED BRIDE'S SEVEN DAYS OF REVENGE",
+            "cover": "/covers/154838.webp",
+            "platform": "Shorten",
+            "total_episodes": 27,
+            "available_episodes": 27,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154836",
+            "slug": "slave-to-emperor",
+            "title": "SLAVE TO EMPEROR",
+            "cover": "/covers/154836.webp",
+            "platform": "Shorten",
+            "total_episodes": 20,
+            "available_episodes": 20,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154835",
+            "slug": "find-me-dad-im-alive",
+            "title": "FIND ME, DAD! I’M ALIVE",
+            "cover": "/covers/154835.webp",
+            "platform": "Shorten",
+            "total_episodes": 20,
+            "available_episodes": 20,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154834",
+            "slug": "deaf-wifes-loud-revenge",
+            "title": "DEAF WIFE’S LOUD REVENGE",
+            "cover": "/covers/154834.webp",
+            "platform": "Shorten",
+            "total_episodes": 27,
+            "available_episodes": 27,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154833",
+            "slug": "fallen-from-grace-raised-in-love",
+            "title": "Fallen From Grace, Raised in Love",
+            "cover": "/covers/154833.webp",
+            "platform": "DramaRush",
+            "total_episodes": 70,
+            "available_episodes": 70,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154831",
+            "slug": "dubbeddaddys-kisses-no-thanks",
+            "title": "[Dubbed]Daddy’s Kisses? No Thanks!",
+            "cover": "/covers/154831.webp",
+            "platform": "DramaRush",
+            "total_episodes": 80,
+            "available_episodes": 80,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154830",
+            "slug": "6-years-1-secret-0-distance",
+            "title": "6 Years, 1 Secret, 0 Distance",
+            "cover": "/covers/154830.webp",
+            "platform": "DramaRush",
+            "total_episodes": 70,
+            "available_episodes": 70,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154829",
+            "slug": "return-of-the-sanctum-king",
+            "title": "Return of the Sanctum King",
+            "cover": "/covers/154829.webp",
+            "platform": "DramaRush",
+            "total_episodes": 90,
+            "available_episodes": 90,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154828",
+            "slug": "august-again",
+            "title": "August Again",
+            "cover": "/covers/154828.webp",
+            "platform": "DramaRush",
+            "total_episodes": 100,
+            "available_episodes": 100,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154827",
+            "slug": "from-his-mrs-to-her-own-boss",
+            "title": "From His Mrs. to Her Own Boss",
+            "cover": "/covers/154827.webp",
+            "platform": "DramaRush",
+            "total_episodes": 59,
+            "available_episodes": 59,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154826",
+            "slug": "bloom-in-ashes",
+            "title": "Bloom in Ashes",
+            "cover": "/covers/154826.webp",
+            "platform": "DramaRush",
+            "total_episodes": 61,
+            "available_episodes": 61,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154824",
+            "slug": "colorful-charade",
+            "title": "Colorful Charade",
+            "cover": "/covers/154824.webp",
+            "platform": "DramaRush",
+            "total_episodes": 43,
+            "available_episodes": 43,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154823",
+            "slug": "the-girl-who-smashed-my-car",
+            "title": "The Girl Who Smashed My Car",
+            "cover": "/covers/154823.webp",
+            "platform": "DramaRush",
+            "total_episodes": 80,
+            "available_episodes": 80,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154822",
+            "slug": "the-uncaged-fury",
+            "title": "The Uncaged Fury",
+            "cover": "/covers/154822.webp",
+            "platform": "DramaRush",
+            "total_episodes": 65,
+            "available_episodes": 65,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154821",
+            "slug": "dubbedthe-replacement-bride",
+            "title": "[Dubbed]The Replacement Bride",
+            "cover": "/covers/154821.webp",
+            "platform": "DramaRush",
+            "total_episodes": 61,
+            "available_episodes": 61,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154819",
+            "slug": "reborn-after-five-years-of-marriage",
+            "title": "Reborn After Five Years of Marriage",
+            "cover": "/covers/154819.webp",
+            "platform": "DramaRush",
+            "total_episodes": 100,
+            "available_episodes": 100,
+            "is_new": true,
+            "is_popular": false
+          }
+        ],
+        "total": 32564,
+        "page": 1,
+        "limit": 40,
+        "pages": 815
+      }
+    },
+    {
+      "label": "catalogue-page-2",
+      "data": {
+        "data": [
+          {
+            "id": "154818",
+            "slug": "a-summer-night",
+            "title": "A summer night",
+            "cover": "/covers/154818.webp",
+            "platform": "DramaRush",
+            "total_episodes": 81,
+            "available_episodes": 81,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154817",
+            "slug": "that-nobody-has-a-body-count",
+            "title": "That Nobody Has a Body Count",
+            "cover": "/covers/154817.webp",
+            "platform": "DramaRush",
+            "total_episodes": 101,
+            "available_episodes": 101,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154816",
+            "slug": "when-the-caged-bird-returns",
+            "title": "When the Caged Bird Returns",
+            "cover": "/covers/154816.webp",
+            "platform": "DramaRush",
+            "total_episodes": 50,
+            "available_episodes": 50,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154815",
+            "slug": "the-tycoon-wants-my-kids",
+            "title": "The Tycoon Wants My Kids",
+            "cover": "/covers/154815.webp",
+            "platform": "DramaRush",
+            "total_episodes": 90,
+            "available_episodes": 90,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154813",
+            "slug": "playing-dumb-brewing-secrets",
+            "title": "Playing Dumb, Brewing Secrets",
+            "cover": "/covers/154813.webp",
+            "platform": "DramaRush",
+            "total_episodes": 80,
+            "available_episodes": 80,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154812",
+            "slug": "they-mocked-the-wrong-woman",
+            "title": "They Mocked the Wrong Woman",
+            "cover": "/covers/154812.webp",
+            "platform": "DramaRush",
+            "total_episodes": 45,
+            "available_episodes": 45,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154810",
+            "slug": "taming-the-gold-belt-king",
+            "title": "Taming the Gold Belt King",
+            "cover": "/covers/154810.webp",
+            "platform": "DramaRush",
+            "total_episodes": 49,
+            "available_episodes": 49,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154809",
+            "slug": "the-double-life-of-a-billionaires-sweet-ex-wifey",
+            "title": "The Double Life of a Billionaire’s Sweet Ex-wifey",
+            "cover": "/covers/154809.webp",
+            "platform": "DramaRush",
+            "total_episodes": 70,
+            "available_episodes": 70,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154808",
+            "slug": "reel-revenge-divorced-director-strikes-back",
+            "title": "Reel Revenge: Divorced Director Strikes Back",
+            "cover": "/covers/154808.webp",
+            "platform": "DramaRush",
+            "total_episodes": 53,
+            "available_episodes": 53,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154805",
+            "slug": "eternal-illumination",
+            "title": "Eternal Illumination",
+            "cover": "/covers/154805.webp",
+            "platform": "MeloShort",
+            "total_episodes": 55,
+            "available_episodes": 55,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154800",
+            "slug": "f-rank-rabbits-beast-sanctuary",
+            "title": "F-Rank Rabbit's Beast Sanctuary",
+            "cover": "/covers/154800.webp",
+            "platform": "MeloShort",
+            "total_episodes": 40,
+            "available_episodes": 40,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154795",
+            "slug": "the-daughter-of-the-mechanic",
+            "title": "The Daughter of the Mechanic",
+            "cover": "/covers/154795.webp",
+            "platform": "MeloShort",
+            "total_episodes": 33,
+            "available_episodes": 33,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154784",
+            "slug": "the-bad-boy-pinned-me",
+            "title": "The Bad Boy Pinned Me",
+            "cover": "/covers/154784.webp",
+            "platform": "MeloShort",
+            "total_episodes": 50,
+            "available_episodes": 50,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154781",
+            "slug": "my-fatal-marriage-to-the-female-ceo",
+            "title": "My Fatal Marriage to the Female CEO",
+            "cover": "/covers/154781.webp",
+            "platform": "MeloShort",
+            "total_episodes": 71,
+            "available_episodes": 71,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154767",
+            "slug": "beloved-of-the-alpha-wolf-king",
+            "title": "Beloved of the Alpha Wolf King",
+            "cover": "/covers/154767.webp",
+            "platform": "MeloShort",
+            "total_episodes": 42,
+            "available_episodes": 42,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154746",
+            "slug": "fated-bride-of-the-abyss",
+            "title": "Fated Bride of the Abyss",
+            "cover": "/covers/154746.webp",
+            "platform": "MeloShort",
+            "total_episodes": 40,
+            "available_episodes": 40,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154744",
+            "slug": "the-commanders-daughter",
+            "title": "The Commander’s Daughter",
+            "cover": "/covers/154744.webp",
+            "platform": "RapidTV",
+            "total_episodes": 58,
+            "available_episodes": 58,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154741",
+            "slug": "seer-of-death-and-the-fated-heir",
+            "title": "Seer of Death and the Fated Heir",
+            "cover": "/covers/154741.webp",
+            "platform": "MeloShort",
+            "total_episodes": 45,
+            "available_episodes": 45,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154736",
+            "slug": "archangel-gabriel-taking-a-number-in-heaven",
+            "title": "Archangel Gabriel — Taking a Number in Heaven?!",
+            "cover": "/covers/154736.webp",
+            "platform": "DramaBox",
+            "total_episodes": 27,
+            "available_episodes": 27,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154732",
+            "slug": "ten-years-preceding-my-revenge",
+            "title": "Ten Years Preceding My Revenge",
+            "cover": "/covers/154732.webp",
+            "platform": "MeloShort",
+            "total_episodes": 40,
+            "available_episodes": 40,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154729",
+            "slug": "dragon-lullaby-of-a-billionaires-love",
+            "title": "Dragon Lullaby of a Billionaire’s Love",
+            "cover": "/covers/154729.webp",
+            "platform": "MeloShort",
+            "total_episodes": 40,
+            "available_episodes": 40,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154722",
+            "slug": "the-iron-dukes-slave-father-in-law",
+            "title": "The Iron Duke's Slave Father-in-Law",
+            "cover": "/covers/154722.webp",
+            "platform": "MeloShort",
+            "total_episodes": 40,
+            "available_episodes": 40,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154720",
+            "slug": "destined-to-love-my-stepmother",
+            "title": "Destined to Love My Stepmother",
+            "cover": "/covers/154720.webp",
+            "platform": "MeloShort",
+            "total_episodes": 20,
+            "available_episodes": 20,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154718",
+            "slug": "our-husband-swap-contract",
+            "title": "Our Husband Swap Contract",
+            "cover": "/covers/154718.webp",
+            "platform": "MeloShort",
+            "total_episodes": 35,
+            "available_episodes": 35,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154716",
+            "slug": "the-dragons-feigned-weakness",
+            "title": "The Dragon’s Feigned Weakness",
+            "cover": "/covers/154716.webp",
+            "platform": "MeloShort",
+            "total_episodes": 20,
+            "available_episodes": 20,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154714",
+            "slug": "hidden-alpha-my-pet",
+            "title": "Hidden Alpha: My Pet",
+            "cover": "/covers/154714.webp",
+            "platform": "MeloShort",
+            "total_episodes": 30,
+            "available_episodes": 30,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154711",
+            "slug": "rulers-of-dual-power",
+            "title": "Rulers of Dual Power",
+            "cover": "/covers/154711.webp",
+            "platform": "MeloShort",
+            "total_episodes": 30,
+            "available_episodes": 30,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154710",
+            "slug": "reborn-bound-to-the-shy-doe-girl",
+            "title": "Reborn, Bound to the Shy Doe Girl",
+            "cover": "/covers/154710.webp",
+            "platform": "MeloShort",
+            "total_episodes": 30,
+            "available_episodes": 30,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154672",
+            "slug": "alpha-you-chose-the-wrong-twin",
+            "title": "Alpha, You Chose the Wrong Twin",
+            "cover": "/covers/154672.webp",
+            "platform": "MeloShort",
+            "total_episodes": 39,
+            "available_episodes": 39,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154670",
+            "slug": "the-brides-path-to-redemption",
+            "title": "The Bride’s Path to Redemption",
+            "cover": "/covers/154670.webp",
+            "platform": "MeloShort",
+            "total_episodes": 51,
+            "available_episodes": 51,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154642",
+            "slug": "tempted-by-the-devils-fruit",
+            "title": "Tempted by the Devil’s Fruit",
+            "cover": "/covers/154642.webp",
+            "platform": "MeloShort",
+            "total_episodes": 40,
+            "available_episodes": 40,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154626",
+            "slug": "the-billionaires-missing-wife",
+            "title": "The Billionaire’s Missing Wife",
+            "cover": "/covers/154626.webp",
+            "platform": "MeloShort",
+            "total_episodes": 45,
+            "available_episodes": 45,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154613",
+            "slug": "wedded-to-the-dread-of-ghosts",
+            "title": "Wedded to the Dread of Ghosts",
+            "cover": "/covers/154613.webp",
+            "platform": "MeloShort",
+            "total_episodes": 51,
+            "available_episodes": 51,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154604",
+            "slug": "his-hidden-promise-to-me",
+            "title": "His Hidden Promise to Me",
+            "cover": "/covers/154604.webp",
+            "platform": "MeloShort",
+            "total_episodes": 40,
+            "available_episodes": 40,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154592",
+            "slug": "the-rejected-heiress-taken-by-the-beasts",
+            "title": "The Rejected Heiress: Taken by the Beasts",
+            "cover": "/covers/154592.webp",
+            "platform": "MeloShort",
+            "total_episodes": 20,
+            "available_episodes": 20,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154567",
+            "slug": "fatal-temptation-the-marked-fugitive-of-the-alpha",
+            "title": "Fatal Temptation: The Marked Fugitive of the Alpha",
+            "cover": "/covers/154567.webp",
+            "platform": "MeloShort",
+            "total_episodes": 20,
+            "available_episodes": 20,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154565",
+            "slug": "my-gentle-cerberus-husband",
+            "title": "My Gentle Cerberus Husband",
+            "cover": "/covers/154565.webp",
+            "platform": "BonusTV",
+            "total_episodes": 32,
+            "available_episodes": 32,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154564",
+            "slug": "hellhounds-claim-the-shadow-queen",
+            "title": "HELLHOUNDS' CLAIM: THE SHADOW QUEEN",
+            "cover": "/covers/154564.webp",
+            "platform": "BonusTV",
+            "total_episodes": 32,
+            "available_episodes": 32,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154563",
+            "slug": "night-in-the-cramped-ward",
+            "title": "Night in the Cramped Ward",
+            "cover": "/covers/154563.webp",
+            "platform": "BonusTV",
+            "total_episodes": 38,
+            "available_episodes": 38,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154562",
+            "slug": "mermaid-lunas-forbidden-love",
+            "title": "Mermaid Luna's Forbidden Love",
+            "cover": "/covers/154562.webp",
+            "platform": "BonusTV",
+            "total_episodes": 60,
+            "available_episodes": 60,
+            "is_new": true,
+            "is_popular": false
+          }
+        ],
+        "total": 32564,
+        "page": 2,
+        "limit": 40,
+        "pages": 815
+      }
+    },
+    {
+      "label": "search",
+      "data": {
+        "data": [
+          {
+            "id": "147258",
+            "slug": "eternal-vows",
+            "title": "Eternal Vows",
+            "cover": "/covers/147258.webp",
+            "platform": "FlickReels",
+            "total_episodes": 61,
+            "available_episodes": 61,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "115793",
+            "slug": "eternal-bite",
+            "title": "Eternal Bite",
+            "cover": "/covers/115793.webp",
+            "platform": "FlareFlow",
+            "total_episodes": 60,
+            "available_episodes": 60,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "152666",
+            "slug": "eternal-peace",
+            "title": "Eternal Peace",
+            "cover": "/covers/152666.webp",
+            "platform": "NetShort",
+            "total_episodes": 72,
+            "available_episodes": 72,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "72634",
+            "slug": "eternal-night-rs-en",
+            "title": "Eternal Night",
+            "cover": "/covers/72634.webp",
+            "platform": "ReelShort",
+            "total_episodes": 79,
+            "available_episodes": 79,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "78442",
+            "slug": "eternal-dominion",
+            "title": "Eternal Dominion",
+            "cover": "/covers/78442.webp",
+            "platform": "NetShort",
+            "total_episodes": 63,
+            "available_episodes": 63,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "76946",
+            "slug": "eternal-burial-rite",
+            "title": "Eternal Burial Rite",
+            "cover": "/covers/76946.webp",
+            "platform": "DramaWave",
+            "total_episodes": 28,
+            "available_episodes": 70,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "154805",
+            "slug": "eternal-illumination",
+            "title": "Eternal Illumination",
+            "cover": "/covers/154805.webp",
+            "platform": "MeloShort",
+            "total_episodes": 55,
+            "available_episodes": 55,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "147855",
+            "slug": "eternal-night-covenant",
+            "title": "Eternal Night Covenant",
+            "cover": "/covers/147855.webp",
+            "platform": "StarDust",
+            "total_episodes": 29,
+            "available_episodes": 29,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "13667",
+            "slug": "eternal-dragon-emperor",
+            "title": "Eternal Dragon Emperor",
+            "cover": "/covers/13667.webp",
+            "platform": "ReelShort",
+            "total_episodes": 141,
+            "available_episodes": 141,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "6338",
+            "slug": "eternal-remedy-of-love",
+            "title": "Eternal Remedy of Love",
+            "cover": "/covers/6338.webp",
+            "platform": "DramaBox",
+            "total_episodes": 82,
+            "available_episodes": 82,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "35163",
+            "slug": "eternal-oath-of-seraphina",
+            "title": "Eternal Oath of Seraphina",
+            "cover": "/covers/35163.webp",
+            "platform": "NetShort",
+            "total_episodes": 50,
+            "available_episodes": 50,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "72415",
+            "slug": "eternal-love-across-three-lives",
+            "title": "Eternal Love Across Three Lives",
+            "cover": "/covers/72415.webp",
+            "platform": "ShortMax",
+            "total_episodes": 23,
+            "available_episodes": 23,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "90746",
+            "slug": "eternal-silence-of-the-mountains",
+            "title": "Eternal Silence of the Mountains",
+            "cover": "/covers/90746.webp",
+            "platform": "ShortWave",
+            "total_episodes": 55,
+            "available_episodes": 55,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "5887",
+            "slug": "eternal-vows-destinys-battlefield",
+            "title": "Eternal Vows: Destiny's Battlefield",
+            "cover": "/covers/5887.webp",
+            "platform": "ShortMax",
+            "total_episodes": 61,
+            "available_episodes": 61,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "3657",
+            "slug": "eternal-destiny-love-beyond-realms",
+            "title": "Eternal Destiny: Love Beyond Realms",
+            "cover": "/covers/3657.webp",
+            "platform": "ShortMax",
+            "total_episodes": 70,
+            "available_episodes": 70,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "6351",
+            "slug": "eternal-embrace-my-boyfriend-is-a-general",
+            "title": "Eternal Embrace: My Boyfriend Is a General",
+            "cover": "/covers/6351.webp",
+            "platform": "DramaBox",
+            "total_episodes": 93,
+            "available_episodes": 93,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "149245",
+            "slug": "the-wolfs-eternal-curse",
+            "title": "The Wolf's Eternal Curse",
+            "cover": "/covers/149245.webp",
+            "platform": "DramaBox",
+            "total_episodes": 66,
+            "available_episodes": 66,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "148786",
+            "slug": "the-eternal-blood-pact",
+            "title": "The Eternal Blood Pact",
+            "cover": "/covers/148786.webp",
+            "platform": "DramaBox",
+            "total_episodes": 50,
+            "available_episodes": 50,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "146040",
+            "slug": "gourd-for-eternal-life-kalostv-en",
+            "title": "Gourd for Eternal Life",
+            "cover": "/covers/146040.webp",
+            "platform": "KalosTV",
+            "total_episodes": 14,
+            "available_episodes": 14,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "145274",
+            "slug": "crowned-by-eternal-night",
+            "title": "Crowned by Eternal Night",
+            "cover": "/covers/145274.webp",
+            "platform": "DramaWave",
+            "total_episodes": 40,
+            "available_episodes": 40,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "145101",
+            "slug": "forging-immortality-i-am-the-eternal-god",
+            "title": "Forging Immortality: I Am the Eternal God",
+            "cover": "/covers/145101.webp",
+            "platform": "DramaWave",
+            "total_episodes": 60,
+            "available_episodes": 60,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "107392",
+            "slug": "dubbed-five-elements-road-to-eternal-life-storyreel-en",
+            "title": "[Dubbed] Five Elements: Road to Eternal Life",
+            "cover": "/covers/107392.webp",
+            "platform": "Storyreel",
+            "total_episodes": 55,
+            "available_episodes": 55,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "105393",
+            "slug": "hope-springs-eternal",
+            "title": "Hope Springs Eternal",
+            "cover": "/covers/105393.webp",
+            "platform": "RaptDrama",
+            "total_episodes": 30,
+            "available_episodes": 30,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "94646",
+            "slug": "the-eternal-return-bloodline-ascends",
+            "title": "The Eternal Return: Bloodline Ascends",
+            "cover": "/covers/94646.webp",
+            "platform": "DramaBox",
+            "total_episodes": 76,
+            "available_episodes": 76,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "93895",
+            "slug": "the-eternal-day",
+            "title": "The Eternal Day",
+            "cover": "/covers/93895.webp",
+            "platform": "ShortWave",
+            "total_episodes": 58,
+            "available_episodes": 58,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "92670",
+            "slug": "the-eternal-sovereign-above-all-realms",
+            "title": "The Eternal Sovereign: Above All Realms",
+            "cover": "/covers/92670.webp",
+            "platform": "DramaBox",
+            "total_episodes": 60,
+            "available_episodes": 60,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "90368",
+            "slug": "silent-turmoil-eternal-bond",
+            "title": "Silent Turmoil Eternal Bond",
+            "cover": "/covers/90368.webp",
+            "platform": "ShortWave",
+            "total_episodes": 60,
+            "available_episodes": 60,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "88649",
+            "slug": "the-eternal-conqueror-none-shall-defy",
+            "title": "The Eternal Conqueror: None Shall Defy",
+            "cover": "/covers/88649.webp",
+            "platform": "DramaBox",
+            "total_episodes": 55,
+            "available_episodes": 55,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "76156",
+            "slug": "his-final-heartbeat-her-eternal-regret",
+            "title": "His Final Heartbeat, Her Eternal Regret",
+            "cover": "/covers/76156.webp",
+            "platform": "DramaBox",
+            "total_episodes": 39,
+            "available_episodes": 39,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "75879",
+            "slug": "mark-of-the-eternal-bracelet",
+            "title": "Mark of the Eternal Bracelet",
+            "cover": "/covers/75879.webp",
+            "platform": "ShortMax",
+            "total_episodes": 18,
+            "available_episodes": 18,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "75490",
+            "slug": "scientist-reborn-he-ignites-the-eternal-spark",
+            "title": "Scientist Reborn: He Ignites the Eternal Spark",
+            "cover": "/covers/75490.webp",
+            "platform": "DramaBox",
+            "total_episodes": 76,
+            "available_episodes": 76,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "71841",
+            "slug": "a-vow-of-eternal-love",
+            "title": "A Vow of Eternal Love",
+            "cover": "/covers/71841.webp",
+            "platform": "DramaWave",
+            "total_episodes": 70,
+            "available_episodes": 70,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "69927",
+            "slug": "her-dual-soul-his-eternal-destiny",
+            "title": "Her Dual Soul, His Eternal Destiny",
+            "cover": "/covers/69927.webp",
+            "platform": "DramaBox",
+            "total_episodes": 42,
+            "available_episodes": 42,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "65401",
+            "slug": "quantum-rebirth-the-eternal-mind",
+            "title": "Quantum Rebirth: The Eternal Mind",
+            "cover": "/covers/65401.webp",
+            "platform": "DramaWave",
+            "total_episodes": 51,
+            "available_episodes": 51,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "48316",
+            "slug": "accidentally-bound-eternally-loved",
+            "title": "Accidentally Bound, Eternally Loved",
+            "cover": "/covers/48316.webp",
+            "platform": "DramaBox",
+            "total_episodes": 100,
+            "available_episodes": 100,
+            "is_new": true,
+            "is_popular": false
+          },
+          {
+            "id": "28471",
+            "slug": "iron-will-eternal-loyalty",
+            "title": "Iron Will, Eternal Loyalty",
+            "cover": "/covers/28471.webp",
+            "platform": "FlexTV",
+            "total_episodes": 52,
+            "available_episodes": 52,
+            "is_new": true,
+            "is_popular": false
+          }
+        ],
+        "total": 43,
+        "page": 1,
+        "limit": 36,
+        "pages": 2,
+        "gevsek": false,
+        "q": "eternal"
+      }
+    },
+    {
+      "label": "legacy-home",
+      "data": {
+        "hero": [
+          {
+            "id": "130631",
+            "slug": "craving-the-wrong-brother",
+            "title": "Craving the Wrong Brother",
+            "cover": "/covers/130631.webp",
+            "platform": "DramaWave",
+            "total_episodes": 54,
+            "available_episodes": 54,
+            "is_new": true,
+            "is_popular": false,
+            "description": "Sloane spent ten years chasing Finn, but he wanted Delilah. Crashing Delilah's wedding, Sloane meets Knox, Finn's older brother. A bet turns into real passion. Now she is torn between the brother who broke her heart and the one determined to steal it.",
+            "language": "en",
+            "genre": "Romance",
+            "views": 0,
+            "is_featured": false,
+            "release_date": null
+          },
+          {
+            "id": "148158",
+            "slug": "the-husband-swap-party",
+            "title": "The Husband Swap Party",
+            "cover": "/covers/148158.webp",
+            "platform": "DramaBox",
+            "total_episodes": 43,
+            "available_episodes": 43,
+            "is_new": true,
+            "is_popular": false,
+            "description": "Olivia is dragged by her husband Ryan to a couples-swapping getaway—only to be paired with Jake, the husband of her closest friend Mia. Jake is magnetic, unreadable, relentless—nothing like the dull, clueless husband Mia always described. And he won't stop closing in. As both men begin fighting for Olivia's attention, and Mia's jealousy cracks in her perfect act—Olivia must uncover the real truth behind the partner-swapping party before it's too late.",
+            "language": "en",
+            "genre": "Forbidden Love",
+            "views": 0,
+            "is_featured": false,
+            "release_date": null
+          },
+          {
+            "id": "145075",
+            "slug": "the-betrayed-wolfless-is-the-lycan-king",
+            "title": "The Betrayed Wolfless Is The Lycan King",
+            "cover": "/covers/145075.webp",
+            "platform": "DramaBox",
+            "total_episodes": 45,
+            "available_episodes": 45,
+            "is_new": true,
+            "is_popular": false,
+            "description": "Aeron gives his Alpha wolf to his beloved mate Serena to fulfill her dream. After she abandons him, he gains secret Lycan power blessed by the Moon Goddess. Years later, the ambitious Serena invades packs for dominance. Aeron must face his former lover, fight dark forces, and protect his new friends while hiding his true mighty identity.",
+            "language": "en",
+            "genre": "Werewolf",
+            "views": 0,
+            "is_featured": false,
+            "release_date": null
+          },
+          {
+            "id": "124506",
+            "slug": "that-prince-is-a-girl-the-princess-and-her-grand-king",
+            "title": "That Prince Is A Girl: The Princess And Her Grand King",
+            "cover": "/covers/124506.webp",
+            "platform": "MoboReels",
+            "total_episodes": 61,
+            "available_episodes": 61,
+            "is_new": true,
+            "is_popular": false,
+            "description": "To protect her sister, Emeriel disguises herself as a male servant when both sisters are sold as slaves to the beasts kingdom of Urai. But Emeriel is no ordinary human, she's a rare Syren, the only one who can calm the beast king Daemonikai in his feral state, and they secretly fall for each other. As the jealous Sinai torments her, the ambitious lord Zaiper schemes against her, and the cursed Vladya becomes obsessed with her sister, Emeriel fights to keep her identity hidden while navigating deadly traps. In the end, she breaks the beast-king's curse unexpectedly.",
+            "language": "en",
+            "genre": "Western Fantasy",
+            "views": 0,
+            "is_featured": false,
+            "release_date": null
+          },
+          {
+            "id": "144398",
+            "slug": "weak-dragons-covenanted-harem",
+            "title": "Weak Dragon’s Covenanted Harem",
+            "cover": "/covers/144398.webp",
+            "platform": "NetShort",
+            "total_episodes": 45,
+            "available_episodes": 45,
+            "is_new": true,
+            "is_popular": false,
+            "description": "At a wife selection ceremony, Claire, who was despised by her father and brothers, awakened the system of mating and becoming stronger. As long as she mated with the opposite sex, she could continuously become stronger. In the end, she was crowned as the Dragon Lord of both races, holding the harem of beauties from all races, and creating a new era for the Dragon race!",
+            "language": "en",
+            "genre": "Underdog Rise",
+            "views": 0,
+            "is_featured": false,
+            "release_date": null
+          },
+          {
+            "id": "152113",
+            "slug": "the-mortal-i-married-made-heaven-bow",
+            "title": "The Mortal I Married Made Heaven Bow",
+            "cover": "/covers/152113.webp",
+            "platform": "DramaWave",
+            "total_episodes": 50,
+            "available_episodes": 50,
+            "is_new": true,
+            "is_popular": false,
+            "description": "Six years ago, Demon King Diablo hid his identity, living among humans as a blacksmith and saved Inaris, a six-winged angel. Six years later, to escape an arranged marriage and protect her twins, Inaris seeks Diablo out again...",
+            "language": "en",
+            "genre": "Romance",
+            "views": 0,
+            "is_featured": false,
+            "release_date": null
+          },
+          {
+            "id": "129774",
+            "slug": "wicked-games",
+            "title": "Wicked Games",
+            "cover": "/covers/129774.webp",
+            "platform": "NetShort",
+            "total_episodes": 13,
+            "available_episodes": 13,
+            "is_new": true,
+            "is_popular": false,
+            "description": "Wicked Games is a subtitled short drama in 13 episodes, a pick for fans of karma payback, love triangle and revenge. Each episode lasts only a few minutes and ends on a cliffhanger. Watch every episode of Wicked Games free on DramaDünyam, with no sign-up and no app.",
+            "language": "en",
+            "genre": "Karma Payback",
+            "views": 0,
+            "is_featured": false,
+            "release_date": null
+          },
+          {
+            "id": "144075",
+            "slug": "the-triplets-final-regret",
+            "title": "The Triplets' Final Regret",
+            "cover": "/covers/144075.webp",
+            "platform": "ReelShort",
+            "total_episodes": 51,
+            "available_episodes": 51,
+            "is_new": true,
+            "is_popular": false,
+            "description": "Elisa, a half-human, half-vampire girl, believes the Lockhart triplets are the only people in the world she can truly trust. She wants to become human for them—and spend forever with one of them.\n\nBut everything changes when Amber, the maid’s daughter, appears. Again and again, Elisa is abandoned, humiliated, and stripped of her dignity. All for Amber. Finally, she decides to let go and accept her fate: leaving day school behind, transferring to night school, and becoming a vampire.\n\nBut when Elisa appears in her night school uniform, held in the arms of a powerful vampire heir, why do the triplets who once threw her away suddenly fall into regret and panic—kneeling before her, begging for forgiveness?",
+            "language": "en",
+            "genre": "Young Adult",
+            "views": 0,
+            "is_featured": false,
+            "release_date": null
+          }
+        ],
+        "rows": [
+          {
+            "key": "populer",
+            "title": "Popular Series",
+            "href": "/en/browse/popular",
+            "total": 100,
+            "items": [
+              {
+                "id": "130631",
+                "slug": "craving-the-wrong-brother",
+                "title": "Craving the Wrong Brother",
+                "cover": "/covers/130631.webp",
+                "platform": "DramaWave",
+                "total_episodes": 54,
+                "available_episodes": 54,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "148158",
+                "slug": "the-husband-swap-party",
+                "title": "The Husband Swap Party",
+                "cover": "/covers/148158.webp",
+                "platform": "DramaBox",
+                "total_episodes": 43,
+                "available_episodes": 43,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "145075",
+                "slug": "the-betrayed-wolfless-is-the-lycan-king",
+                "title": "The Betrayed Wolfless Is The Lycan King",
+                "cover": "/covers/145075.webp",
+                "platform": "DramaBox",
+                "total_episodes": 45,
+                "available_episodes": 45,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "124506",
+                "slug": "that-prince-is-a-girl-the-princess-and-her-grand-king",
+                "title": "That Prince Is A Girl: The Princess And Her Grand King",
+                "cover": "/covers/124506.webp",
+                "platform": "MoboReels",
+                "total_episodes": 61,
+                "available_episodes": 61,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "144398",
+                "slug": "weak-dragons-covenanted-harem",
+                "title": "Weak Dragon’s Covenanted Harem",
+                "cover": "/covers/144398.webp",
+                "platform": "NetShort",
+                "total_episodes": 45,
+                "available_episodes": 45,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "152113",
+                "slug": "the-mortal-i-married-made-heaven-bow",
+                "title": "The Mortal I Married Made Heaven Bow",
+                "cover": "/covers/152113.webp",
+                "platform": "DramaWave",
+                "total_episodes": 50,
+                "available_episodes": 50,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "129774",
+                "slug": "wicked-games",
+                "title": "Wicked Games",
+                "cover": "/covers/129774.webp",
+                "platform": "NetShort",
+                "total_episodes": 13,
+                "available_episodes": 13,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "144075",
+                "slug": "the-triplets-final-regret",
+                "title": "The Triplets' Final Regret",
+                "cover": "/covers/144075.webp",
+                "platform": "ReelShort",
+                "total_episodes": 51,
+                "available_episodes": 51,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "131242",
+                "slug": "route-threeway-to-climax",
+                "title": "Route Threeway To Climax",
+                "cover": "/covers/131242.webp",
+                "platform": "GoodShort",
+                "total_episodes": 35,
+                "available_episodes": 35,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "143833",
+                "slug": "the-dragon-kings-forbidden-bride",
+                "title": "The Dragon King's Forbidden Bride",
+                "cover": "/covers/143833.webp",
+                "platform": "StarShort",
+                "total_episodes": 39,
+                "available_episodes": 39,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "132875",
+                "slug": "plus-size-bride-stepmom-in-charge",
+                "title": "Plus-Size Bride, Stepmom in Charge",
+                "cover": "/covers/132875.webp",
+                "platform": "Storyreel",
+                "total_episodes": 99,
+                "available_episodes": 99,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "153511",
+                "slug": "the-exiled-luna-and-her-golden-eyed-daughter",
+                "title": "The Exiled Luna and Her Golden-Eyed Daughter",
+                "cover": "/covers/153511.webp",
+                "platform": "DramaBox",
+                "total_episodes": 50,
+                "available_episodes": 50,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "116858",
+                "slug": "my-alien-life",
+                "title": "My Alien Life",
+                "cover": "/covers/116858.webp",
+                "platform": "MoboReels",
+                "total_episodes": 60,
+                "available_episodes": 60,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "144387",
+                "slug": "honey-cut",
+                "title": "Honey Cut",
+                "cover": "/covers/144387.webp",
+                "platform": "ReelShort",
+                "total_episodes": 60,
+                "available_episodes": 60,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "148159",
+                "slug": "the-new-ceo-treats-my-sex-addiction",
+                "title": "The new CEO treats my sex addiction",
+                "cover": "/covers/148159.webp",
+                "platform": "DramaBox",
+                "total_episodes": 62,
+                "available_episodes": 62,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "143782",
+                "slug": "bitter-burn",
+                "title": "Bitter Burn",
+                "cover": "/covers/143782.webp",
+                "platform": "ReelShort",
+                "total_episodes": 61,
+                "available_episodes": 61,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "153556",
+                "slug": "touch-me-not-radreels-en",
+                "title": "Touch Me Not",
+                "cover": "/covers/153556.webp",
+                "platform": "RadReels",
+                "total_episodes": 55,
+                "available_episodes": 55,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "106279",
+                "slug": "the-lost-son-of-zeus-his-return",
+                "title": "The Lost Son of Zeus: His Return",
+                "cover": "/covers/106279.webp",
+                "platform": "DramaBox",
+                "total_episodes": 53,
+                "available_episodes": 53,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "106285",
+                "slug": "the-husband-they-swore-i-didnt-have",
+                "title": "The Husband They Swore I Didn't Have",
+                "cover": "/covers/106285.webp",
+                "platform": "DramaBox",
+                "total_episodes": 31,
+                "available_episodes": 31,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "82630",
+                "slug": "rivals-to-lovers",
+                "title": "Rivals to Lovers",
+                "cover": "/covers/82630.webp",
+                "platform": "StarDust",
+                "total_episodes": 61,
+                "available_episodes": 61,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "150664",
+                "slug": "the-homeless-man-with-the-billion-dollar-eye",
+                "title": "The Homeless Man with the Billion-Dollar Eye",
+                "cover": "/covers/150664.webp",
+                "platform": "NetShort",
+                "total_episodes": 44,
+                "available_episodes": 44,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "113835",
+                "slug": "the-alpha-and-his-nanny-luna",
+                "title": "The Alpha and His Nanny Luna",
+                "cover": "/covers/113835.webp",
+                "platform": "ReelShort",
+                "total_episodes": 50,
+                "available_episodes": 50,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154513",
+                "slug": "dubbedthe-mafia-kings-contract-bride",
+                "title": "(Dubbed)The Mafia King's Contract Bride",
+                "cover": "/covers/154513.webp",
+                "platform": "BonusTV",
+                "total_episodes": 66,
+                "available_episodes": 66,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "145054",
+                "slug": "pregnant-with-the-dragon-kings-sextuplets",
+                "title": "Pregnant with the Dragon King's Sextuplets",
+                "cover": "/covers/145054.webp",
+                "platform": "ReelShort",
+                "total_episodes": 45,
+                "available_episodes": 45,
+                "is_new": true,
+                "is_popular": false
+              }
+            ]
+          },
+          {
+            "key": "bugun",
+            "title": "Most Watched Today",
+            "href": "/en/browse/today",
+            "total": 500,
+            "items": [
+              {
+                "id": "148716",
+                "slug": "you-woke-the-demon-inside-me",
+                "title": "You Woke the Demon Inside Me",
+                "cover": "/covers/148716.webp",
+                "platform": "DramaBox",
+                "total_episodes": 46,
+                "available_episodes": 46,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "148158",
+                "slug": "the-husband-swap-party",
+                "title": "The Husband Swap Party",
+                "cover": "/covers/148158.webp",
+                "platform": "DramaBox",
+                "total_episodes": 43,
+                "available_episodes": 43,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154347",
+                "slug": "pocket-watch-to-the-medieval-throne",
+                "title": "Pocket Watch to the Medieval Throne",
+                "cover": "/covers/154347.webp",
+                "platform": "BonusTV",
+                "total_episodes": 60,
+                "available_episodes": 60,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "146344",
+                "slug": "even-billionaires-beg-to-borrow-from-me",
+                "title": "Even Billionaires Beg to Borrow From Me",
+                "cover": "/covers/146344.webp",
+                "platform": "FlickReels",
+                "total_episodes": 43,
+                "available_episodes": 43,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "145318",
+                "slug": "second-chance-as-her-mrtrash",
+                "title": "Second Chance as Her Mr.Trash",
+                "cover": "/covers/145318.webp",
+                "platform": "DramaBox",
+                "total_episodes": 60,
+                "available_episodes": 60,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "144388",
+                "slug": "the-doll-next-door",
+                "title": "The Doll Next Door",
+                "cover": "/covers/144388.webp",
+                "platform": "DramaWave",
+                "total_episodes": 30,
+                "available_episodes": 30,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "144398",
+                "slug": "weak-dragons-covenanted-harem",
+                "title": "Weak Dragon’s Covenanted Harem",
+                "cover": "/covers/144398.webp",
+                "platform": "NetShort",
+                "total_episodes": 45,
+                "available_episodes": 45,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "145075",
+                "slug": "the-betrayed-wolfless-is-the-lycan-king",
+                "title": "The Betrayed Wolfless Is The Lycan King",
+                "cover": "/covers/145075.webp",
+                "platform": "DramaBox",
+                "total_episodes": 45,
+                "available_episodes": 45,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "135353",
+                "slug": "level-one-loser-maxxx-level-lover",
+                "title": "Level One Loser, Maxxx Level Lover",
+                "cover": "/covers/135353.webp",
+                "platform": "DramaBox",
+                "total_episodes": 41,
+                "available_episodes": 41,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "146055",
+                "slug": "i-stole-the-dons-heart",
+                "title": "I Stole the Don's Heart",
+                "cover": "/covers/146055.webp",
+                "platform": "DramaWave",
+                "total_episodes": 46,
+                "available_episodes": 46,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "133964",
+                "slug": "entangled-by-the-serpents-touch",
+                "title": "Entangled by the Serpent's Touch",
+                "cover": "/covers/133964.webp",
+                "platform": "DramaBox",
+                "total_episodes": 45,
+                "available_episodes": 45,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "152113",
+                "slug": "the-mortal-i-married-made-heaven-bow",
+                "title": "The Mortal I Married Made Heaven Bow",
+                "cover": "/covers/152113.webp",
+                "platform": "DramaWave",
+                "total_episodes": 50,
+                "available_episodes": 50,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "147052",
+                "slug": "curvy-liar-who-snared-a-mafia-dons-heart",
+                "title": "Curvy Liar Who Snared a Mafia Don’s Heart",
+                "cover": "/covers/147052.webp",
+                "platform": "ShortMax",
+                "total_episodes": 25,
+                "available_episodes": 25,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "144266",
+                "slug": "silent-sacrifice-the-godfathers-hidden-child",
+                "title": "Silent Sacrifice: The Godfather's Hidden Child",
+                "cover": "/covers/144266.webp",
+                "platform": "ShortMax",
+                "total_episodes": 50,
+                "available_episodes": 50,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "148730",
+                "slug": "dont-call-me-mate-i-am-your-brothers-luna",
+                "title": "Don't Call Me Mate, I Am Your Brother's Luna",
+                "cover": "/covers/148730.webp",
+                "platform": "GoodShort",
+                "total_episodes": 50,
+                "available_episodes": 50,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "109168",
+                "slug": "dads-secret-lesson",
+                "title": "Dad's Secret Lesson",
+                "cover": "/covers/109168.webp",
+                "platform": "iDrama",
+                "total_episodes": 30,
+                "available_episodes": 30,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "138630",
+                "slug": "my-ex-wife-called-me-worthless-then-the-mafia-donna-made-me-her-husband",
+                "title": "My Ex-Wife Called Me Worthless — Then the Mafia Donna Made Me Her Husband",
+                "cover": "/covers/138630.webp",
+                "platform": "ShortMax",
+                "total_episodes": 25,
+                "available_episodes": 25,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "146267",
+                "slug": "the-trap-she-set-how-to-seduce-a-professor",
+                "title": "The Trap She Set: How to Seduce a Professor",
+                "cover": "/covers/146267.webp",
+                "platform": "FlickReels",
+                "total_episodes": 40,
+                "available_episodes": 40,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "138835",
+                "slug": "my-demon-lord-your-shepherd-girl-has-run-away-again",
+                "title": "My Demon Lord, Your Shepherd Girl Has Run Away Again",
+                "cover": "/covers/138835.webp",
+                "platform": "DramaBox",
+                "total_episodes": 51,
+                "available_episodes": 51,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "110751",
+                "slug": "the-heat-after-the-warehouse-locked",
+                "title": "The Heat After the Warehouse Locked",
+                "cover": "/covers/110751.webp",
+                "platform": "iDrama",
+                "total_episodes": 35,
+                "available_episodes": 35,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "119713",
+                "slug": "forbidden-tides-dont-tell-my-stepson",
+                "title": "Forbidden Tides : Don't Tell My Stepson",
+                "cover": "/covers/119713.webp",
+                "platform": "Vigloo",
+                "total_episodes": 50,
+                "available_episodes": 50,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "148378",
+                "slug": "she-chose-her-fake-husband",
+                "title": "She Chose Her Fake Husband",
+                "cover": "/covers/148378.webp",
+                "platform": "DramaBox",
+                "total_episodes": 40,
+                "available_episodes": 40,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "152691",
+                "slug": "the-odd-prophecy-before-hurricane-strikes",
+                "title": "The Odd Prophecy Before Hurricane Strikes",
+                "cover": "/covers/152691.webp",
+                "platform": "ShortMax",
+                "total_episodes": 30,
+                "available_episodes": 30,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "122797",
+                "slug": "taming-the-untouchable-alpha",
+                "title": "Taming the Untouchable Alpha",
+                "cover": "/covers/122797.webp",
+                "platform": "SerialPlus",
+                "total_episodes": 33,
+                "available_episodes": 33,
+                "is_new": true,
+                "is_popular": false
+              }
+            ]
+          },
+          {
+            "key": "bu-ay",
+            "title": "Most Watched This Month",
+            "href": "/en/browse/this-month",
+            "total": 96,
+            "items": [
+              {
+                "id": "94386",
+                "slug": "wet-therapy",
+                "title": "Wet Therapy",
+                "cover": "/covers/94386.webp",
+                "platform": "ShortWave",
+                "total_episodes": 30,
+                "available_episodes": 30,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "92265",
+                "slug": "sex-in-the-bathroom-with-a-mafia-don",
+                "title": "Sex in the Bathroom with a Mafia Don",
+                "cover": "/covers/92265.webp",
+                "platform": "ShortMax",
+                "total_episodes": 56,
+                "available_episodes": 56,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "130631",
+                "slug": "craving-the-wrong-brother",
+                "title": "Craving the Wrong Brother",
+                "cover": "/covers/130631.webp",
+                "platform": "DramaWave",
+                "total_episodes": 54,
+                "available_episodes": 54,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "122388",
+                "slug": "rejecting-my-five-female-mates",
+                "title": "Rejecting My Five Female Mates",
+                "cover": "/covers/122388.webp",
+                "platform": "ReelShort",
+                "total_episodes": 50,
+                "available_episodes": 50,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "109170",
+                "slug": "left-in-the-blizzardclaimed-by-my-stepbrother",
+                "title": "Left in the Blizzard，Claimed by My Stepbrother",
+                "cover": "/covers/109170.webp",
+                "platform": "iDrama",
+                "total_episodes": 41,
+                "available_episodes": 41,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "110751",
+                "slug": "the-heat-after-the-warehouse-locked",
+                "title": "The Heat After the Warehouse Locked",
+                "cover": "/covers/110751.webp",
+                "platform": "iDrama",
+                "total_episodes": 35,
+                "available_episodes": 35,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "113464",
+                "slug": "the-ruthless-heir-and-his-runaway-maid",
+                "title": "The Ruthless Heir And His Runaway Maid",
+                "cover": "/covers/113464.webp",
+                "platform": "DramaBox",
+                "total_episodes": 55,
+                "available_episodes": 55,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "105426",
+                "slug": "omg-my-moms-lover-mistook-me-for-a-sex-doll",
+                "title": "OMG! My Mom’s Lover Mistook Me for a Sex Doll",
+                "cover": "/covers/105426.webp",
+                "platform": "iDrama",
+                "total_episodes": 26,
+                "available_episodes": 26,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "109168",
+                "slug": "dads-secret-lesson",
+                "title": "Dad's Secret Lesson",
+                "cover": "/covers/109168.webp",
+                "platform": "iDrama",
+                "total_episodes": 30,
+                "available_episodes": 30,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "122970",
+                "slug": "dumping-my-quarterback-after-my-glow-up",
+                "title": "Dumping My Quarterback After My Glow-up",
+                "cover": "/covers/122970.webp",
+                "platform": "VibeShort",
+                "total_episodes": 50,
+                "available_episodes": 50,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "113935",
+                "slug": "in-bed-with-my-brother-in-law",
+                "title": "In Bed with My Brother-in-Law",
+                "cover": "/covers/113935.webp",
+                "platform": "ReelShort",
+                "total_episodes": 45,
+                "available_episodes": 45,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "105433",
+                "slug": "i-hooked-up-with-a-mafia-boss-idrama-en",
+                "title": "I Hooked Up with a Mafia Boss",
+                "cover": "/covers/105433.webp",
+                "platform": "iDrama",
+                "total_episodes": 40,
+                "available_episodes": 40,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "78403",
+                "slug": "the-summer-the-ac-broke",
+                "title": "The Summer the AC Broke",
+                "cover": "/covers/78403.webp",
+                "platform": "ReelShort",
+                "total_episodes": 30,
+                "available_episodes": 30,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "116145",
+                "slug": "sold-to-the-beasts-claimed-by-the-alpha",
+                "title": "Sold to the Beasts, Claimed by the Alpha",
+                "cover": "/covers/116145.webp",
+                "platform": "FlickReels",
+                "total_episodes": 62,
+                "available_episodes": 62,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "117667",
+                "slug": "the-road-through-fire",
+                "title": "The Road Through Fire",
+                "cover": "/covers/117667.webp",
+                "platform": "DramaBox",
+                "total_episodes": 50,
+                "available_episodes": 50,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "103624",
+                "slug": "the-godfathers-obsession-only-yours",
+                "title": "The Godfather's Obsession: Only Yours",
+                "cover": "/covers/103624.webp",
+                "platform": "FlickReels",
+                "total_episodes": 56,
+                "available_episodes": 56,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "118505",
+                "slug": "their-hidden-princess",
+                "title": "Their Hidden Princess",
+                "cover": "/covers/118505.webp",
+                "platform": "DramaBox",
+                "total_episodes": 55,
+                "available_episodes": 55,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "111611",
+                "slug": "poisoned-by-his-love",
+                "title": "Poisoned by His Love",
+                "cover": "/covers/111611.webp",
+                "platform": "DramaBox",
+                "total_episodes": 56,
+                "available_episodes": 56,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "117665",
+                "slug": "mistaken-for-my-brother-in-laws-sex-doll",
+                "title": "Mistaken for My Brother-in-law's Sex Doll",
+                "cover": "/covers/117665.webp",
+                "platform": "DramaBox",
+                "total_episodes": 60,
+                "available_episodes": 60,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "119708",
+                "slug": "he-paid-for-one-night-then-wanted-forever",
+                "title": "He Paid for One Night, Then Wanted Forever",
+                "cover": "/covers/119708.webp",
+                "platform": "Vigloo",
+                "total_episodes": 40,
+                "available_episodes": 40,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "118129",
+                "slug": "forbidden-desire-kalostv-en",
+                "title": "Forbidden Desire",
+                "cover": "/covers/118129.webp",
+                "platform": "KalosTV",
+                "total_episodes": 40,
+                "available_episodes": 40,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "114900",
+                "slug": "the-silver-angel-he-never-recognized",
+                "title": "The Silver Angel He Never Recognized",
+                "cover": "/covers/114900.webp",
+                "platform": "DramaWave",
+                "total_episodes": 54,
+                "available_episodes": 54,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "131130",
+                "slug": "surrender-to-the-unwanted-virgin-luna",
+                "title": "Surrender to the Unwanted Virgin Luna",
+                "cover": "/covers/131130.webp",
+                "platform": "DramaBox",
+                "total_episodes": 40,
+                "available_episodes": 40,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "93786",
+                "slug": "i-fell-for-my-dangerous-stepbrother",
+                "title": "I Fell for My Dangerous Stepbrother",
+                "cover": "/covers/93786.webp",
+                "platform": "NetShort",
+                "total_episodes": 27,
+                "available_episodes": 27,
+                "is_new": true,
+                "is_popular": false
+              }
+            ]
+          },
+          {
+            "key": "yeni",
+            "title": "Newly Added",
+            "href": "/en/browse/new",
+            "total": 32564,
+            "items": [
+              {
+                "id": "154864",
+                "slug": "disabled-customer-is-the-real-boss",
+                "title": "DISABLED CUSTOMER IS THE REAL BOSS",
+                "cover": "/covers/154864.webp",
+                "platform": "Shorten",
+                "total_episodes": 10,
+                "available_episodes": 10,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154863",
+                "slug": "homeless-girl-won-rich-mans-heart",
+                "title": "HOMELESS GIRL WON RICH MAN’S HEART",
+                "cover": "/covers/154863.webp",
+                "platform": "Shorten",
+                "total_episodes": 10,
+                "available_episodes": 10,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154860",
+                "slug": "the-double-life-of-the-true-successor",
+                "title": "THE DOUBLE LIFE OF THE TRUE SUCCESSOR",
+                "cover": "/covers/154860.webp",
+                "platform": "Shorten",
+                "total_episodes": 63,
+                "available_episodes": 63,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154859",
+                "slug": "the-billionaire-is-my-substitute-groom",
+                "title": "THE BILLIONAIRE IS MY SUBSTITUTE GROOM",
+                "cover": "/covers/154859.webp",
+                "platform": "Shorten",
+                "total_episodes": 46,
+                "available_episodes": 46,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154858",
+                "slug": "stunning-waitress-becomes-mr-presidents-wife",
+                "title": "STUNNING WAITRESS BECOMES MR. PRESIDENT'S WIFE",
+                "cover": "/covers/154858.webp",
+                "platform": "Shorten",
+                "total_episodes": 45,
+                "available_episodes": 45,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154857",
+                "slug": "the-fireman-who-burned-my-heart",
+                "title": "THE FIREMAN WHO BURNED MY HEART",
+                "cover": "/covers/154857.webp",
+                "platform": "Shorten",
+                "total_episodes": 72,
+                "available_episodes": 72,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154856",
+                "slug": "the-cinderella-maid-becomes-millionaires-wife",
+                "title": "THE CINDERELLA MAID BECOMES MILLIONAIRE’S WIFE",
+                "cover": "/covers/154856.webp",
+                "platform": "Shorten",
+                "total_episodes": 14,
+                "available_episodes": 14,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154855",
+                "slug": "double-life-of-my-homeless-husband",
+                "title": "DOUBLE LIFE OF MY HOMELESS HUSBAND",
+                "cover": "/covers/154855.webp",
+                "platform": "Shorten",
+                "total_episodes": 29,
+                "available_episodes": 29,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154854",
+                "slug": "my-stepbrother-my-deadly-crush",
+                "title": "MY STEPBROTHER, MY DEADLY CRUSH",
+                "cover": "/covers/154854.webp",
+                "platform": "Shorten",
+                "total_episodes": 61,
+                "available_episodes": 61,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154853",
+                "slug": "genius-wifes-legendary-comeback",
+                "title": "GENIUS WIFE’S LEGENDARY COMEBACK",
+                "cover": "/covers/154853.webp",
+                "platform": "Shorten",
+                "total_episodes": 61,
+                "available_episodes": 61,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154852",
+                "slug": "xxl-superstar-destroys-the-fake-diva",
+                "title": "XXL SUPERSTAR DESTROYS THE FAKE DIVA",
+                "cover": "/covers/154852.webp",
+                "platform": "Shorten",
+                "total_episodes": 60,
+                "available_episodes": 60,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154851",
+                "slug": "bombshell-baby",
+                "title": "BOMBSHELL BABY",
+                "cover": "/covers/154851.webp",
+                "platform": "Shorten",
+                "total_episodes": 17,
+                "available_episodes": 17,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154850",
+                "slug": "mom-help-dad-is-killing-me",
+                "title": "MOM, HELP… DAD IS KILLING ME!",
+                "cover": "/covers/154850.webp",
+                "platform": "Shorten",
+                "total_episodes": 54,
+                "available_episodes": 54,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154849",
+                "slug": "i-can-hear-my-bosss-thoughts",
+                "title": "I CAN HEAR MY BOSS'S THOUGHTS!",
+                "cover": "/covers/154849.webp",
+                "platform": "Shorten",
+                "total_episodes": 35,
+                "available_episodes": 35,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154848",
+                "slug": "how-to-seduce-my-exs-dad",
+                "title": "HOW TO SEDUCE MY EX'S DAD",
+                "cover": "/covers/154848.webp",
+                "platform": "Shorten",
+                "total_episodes": 52,
+                "available_episodes": 52,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154847",
+                "slug": "three-billionaire-fiancs-for-a-delivery-girl",
+                "title": "THREE BILLIONAIRE FIANCÉS FOR A DELIVERY GIRL",
+                "cover": "/covers/154847.webp",
+                "platform": "Shorten",
+                "total_episodes": 54,
+                "available_episodes": 54,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154846",
+                "slug": "the-baby-champion-of-snooker",
+                "title": "THE BABY CHAMPION OF SNOOKER",
+                "cover": "/covers/154846.webp",
+                "platform": "Shorten",
+                "total_episodes": 46,
+                "available_episodes": 46,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154845",
+                "slug": "american-sniper-king-of-guns",
+                "title": "AMERICAN SNIPER: KING OF GUNS",
+                "cover": "/covers/154845.webp",
+                "platform": "Shorten",
+                "total_episodes": 23,
+                "available_episodes": 23,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154844",
+                "slug": "the-ugly-cinderella-the-homeless-heir",
+                "title": "THE UGLY CINDERELLA & THE HOMELESS HEIR",
+                "cover": "/covers/154844.webp",
+                "platform": "Shorten",
+                "total_episodes": 54,
+                "available_episodes": 54,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154843",
+                "slug": "the-silent-ceos-transmigrated-bride",
+                "title": "THE SILENT CEO’S TRANSMIGRATED BRIDE",
+                "cover": "/covers/154843.webp",
+                "platform": "Shorten",
+                "total_episodes": 60,
+                "available_episodes": 60,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154842",
+                "slug": "virgins-highest-bidder-is-not-a-stranger",
+                "title": "VIRGIN'S HIGHEST BIDDER IS NOT A STRANGER",
+                "cover": "/covers/154842.webp",
+                "platform": "Shorten",
+                "total_episodes": 26,
+                "available_episodes": 26,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154841",
+                "slug": "too-late-to-want-me-back-shorten-en",
+                "title": "TOO LATE TO WANT ME BACK",
+                "cover": "/covers/154841.webp",
+                "platform": "Shorten",
+                "total_episodes": 50,
+                "available_episodes": 50,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154840",
+                "slug": "reborn-to-ruin-my-heartless-husband",
+                "title": "REBORN TO RUIN MY HEARTLESS HUSBAND!",
+                "cover": "/covers/154840.webp",
+                "platform": "Shorten",
+                "total_episodes": 58,
+                "available_episodes": 58,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154839",
+                "slug": "my-stepbrother-is-my-crush",
+                "title": "MY STEPBROTHER IS MY CRUSH",
+                "cover": "/covers/154839.webp",
+                "platform": "Shorten",
+                "total_episodes": 30,
+                "available_episodes": 30,
+                "is_new": true,
+                "is_popular": false
+              }
+            ]
+          },
+          {
+            "key": "dublaj",
+            "title": "Dubbed Series",
+            "href": "/en/browse/dubbed",
+            "total": 2373,
+            "items": [
+              {
+                "id": "154831",
+                "slug": "dubbeddaddys-kisses-no-thanks",
+                "title": "[Dubbed]Daddy’s Kisses? No Thanks!",
+                "cover": "/covers/154831.webp",
+                "platform": "DramaRush",
+                "total_episodes": 80,
+                "available_episodes": 80,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154821",
+                "slug": "dubbedthe-replacement-bride",
+                "title": "[Dubbed]The Replacement Bride",
+                "cover": "/covers/154821.webp",
+                "platform": "DramaRush",
+                "total_episodes": 61,
+                "available_episodes": 61,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154541",
+                "slug": "dubbedboundless-oceans-vast-skies-my-comeback-to-showbiz",
+                "title": "(Dubbed)Boundless Oceans, Vast Skies: My Comeback to Showbiz",
+                "cover": "/covers/154541.webp",
+                "platform": "BonusTV",
+                "total_episodes": 80,
+                "available_episodes": 80,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154513",
+                "slug": "dubbedthe-mafia-kings-contract-bride",
+                "title": "(Dubbed)The Mafia King's Contract Bride",
+                "cover": "/covers/154513.webp",
+                "platform": "BonusTV",
+                "total_episodes": 66,
+                "available_episodes": 66,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154509",
+                "slug": "dubbed-lost-at-sea",
+                "title": "(Dubbed) Lost at Sea",
+                "cover": "/covers/154509.webp",
+                "platform": "BonusTV",
+                "total_episodes": 60,
+                "available_episodes": 60,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154504",
+                "slug": "dubbed-the-elite-lawyer-forced-my-divorce-him-for-his-mistresss-baby",
+                "title": "(Dubbed) The Elite Lawyer Forced My Divorce Him For His Mistress's Baby",
+                "cover": "/covers/154504.webp",
+                "platform": "BonusTV",
+                "total_episodes": 45,
+                "available_episodes": 45,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154455",
+                "slug": "dubbedhidden-fragrance-in-the-deep-woods",
+                "title": "(Dubbed)Hidden Fragrance in the Deep Woods",
+                "cover": "/covers/154455.webp",
+                "platform": "BonusTV",
+                "total_episodes": 80,
+                "available_episodes": 80,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154439",
+                "slug": "dubbed-i-vanished-with-the-dons-true-heir",
+                "title": "(Dubbed) I Vanished With the Don's True Heir",
+                "cover": "/covers/154439.webp",
+                "platform": "BonusTV",
+                "total_episodes": 46,
+                "available_episodes": 46,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154434",
+                "slug": "dubbed-i-signed-divorce-papers-before-his-wedding-collapsed",
+                "title": "(Dubbed) I Signed Divorce Papers Before His Wedding Collapsed",
+                "cover": "/covers/154434.webp",
+                "platform": "BonusTV",
+                "total_episodes": 41,
+                "available_episodes": 41,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154406",
+                "slug": "dubbedyoung-marshals-beloved-wife",
+                "title": "(Dubbed)Young Marshal's Beloved Wife",
+                "cover": "/covers/154406.webp",
+                "platform": "BonusTV",
+                "total_episodes": 100,
+                "available_episodes": 100,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154354",
+                "slug": "dubbedtest-the-apprentices-with-gold",
+                "title": "(Dubbed)Test the Apprentices with Gold",
+                "cover": "/covers/154354.webp",
+                "platform": "BonusTV",
+                "total_episodes": 50,
+                "available_episodes": 50,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154337",
+                "slug": "dubbedgrandpa-at-eighteen",
+                "title": "(Dubbed)Grandpa at Eighteen",
+                "cover": "/covers/154337.webp",
+                "platform": "BonusTV",
+                "total_episodes": 94,
+                "available_episodes": 94,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154336",
+                "slug": "dubbed10000x-returns-master-stop-giving-season-2",
+                "title": "(Dubbed)10,000x Returns, Master Stop Giving — Season 2",
+                "cover": "/covers/154336.webp",
+                "platform": "BonusTV",
+                "total_episodes": 76,
+                "available_episodes": 76,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154263",
+                "slug": "dubbed-the-beloved-pregnant-wife-doted-by-her-billionaire-husband",
+                "title": "[Dubbed] The Beloved Pregnant Wife Doted by Her Billionaire Husband",
+                "cover": "/covers/154263.webp",
+                "platform": "MicroDrama",
+                "total_episodes": 80,
+                "available_episodes": 80,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "154231",
+                "slug": "the-new-intern-is-the-ceos-wife-dubbed",
+                "title": "The New Intern Is the CEO's Wife?! (Dubbed)",
+                "cover": "/covers/154231.webp",
+                "platform": "MicroDrama",
+                "total_episodes": 80,
+                "available_episodes": 80,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "153963",
+                "slug": "dubbedregret-after-slumber",
+                "title": "[Dubbed]Regret After Slumber",
+                "cover": "/covers/153963.webp",
+                "platform": "ShotShort",
+                "total_episodes": 33,
+                "available_episodes": 33,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "153938",
+                "slug": "dubbed-love-triangle-turmoil",
+                "title": "[dubbed] Love Triangle Turmoil",
+                "cover": "/covers/153938.webp",
+                "platform": "ShotShort",
+                "total_episodes": 60,
+                "available_episodes": 60,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "153899",
+                "slug": "dubbedmy-heiress-mom",
+                "title": "[dubbed]My Heiress Mom",
+                "cover": "/covers/153899.webp",
+                "platform": "ShotShort",
+                "total_episodes": 78,
+                "available_episodes": 78,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "153894",
+                "slug": "dubbed-lured-by-her",
+                "title": "[dubbed] Lured by Her",
+                "cover": "/covers/153894.webp",
+                "platform": "ShotShort",
+                "total_episodes": 60,
+                "available_episodes": 60,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "153889",
+                "slug": "dubbedthe-mischievous-wife",
+                "title": "[dubbed]The Mischievous Wife",
+                "cover": "/covers/153889.webp",
+                "platform": "ShotShort",
+                "total_episodes": 80,
+                "available_episodes": 80,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "153596",
+                "slug": "dubbed-the-assassins-husband",
+                "title": "(Dubbed) The Assassin's Husband",
+                "cover": "/covers/153596.webp",
+                "platform": "RadReels",
+                "total_episodes": 54,
+                "available_episodes": 54,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "153595",
+                "slug": "dubbed-journey-to-the-throne",
+                "title": "(Dubbed) Journey to the Throne",
+                "cover": "/covers/153595.webp",
+                "platform": "RadReels",
+                "total_episodes": 74,
+                "available_episodes": 74,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "153594",
+                "slug": "dubbed-return-of-justice-goddess",
+                "title": "(Dubbed) Return of Justice Goddess",
+                "cover": "/covers/153594.webp",
+                "platform": "RadReels",
+                "total_episodes": 81,
+                "available_episodes": 81,
+                "is_new": true,
+                "is_popular": false
+              },
+              {
+                "id": "153593",
+                "slug": "dubbed-a-womans-glory",
+                "title": "(Dubbed) A Woman's Glory",
+                "cover": "/covers/153593.webp",
+                "platform": "RadReels",
+                "total_episodes": 72,
+                "available_episodes": 72,
+                "is_new": true,
+                "is_popular": false
+              }
+            ]
+          }
+        ],
+        "platforms": [
+          {
+            "name": "ShortMax",
+            "logo": "/logos/shortmax.webp",
+            "count": 3346
+          },
+          {
+            "name": "NetShort",
+            "logo": "/logos/netshort.webp",
+            "count": 5961
+          },
+          {
+            "name": "DramaBox",
+            "logo": "/logos/dramabox.webp",
+            "count": 6142
+          },
+          {
+            "name": "DramaWave",
+            "logo": "/logos/dramawave.webp",
+            "count": 3017
+          },
+          {
+            "name": "ReelShort",
+            "logo": "/logos/reelshort.webp",
+            "count": 3250
+          },
+          {
+            "name": "StarDust",
+            "logo": "/logos/stardust.webp",
+            "count": 993
+          },
+          {
+            "name": "DramaBite",
+            "logo": "/logos/dramabite.webp",
+            "count": 411
+          },
+          {
+            "name": "FlexTV",
+            "logo": "/logos/flextv.webp",
+            "count": 578
+          },
+          {
+            "name": "FreeReels",
+            "logo": "/logos/freereels.webp",
+            "count": 753
+          },
+          {
+            "name": "RapidTV",
+            "logo": "/logos/rapidtv.webp",
+            "count": 95
+          },
+          {
+            "name": "SodaReels",
+            "logo": "/logos/sodareels.webp",
+            "count": 85
+          },
+          {
+            "name": "VibeShort",
+            "logo": "/logos/vibeshort.webp",
+            "count": 28
+          },
+          {
+            "name": "ShortBox",
+            "logo": "/logos/shortbox.webp",
+            "count": 56
+          },
+          {
+            "name": "PineDrama",
+            "logo": "/logos/pinedrama.webp",
+            "count": 648
+          },
+          {
+            "name": "StarShort",
+            "logo": "/logos/starshort.webp",
+            "count": 191
+          },
+          {
+            "name": "ShortWave",
+            "logo": "/logos/shortwave.webp",
+            "count": 1334
+          },
+          {
+            "name": "BiliTV",
+            "logo": "/logos/bilitv.png",
+            "count": 14
+          },
+          {
+            "name": "Storyreel",
+            "logo": "/logos/storyreel.png",
+            "count": 507
+          },
+          {
+            "name": "FlickReels",
+            "logo": "/logos/flickreels.webp",
+            "count": 1336
+          },
+          {
+            "name": "GoldDrama",
+            "logo": "/logos/golddrama.webp",
+            "count": 98
+          },
+          {
+            "name": "GoodShort",
+            "logo": "/logos/goodshort.webp",
+            "count": 193
+          },
+          {
+            "name": "Joyreels",
+            "logo": "/logos/joyreels.webp",
+            "count": 105
+          },
+          {
+            "name": "KalosTV",
+            "logo": "/logos/kalostv.webp",
+            "count": 615
+          },
+          {
+            "name": "HappyShort",
+            "logo": "/logos/happyshort.webp",
+            "count": 223
+          },
+          {
+            "name": "RaptDrama",
+            "logo": "/logos/raptdrama.webp",
+            "count": 310
+          },
+          {
+            "name": "FlareFlow",
+            "logo": "/logos/flareflow.webp",
+            "count": 305
+          },
+          {
+            "name": "SerialPlus",
+            "logo": "/logos/serialplus.webp",
+            "count": 453
+          },
+          {
+            "name": "Reelife",
+            "logo": "/logos/reelife.webp",
+            "count": 23
+          },
+          {
+            "name": "iDrama",
+            "logo": "/logos/idrama.webp",
+            "count": 42
+          },
+          {
+            "name": "Vigloo",
+            "logo": "/logos/vigloo.webp",
+            "count": 13
+          },
+          {
+            "name": "MoboReels",
+            "logo": "/logos/moboreels.webp",
+            "count": 321
+          },
+          {
+            "name": "Playlet",
+            "logo": null,
+            "count": 8
+          },
+          {
+            "name": "CubeTV",
+            "logo": null,
+            "count": 35
+          },
+          {
+            "name": "ShotShort",
+            "logo": "/logos/shotshort.webp",
+            "count": 350
+          },
+          {
+            "name": "RadReels",
+            "logo": "/logos/radreels.webp",
+            "count": 326
+          },
+          {
+            "name": "BonusTV",
+            "logo": "/logos/bonustv.webp",
+            "count": 232
+          },
+          {
+            "name": "MicroDrama",
+            "logo": "/logos/microdrama.webp",
+            "count": 93
+          },
+          {
+            "name": "DramaRush",
+            "logo": "/logos/dramarush.webp",
+            "count": 21
+          },
+          {
+            "name": "Shorten",
+            "logo": "/logos/shorten.webp",
+            "count": 28
+          },
+          {
+            "name": "MeloShort",
+            "logo": "/logos/meloshort.webp",
+            "count": 25
+          }
+        ]
+      }
+    }
+  ]
+}
