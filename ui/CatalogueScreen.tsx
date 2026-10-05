@@ -93,10 +93,9 @@ export const CatalogueScreen = memo(function CatalogueScreen(props: CatalogueScr
   const feature = props.tab === 'home' && !props.query && !props.selectedPlatform ? props.items[0] : undefined;
   const listItems = useMemo(() => feature ? props.items.slice(1) : props.items, [feature, props.items]);
   const renderItem = useCallback(({item}: ListRenderItemInfo<DramaCard>) => <PosterCard card={item} width={cardWidth} saved={props.savedIds.has(item.id)} onOpen={props.tab==='saved'?props.onWatch:props.onOpenSeries} progress={props.progress?.[item.slug]} />, [cardWidth, props.savedIds, props.onOpenSeries, props.onWatch, props.tab, props.progress]);
-  const searchTab = useCallback(() => props.onTabChange('discover'), [props.onTabChange]);
   const clearQuery = useCallback(() => props.onQueryChange(''), [props.onQueryChange]);
   const loadMore = useCallback(() => {if (props.hasMore && !props.loading && !props.refreshing && !props.error) props.onLoadMore();}, [props.hasMore, props.loading, props.refreshing, props.error, props.onLoadMore]);
-  const title = props.tab === 'home' ? 'Stories worth\nstaying for.' : props.tab === 'saved' ? props.collection==='recents'?'Your recent reels.':'Your saved reels.' : 'Find your next story.';
+  const title = props.tab === 'saved' ? props.collection==='recents'?'Your recent reels.':'Your saved reels.' : 'Stories worth\nstaying for.';
   const saved = props.tab === 'saved';
   const header = <View style={styles.listHeader}>
     <Text style={styles.screenTitle}>{title}</Text>
@@ -123,8 +122,8 @@ export const CatalogueScreen = memo(function CatalogueScreen(props: CatalogueScr
     {props.error ? <StatePanel kind="error" title="These reels didn’t load." message={props.error} onRetry={props.onRefresh} /> : null}
     {props.loading && props.items.length === 0 ? <StatePanel kind="loading" title="Finding your next story…" message="Loading the latest catalogue." /> : null}
   </View>;
-  return <MeasurementProvider view={props.tab === 'discover' ? 'platform' : 'home'} variant={`${props.tab}/${props.selectedPlatform ?? ''}/${props.loading}/${props.refreshing}/${props.items.length}`}><View style={styles.screen}>
-    <BrandedHeader topInset={props.insets.top} onSearch={searchTab} />
+  return <MeasurementProvider view={props.selectedPlatform ? 'platform' : 'home'} variant={`${props.tab}/${props.selectedPlatform ?? ''}/${props.loading}/${props.refreshing}/${props.items.length}`}><View style={styles.screen}>
+    <BrandedHeader topInset={props.insets.top} />
     <FlatList key={columns} testID="catalogue-grid" data={listItems} numColumns={columns} keyExtractor={item => item.id} renderItem={renderItem} extraData={props.savedIds} columnWrapperStyle={styles.gridRow}
       contentContainerStyle={[styles.list, {paddingHorizontal: layout.gutter + safeInset(props.insets.left), paddingRight: layout.gutter + safeInset(props.insets.right)}]}
       ListHeaderComponent={header} ListEmptyComponent={!props.loading && !props.error && !feature ? <StatePanel kind="empty" title={saved ? 'Keep a few stories for later.' : 'No reels found.'} message={saved ? 'Open a story and save it to build your collection.' : 'Try another title or choose a different platform.'} /> : null}

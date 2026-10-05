@@ -1,7 +1,6 @@
 package org.reelm.drama.uiprobe;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.Instrumentation;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.content.ComponentName;
@@ -31,9 +30,12 @@ public final class OwnActivityProbe extends Instrumentation {
   private String ACTIVITY;
   private String CONSUMER_URI;
   private String suite;
-  private boolean managerOnly,prepareInstall,verifyUpgrade,stageCandidate;
+  private boolean verifyUpgrade,stageCandidate;
   private int fontPercent;
   private String continuityJson;
+  private String captureToken;
+  private volatile String captureStage;
+  private volatile CountDownLatch captureComplete;
   private static final long ACQUISITION_TIMEOUT_MS = 20000;
   private static final long MAIN_OPERATION_TIMEOUT_MS = 5000;
   private Activity activity;
@@ -42,11 +44,12 @@ public final class OwnActivityProbe extends Instrumentation {
   @Override public void onCreate(Bundle arguments) {
     super.onCreate(arguments);
     TARGET = arguments.getString("targetPackage"); ACTIVITY = TARGET + ".MainActivity";
-    CONSUMER_URI = arguments.getString("consumerUri"); suite = arguments.getString("suite");managerOnly="1".equals(arguments.getString("managerOnly"));
-    prepareInstall="1".equals(arguments.getString("prepareInstall"));verifyUpgrade="1".equals(arguments.getString("verifyUpgrade"));
+    CONSUMER_URI = arguments.getString("consumerUri"); suite = arguments.getString("suite");
+    verifyUpgrade="1".equals(arguments.getString("verifyUpgrade"));
     stageCandidate="1".equals(arguments.getString("stageCandidate"));
     fontPercent=Integer.parseInt(arguments.getString("fontPercent","130"));
     continuityJson=arguments.getString("continuityJson","");
+    captureToken=arguments.getString("captureToken","");
     start();
   }
   @Override public void onStart() {
@@ -70,12 +73,11 @@ public final class OwnActivityProbe extends Instrumentation {
           .put("acquisitionMethod", "exact-own-ActivityMonitor-after-receipted-shell-consumer-start")
           .put("timeoutMs", ACQUISITION_TIMEOUT_MS)
           .put("elapsedMs", SystemClock.uptimeMillis() - acquisitionStarted).json);
-      if("preferences".equals(suite)){preferenceChecks();completed=true;}else if("install-ui".equals(suite)){openUpdateInstall();completed=true;}else if("updates".equals(suite)&&(verifyUpgrade||stageCandidate)){updateContinuity(false);if(stageCandidate)stageUpdateCandidate();completed=true;}else if("download-ui".equals(suite)){downloadUiChecks();completed=true;} else if("episode".equals(suite)){episodeChecks();completed=true;} else if("resume".equals(suite)){resumeChecks();completed=true;} else if (!"player".equals(suite) && !"baseline".equals(suite) && !"settings".equals(suite)) {
+      if("update-feed".equals(suite)){updateFeedChecks();completed=true;}else if("simplification".equals(suite)){simplificationChecks();completed=true;}else if("preferences".equals(suite)){preferenceChecks();completed=true;}else if("install-ui".equals(suite)){openUpdateInstall();completed=true;}else if("updates".equals(suite)&&(verifyUpgrade||stageCandidate)){updateContinuity();if(stageCandidate)stageUpdateCandidate();completed=true;}else if("episode".equals(suite)){episodeChecks();completed=true;} else if("resume".equals(suite)){resumeChecks();completed=true;} else if (!"player".equals(suite) && !"baseline".equals(suite) && !"settings".equals(suite)) {
         Class<?> checks = activity.getClassLoader().loadClass("expo.modules.video.ReelmNativeChecks");
         Object report = checks.getMethod("run", android.content.Context.class, String.class)
             .invoke(null, activity.getApplicationContext(), suite);
         stage("native-suite", "NATIVE_SUITE_CHECK_COMPLETE", new JSONObjectSafe().put("nativeReport", new JSONObject((java.util.Map<?, ?>) report)).json);
-        if(prepareInstall)updateContinuity(true);
         completed = true;
       } else {
       require(waitOwnFocus(35000), "OWN_ACTIVITY_DID_NOT_REGAIN_FOCUS_AFTER_DETAIL_LOADING");
@@ -118,8 +120,7 @@ public final class OwnActivityProbe extends Instrumentation {
       Throwable cause = exception instanceof java.lang.reflect.InvocationTargetException
           ? ((java.lang.reflect.InvocationTargetException)exception).getCause() : exception;
       failure = cause instanceof IllegalArgumentException && "UNKNOWN_NATIVE_SUITE".equals(cause.getMessage())
-          ? "UNKNOWN_NATIVE_SUITE" : cause instanceof IllegalStateException && cause.getMessage() != null
-          && cause.getMessage().matches("CRYPTO_TERMINAL_FAIL_[A-Z_]+") ? cause.getMessage()
+          ? "UNKNOWN_NATIVE_SUITE"
           : exception instanceof ProbeFailure ? exception.getMessage()
           : "INSTRUMENTATION_EXCEPTION_" + cause.getClass().getSimpleName() + (cause.getMessage()!=null&&cause.getMessage().matches("[A-Z0-9_]+")?"_"+cause.getMessage():"");
     }
@@ -131,11 +132,79 @@ public final class OwnActivityProbe extends Instrumentation {
           .put("suite", suite).put("initialEpisode", Uri.parse(CONSUMER_URI).getQueryParameter("episode")==null?0:Integer.parseInt(Uri.parse(CONSUMER_URI).getQueryParameter("episode")))
           .put("completed", completed).put("failure", failure == null ? JSONObject.NULL : failure)
           .put("stages", rows)
-          .put("qualification", "download-ui".equals(suite) ? "Actual exact-package Accessibility ACTION_CLICK and visible own UI labels/bounds, including native Modal. No media enqueue or playback proof. Not human taps or shell input." : "Actual main-thread owned decorView MotionEvent dispatch and observed own UI labels/text. Not human taps or shell input. Native positions and renderedOutputBufferCount are independently read from the visible own ExoPlayer; UI labels are not used as clock proof.");
+          .put("qualification", "Actual main-thread owned decorView MotionEvent dispatch and observed own UI labels/text. Not human taps or shell input. Native positions and renderedOutputBufferCount are independently read from the visible own ExoPlayer; UI labels are not used as clock proof.");
       result.putString("probeJSON", output.toString());
     } catch (Throwable ignored) { result.putString("probeError", "RESULT_SERIALIZATION_ERROR"); }
     finish(completed ? Activity.RESULT_OK : Activity.RESULT_CANCELED, result);
   }
+
+  private void updateFeedChecks() throws Exception {
+    waitUi("Home",40000);uiClick("Settings");scrollToUi("Check GitHub for app updates",false);
+    String before=sha(java.nio.file.Files.readAllBytes(new java.io.File(activity.getFilesDir(),"reelm-drama-library.json").toPath()));
+    uiClick("Check GitHub for app updates");waitUi("No newer public release is available.",25000);
+    swipe("settings-scroll",.5f,.7f,.5f,.4f,400);SystemClock.sleep(350);waitUi("No newer public release is available.",5000);
+    for(String label:new String[]{"Download and verify app update","Retry APK download","Install verified APK with Android confirmation"})require(uiLabel(ownUi(),label)==null,"OLDER_UPDATE_ACTION_PRESENT");
+    Class<?> type=activity.getClassLoader().loadClass("expo.modules.video.ReelmApkUpdater");Object companion=type.getField("Companion").get(null),updater=companion.getClass().getMethod("get",android.content.Context.class).invoke(companion,activity.getApplicationContext());
+    java.util.Map<?,?> status=(java.util.Map<?,?>)type.getMethod("status").invoke(updater);require("idle".equals(status.get("state"))&&status.get("errorCode")==null,"UPDATE_NATIVE_FAILURE_PRESENT");
+    require(before.equals(sha(java.nio.file.Files.readAllBytes(new java.io.File(activity.getFilesDir(),"reelm-drama-library.json").toPath()))),"UPDATE_CHECK_CHANGED_LIBRARY");
+    android.content.BroadcastReceiver receiver=new android.content.BroadcastReceiver(){@Override public void onReceive(android.content.Context context,Intent intent){CountDownLatch pending=captureComplete;if(pending!=null&&captureToken.equals(intent.getStringExtra("token"))&&captureStage.equals(intent.getStringExtra("stage")))pending.countDown();}};
+    require(captureToken.matches("[a-f0-9-]{36}"),"CAPTURE_ACK_TOKEN_REQUIRED");android.content.IntentFilter filter=new android.content.IntentFilter(TARGET+".uiprobe.capture");
+    if(android.os.Build.VERSION.SDK_INT>=33)getTargetContext().registerReceiver(receiver,filter,android.content.Context.RECEIVER_EXPORTED);else getTargetContext().registerReceiver(receiver,filter);
+    try{captureStage="update-feed-current";captureComplete=new CountDownLatch(1);stage(captureStage,"ORDINARY_PUBLIC_GITHUB_CHECK",new JSONObjectSafe().put("currentUI",true).put("olderActionsAbsent",true).put("nativeState",status.get("state")).put("libraryUnchanged",true).json);require(captureComplete.await(15,TimeUnit.SECONDS),"OWN_STAGE_CAPTURE_ACK_TIMEOUT");}finally{captureComplete=null;getTargetContext().unregisterReceiver(receiver);}
+  }
+  private void simplificationChecks() throws Exception {
+    waitUi("Home",40000);uiClick("Home");
+    java.io.File libraryFile=new java.io.File(activity.getFilesDir(),"reelm-drama-library.json");
+    String originalHash=sha(java.nio.file.Files.readAllBytes(libraryFile.toPath()));JSONObject original=library().getJSONObject("preferences");
+    int originalFont=(int)Math.round(original.getDouble("fontScale")*100);double originalHold=original.getDouble("holdSpeed");
+    android.accessibilityservice.AccessibilityServiceInfo info=getUiAutomation().getServiceInfo();int originalFlags=info.flags;
+    info.flags|=android.accessibilityservice.AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS;getUiAutomation().setServiceInfo(info);
+    android.content.BroadcastReceiver captureReceiver=new android.content.BroadcastReceiver(){@Override public void onReceive(android.content.Context context,Intent intent){CountDownLatch pending=captureComplete;if(pending!=null&&captureToken.equals(intent.getStringExtra("token"))&&captureStage.equals(intent.getStringExtra("stage")))pending.countDown();}};
+    boolean touched=false,registered=false;
+    try {
+      require(captureToken.matches("[a-f0-9-]{36}"),"CAPTURE_ACK_TOKEN_REQUIRED");android.content.IntentFilter filter=new android.content.IntentFilter(TARGET+".uiprobe.capture");
+      if(android.os.Build.VERSION.SDK_INT>=33)getTargetContext().registerReceiver(captureReceiver,filter,android.content.Context.RECEIVER_EXPORTED);else getTargetContext().registerReceiver(captureReceiver,filter);registered=true;
+      JSONArray tabs=visibleTabs();require(tabs.length()==3,"EXACT_THREE_TABS_REQUIRED");
+      for(String label:new String[]{"Home","Library","Settings"})require(waitUi(label,10000)!=null,"RETAINED_TAB_REQUIRED");
+      require(uiLabel(ownUi(),"Discover")==null&&uiLabel(ownUi(),"Search catalogue")==null&&uiLabel(ownUi(),"Search")==null&&uiLabel(ownUi(),"Downloads")==null,"REMOVED_HEADER_ACTION_OR_DISCOVER");
+      AccessibilityNodeInfo search=waitUi("Search drama titles",10000);require("catalogue-search-input".equals(search.getViewIdResourceName())&&search.getClassName().toString().contains("EditText"),"HOME_REAL_INLINE_SEARCH_REQUIRED");
+      waitUi("Show all platforms",10000);long until=SystemClock.uptimeMillis()+40000;AccessibilityNodeInfo platform;
+      while((platform=firstPlatform(ownUi()))==null&&SystemClock.uptimeMillis()<until)SystemClock.sleep(200);require(platform!=null,"NONEMPTY_PLATFORM_DIRECTORY_REQUIRED");
+      simplifiedStage("home",new JSONObjectSafe().put("tabs",tabs).put("inlineSearch",true).put("platformChip",true).put("platformDirectoryNonempty",true).json);
+      uiClick("Library");waitUi("Saved",10000);waitUi("Recents",10000);require(visibleTabs().length()==3&&uiLabel(ownUi(),"Discover")==null,"LIBRARY_THREE_TABS_REQUIRED");
+      simplifiedStage("library",new JSONObjectSafe().put("savedAndRecents",true).put("librarySHA256",sha(java.nio.file.Files.readAllBytes(libraryFile.toPath()))).json);
+      uiClick("Settings");waitUi("App updates",10000);touched=true;uiClick("Subtitle size 100 percent");SystemClock.sleep(650);JSONObject base=subtitleMetrics();
+      simplifiedStage("settings-100",base);
+      uiClick("Subtitle size 130 percent");SystemClock.sleep(650);JSONObject large=subtitleMetrics();
+      require(Math.abs(large.getDouble("previewTextSizePx")/base.getDouble("previewTextSizePx")-1.3)<.03,"SUBTITLE_PREVIEW_SCALE_REQUIRED");
+      for(String key:new String[]{"playbackTextSizePx","holdLabelTextSizePx","updatesTextSizePx"})require(Math.abs(large.getDouble(key)-base.getDouble(key))<.1,"NON_SUBTITLE_TEXT_SIZE_CHANGED");
+      require(library().getJSONObject("preferences").getDouble("fontScale")==1.3&&library().getJSONObject("preferences").getDouble("holdSpeed")==originalHold,"SUBTITLE_ONLY_PREFERENCE_REQUIRED");
+      simplifiedStage("settings-130",new JSONObjectSafe().put("nativeTextSizes",large).put("onlySubtitlePreviewChanged",true).json);
+      scrollToUi("Export library and preferences",false);waitUi("Import library and preferences",10000);
+      JSONObject transfer=new JSONObject();onMain(()->{ownWindow();try{for(String action:new String[]{"Export","Import"}){View button=findLabel(activity.getWindow().getDecorView(),action+" library and preferences");TextView text=findTextView(activity.getWindow().getDecorView(),action);float density=activity.getResources().getDisplayMetrics().density;require(button!=null&&text!=null&&button.getWidth()/density>=47.5&&button.getHeight()/density>=47.5&&text.getTextSize()/density>=11.5&&button.getBackground()!=null,"READABLE_FILLED_TRANSFER_BUTTON_REQUIRED");transfer.put(action,new JSONObject().put("widthDp",button.getWidth()/density).put("heightDp",button.getHeight()/density).put("textSizePx",text.getTextSize()).put("textColor",text.getCurrentTextColor()).put("nativeBackground",button.getBackground().getClass().getSimpleName()));}}catch(Exception failure){throw new ProbeFailure("TRANSFER_NATIVE_INSPECTION_FAILED");}});
+      simplifiedStage("transfer",transfer);
+      uiClick("Home");Intent detail=new Intent(Intent.ACTION_VIEW,Uri.parse(CONSUMER_URI));detail.setComponent(new ComponentName(TARGET,ACTIVITY));detail.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      require(dispatchWarmWhenOwnReady(detail,10000)>0,"ORDINARY_DETAIL_CONSUMER_REQUIRED");waitUi("Close story details",40000);
+      until=SystemClock.uptimeMillis()+40000;while(uiLabel(ownUi(),"Save on this device")==null&&uiLabel(ownUi(),"Remove from saved on this device")==null&&SystemClock.uptimeMillis()<until)SystemClock.sleep(200);
+      require(uiLabel(ownUi(),"Save on this device")!=null||uiLabel(ownUi(),"Remove from saved on this device")!=null,"DETAIL_LOADED_REQUIRED");require(uiLabel(ownUi(),"Download episodes")==null,"OFFLINE_EPISODE_ACTION_PRESENT");
+      simplifiedStage("detail",new JSONObjectSafe().put("ordinarySeriesConsumer",true).put("downloadEpisodesAbsent",true).json);uiClick("Close story details");
+    } finally {
+      try {
+        if(uiLabel(ownUi(),"Close story details")!=null)uiClick("Close story details");
+        if(touched){uiClick("Settings");scrollToUi("Subtitle size "+originalFont+" percent",true);uiClick("Subtitle size "+originalFont+" percent");}
+        long settle=SystemClock.uptimeMillis()+10000;String restored;
+        while(!(restored=sha(java.nio.file.Files.readAllBytes(libraryFile.toPath()))).equals(originalHash)&&SystemClock.uptimeMillis()<settle)SystemClock.sleep(200);
+        JSONObject preferences=library().getJSONObject("preferences");require(preferences.getDouble("fontScale")==originalFont/100.0&&preferences.getDouble("holdSpeed")==originalHold&&restored.equals(originalHash),"ORIGINAL_LIBRARY_AND_PREFERENCES_RESTORE_REQUIRED");
+        uiClick("Home");if(registered)simplifiedStage("restored",new JSONObjectSafe().put("librarySHA256",restored).put("fontScale",preferences.getDouble("fontScale")).put("holdSpeed",originalHold).put("preferencesRestored",true).json);
+      } finally {try{if(registered)getTargetContext().unregisterReceiver(captureReceiver);}finally{info.flags=originalFlags;getUiAutomation().setServiceInfo(info);}}
+    }
+  }
+  private void simplifiedStage(String name,JSONObject data){CountDownLatch pending=new CountDownLatch(1);captureStage="simplification-"+name;captureComplete=pending;try{stage(captureStage,"OWN_UI_AND_NATIVE_MEASUREMENTS",data);require(pending.await(15,TimeUnit.SECONDS),"OWN_STAGE_CAPTURE_ACK_TIMEOUT");}catch(InterruptedException failure){Thread.currentThread().interrupt();throw new ProbeFailure("OWN_STAGE_CAPTURE_INTERRUPTED");}finally{captureComplete=null;}}
+  private JSONArray visibleTabs(){JSONArray tabs=new JSONArray();collectTabs(ownUi(),tabs);for(int i=0;i<tabs.length();i++)require(java.util.Arrays.asList("tab-home","tab-saved","tab-settings").contains(tabs.optString(i)),"UNEXPECTED_TAB_PRESENT");return tabs;}
+  private void collectTabs(AccessibilityNodeInfo node,JSONArray tabs){if(node==null)return;String id=node.getViewIdResourceName();if(node.isVisibleToUser()&&id!=null&&id.startsWith("tab-")){tabs.put(id);return;}for(int i=0;i<node.getChildCount();i++)collectTabs(node.getChild(i),tabs);}
+  private AccessibilityNodeInfo firstPlatform(AccessibilityNodeInfo node){if(node==null)return null;String label=String.valueOf(node.getContentDescription());if(node.isVisibleToUser()&&label.startsWith("Show ")&&label.endsWith(" dramas"))return node;for(int i=0;i<node.getChildCount();i++){AccessibilityNodeInfo found=firstPlatform(node.getChild(i));if(found!=null)return found;}return null;}
+  private void scrollToUi(String label,boolean top){for(int i=0;i<8;i++){AccessibilityNodeInfo node=uiLabel(ownUi(),label);if(node!=null&&node.isVisibleToUser())return;swipe("settings-scroll",.5f,top?.35f:.75f,.5f,top?.75f:.35f,400);SystemClock.sleep(300);}throw new ProbeFailure("SETTINGS_CONTROL_NOT_VISIBLE");}
+  private JSONObject subtitleMetrics(){JSONObject result=new JSONObject();onMain(()->{ownWindow();try{String[] labels={"Your subtitle preview","Playback","Press-and-hold speed","App updates"},keys={"previewTextSizePx","playbackTextSizePx","holdLabelTextSizePx","updatesTextSizePx"};for(int i=0;i<labels.length;i++){TextView text=findTextView(activity.getWindow().getDecorView(),labels[i]);require(text!=null,"VISIBLE_SETTINGS_TEXT_REQUIRED");result.put(keys[i],text.getTextSize());}}catch(Exception failure){throw new ProbeFailure("NATIVE_SUBTITLE_MEASUREMENTS_FAILED");}});return result;}
 
   private void episodeChecks() throws Exception {
     require(waitOwnFocus(35000),"EPISODE_OWN_FOCUS_REQUIRED");
@@ -157,7 +226,7 @@ public final class OwnActivityProbe extends Instrumentation {
   }
   private AccessibilityNodeInfo uiLabel(AccessibilityNodeInfo node,String label) {
     if(node==null)return null;
-    if(label.contentEquals(node.getContentDescription()==null?"":node.getContentDescription()))return node;
+    if(label.contentEquals(node.getContentDescription()==null?"":node.getContentDescription())||label.contentEquals(node.getText()==null?"":node.getText()))return node;
     for(int i=0;i<node.getChildCount();i++){AccessibilityNodeInfo found=uiLabel(node.getChild(i),label);if(found!=null)return found;}
     return null;
   }
@@ -171,74 +240,19 @@ public final class OwnActivityProbe extends Instrumentation {
     throw new ProbeFailure("OWN_UI_LABEL_TIMEOUT");
   }
   private void uiClick(String label) {
-    AccessibilityNodeInfo node=waitUi(label,10000);
+    long until=SystemClock.uptimeMillis()+10000;AccessibilityNodeInfo node;
+    while((node=uiAction(ownUi(),label))==null&&SystemClock.uptimeMillis()<until)SystemClock.sleep(200);
+    require(node!=null,"OWN_UI_ACTION_TIMEOUT");
     require(TARGET.contentEquals(node.getPackageName())&&node.isEnabled()&&node.performAction(AccessibilityNodeInfo.ACTION_CLICK),"OWN_UI_ACCESSIBILITY_CLICK_FAILED");
     stage("ui-click","OWN_PACKAGE_ACCESSIBILITY_ACTION_CLICK",new JSONObjectSafe().label(label).json);SystemClock.sleep(450);
   }
-  private android.view.Window ownModalWindow(View root) throws Exception {
-    if(root.getClass().getName().equals("com.facebook.react.views.modal.ReactModalHostView")) {
-      Dialog dialog=(Dialog)invoke(root,"getDialog");if(dialog!=null&&dialog.isShowing())return dialog.getWindow();
-    }
-    if(root instanceof ViewGroup)for(int i=0;i<((ViewGroup)root).getChildCount();i++) {
-      android.view.Window found=ownModalWindow(((ViewGroup)root).getChildAt(i));if(found!=null)return found;
-    }
-    return null;
-  }
-  private void downloadUiChecks() throws Exception {
-    if(!managerOnly) {
-    waitUi("Close story details",40000);
-    AccessibilityNodeInfo save=null;long readyUntil=SystemClock.uptimeMillis()+40000;
-    while(SystemClock.uptimeMillis()<readyUntil){save=uiLabel(ownUi(),"Save on this device");if(save==null)save=uiLabel(ownUi(),"Remove from saved on this device");if(save!=null&&save.isVisibleToUser())break;SystemClock.sleep(200);}
-    require(save!=null&&save.isVisibleToUser(),"STORY_FOOTER_NOT_READY");
-    stage("download-ui-detail","OWN_STORY_SHEET_VISIBLE",null);
-    SystemClock.sleep(1000);
-    AccessibilityNodeInfo icon=uiLabel(ownUi(),"Download episodes");
-    require(icon!=null&&icon.isVisibleToUser(),"DOWNLOAD_ICON_REQUIRED");
-    require(uiLabel(ownUi(),"Download whole series")==null,"STORY_LIST_TOP_DOWNLOAD_MUST_BE_REMOVED");
-    require(save!=null,"SAVE_ICON_REQUIRED");Rect a=new Rect(),b=new Rect();save.getBoundsInScreen(a);icon.getBoundsInScreen(b);
-    require(a.right<=b.left&&Math.abs(a.centerY()-b.centerY())<=2,"FOOTER_ICONS_MUST_BE_ADJACENT");
-    uiClick("Download episodes");waitUi("Download whole series",10000);waitUi("Download episode 1",10000);
-    stage("download-ui-chooser","WHOLE_SERIES_AND_INDIVIDUAL_OPTIONS_VISIBLE",null);
-    SystemClock.sleep(1000);
-    uiClick("Back to story details");waitUi("Download episodes",10000);uiClick("Close story details");
-    }
-    uiClick("Settings");waitUi("Manage downloads",10000);
-    require(uiLabel(ownUi(),"Delete all downloads")==null,"MANAGEMENT_MUST_NOT_CROWD_SETTINGS");
-    stage("download-ui-settings","COMPACT_SETTINGS_VISIBLE",null);
-    SystemClock.sleep(1000);
-    int originalFont=(int)Math.round(library().getJSONObject("preferences").optDouble("fontScale",1)*100);
-    android.view.Window[] modal={null};int[] originalWidth={0};
-    try {
-      uiClick("Text size 130 percent");require(library().getJSONObject("preferences").getDouble("fontScale")==1.3,"MANAGER_LARGE_TEXT_REQUIRED");
-      uiClick("Manage downloads");waitUi("Close downloads",10000);waitUi("Refresh downloads",10000);
-      // Constrain only this app's test dialog. No device display/security setting changes.
-      onMain(()->{try{modal[0]=ownModalWindow(activity.getWindow().getDecorView());require(modal[0]!=null,"OWN_MODAL_WINDOW_REQUIRED");originalWidth[0]=modal[0].getAttributes().width;modal[0].setLayout(Math.round(360*activity.getResources().getDisplayMetrics().density),modal[0].getAttributes().height);}catch(Exception e){throw new ProbeFailure("OWN_MODAL_RESIZE_FAILED");}});
-      SystemClock.sleep(1200);float density=activity.getResources().getDisplayMetrics().density;
-      Rect root=new Rect();ownUi().getBoundsInScreen(root);require(Math.abs(root.width()/density-360)<1,"ACTUAL_360DP_MODAL_REQUIRED");
-      Rect previous=null;JSONArray bounds=new JSONArray();
-      for(String label:new String[]{"Refresh downloads","Pause download queue","Resume download queue","Delete all downloads"}) {
-        AccessibilityNodeInfo node=uiLabel(ownUi(),label);if(node==null){require(label.equals("Delete all downloads"),"QUEUE_ACTION_REQUIRED");continue;}
-        require(node.isVisibleToUser(),"QUEUE_ACTION_CLIPPED");Rect r=new Rect();node.getBoundsInScreen(r);
-        require(r.width()/density>=47.5&&r.height()/density>=47.5,"QUEUE_TARGET_UNDER48DP");require(root.contains(r),"QUEUE_ACTION_OUTSIDE_MODAL");
-        if(previous!=null)require(r.left-previous.right>=7.5*density&&Math.abs(r.centerY()-previous.centerY())<=2,"QUEUE_ACTIONS_MUST_NOT_OVERLAP_OR_WRAP");previous=r;
-        bounds.put(new JSONObjectSafe().put("label",label).put("widthDp",r.width()/density).put("heightDp",r.height()/density).json);
-      }
-      stage("download-ui-manager","OWN_DOWNLOAD_MANAGEMENT_SHEET_VISIBLE",new JSONObjectSafe().put("widthDp",root.width()/density).put("fontScale",1.3).put("queueTargets",bounds).json);SystemClock.sleep(1000);
-    } finally {
-      try {if(modal[0]!=null)onMain(()->modal[0].setLayout(originalWidth[0],modal[0].getAttributes().height));}
-      finally {
-        try {if(uiLabel(ownUi(),"Close downloads")!=null)uiClick("Close downloads");}
-        finally {uiClick("Text size "+originalFont+" percent");require(Math.abs(library().getJSONObject("preferences").getDouble("fontScale")-originalFont/100.0)<.001,"MANAGER_TEXT_PREFERENCE_RESTORE_REQUIRED");}
-      }
-    }
-    waitUi("Manage downloads",10000);
-  }
-  private float settingsFontPixels() {final float[] size={0};onMain(()->{TextView text=findTextView(activity.getWindow().getDecorView(),"Text size");require(text!=null,"VISIBLE_SETTINGS_TEXT_REQUIRED");size[0]=text.getTextSize();});return size[0];}
+  private AccessibilityNodeInfo uiAction(AccessibilityNodeInfo node,String label){if(node==null)return null;if(node.isVisibleToUser()&&node.isEnabled()&&node.isClickable()&&label.contentEquals(node.getContentDescription()==null?"":node.getContentDescription()))return node;for(int i=0;i<node.getChildCount();i++){AccessibilityNodeInfo found=uiAction(node.getChild(i),label);if(found!=null)return found;}return null;}
+  private float settingsFontPixels() {final float[] size={0};onMain(()->{TextView text=findTextView(activity.getWindow().getDecorView(),"Your subtitle preview");require(text!=null,"VISIBLE_SETTINGS_TEXT_REQUIRED");size[0]=text.getTextSize();});return size[0];}
   private TextView findTextView(View root,String expected){if(root instanceof TextView&&expected.contentEquals(((TextView)root).getText())&&visibleInOwnDecor(root))return (TextView)root;if(root instanceof ViewGroup){ViewGroup group=(ViewGroup)root;for(int i=0;i<group.getChildCount();i++){TextView value=findTextView(group.getChildAt(i),expected);if(value!=null)return value;}}return null;}
   private static String sha(byte[] bytes) throws Exception {byte[] digest=java.security.MessageDigest.getInstance("SHA-256").digest(bytes);StringBuilder out=new StringBuilder();for(byte b:digest)out.append(String.format(java.util.Locale.ROOT,"%02x",b&255));return out.toString();}
   private void preferenceChecks() throws Exception {
     require(TARGET.equals("org.reelm.drama.pilot")&&(fontPercent==90||fontPercent==100||fontPercent==115||fontPercent==130),"PILOT_SUPPORTED_FONT_REQUIRED");
-    uiClick("Settings");waitUi("Manage downloads",10000);uiClick("Text size "+fontPercent+" percent");SystemClock.sleep(600);
+    uiClick("Settings");waitUi("App updates",10000);uiClick("Subtitle size "+fontPercent+" percent");SystemClock.sleep(600);
     double font=library().getJSONObject("preferences").getDouble("fontScale");require(Math.abs(font-fontPercent/100.0)<.001,"PERSISTED_FONT_REQUIRED");
     stage("preferences-set","ORDINARY_OWN_SETTINGS_PERSISTED",new JSONObjectSafe().put("fontScale",font).put("librarySHA256",sha(java.nio.file.Files.readAllBytes(new java.io.File(activity.getFilesDir(),"reelm-drama-library.json").toPath()))).json);
   }
@@ -248,7 +262,7 @@ public final class OwnActivityProbe extends Instrumentation {
     Object updater=companion.getClass().getMethod("get",android.content.Context.class).invoke(companion,activity.getApplicationContext());
     require("verified".equals(((java.util.Map<?,?>)type.getMethod("status").invoke(updater)).get("state")),"PREPARED_VERIFIED_UPDATE_REQUIRED");
     String before=sha(library().toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
-    uiClick("Settings");waitUi("Manage downloads",10000);
+    uiClick("Settings");waitUi("App updates",10000);
     String label="Install verified APK with Android confirmation";
     for(int i=0;i<8;i++){AccessibilityNodeInfo node=uiLabel(ownUi(),label);if(node!=null&&node.isVisibleToUser())break;swipe("settings-scroll",.5f,.75f,.5f,.3f,400);SystemClock.sleep(500);}
     uiClick("Install verified APK with Android confirmation");SystemClock.sleep(2000);
@@ -257,28 +271,20 @@ public final class OwnActivityProbe extends Instrumentation {
     require(before.equals(sha(library().toString().getBytes(java.nio.charset.StandardCharsets.UTF_8))),"INSTALL_UI_LIBRARY_UNCHANGED_REQUIRED");
     stage("update-install-opened","ORDINARY_APP_INSTALL_BUTTON_ANDROID_CONFIRMATION_PENDING",new JSONObjectSafe().put("ordinaryInstallButton",true).put("state",status.get("state")).put("errorCode",status.get("errorCode")).put("librarySHA256",before).json);
   }
-  private void updateContinuity(boolean prepare) throws Exception {
+  private void updateContinuity() throws Exception {
     require(TARGET.equals("org.reelm.drama.pilot"),"PILOT_ONLY_UPDATE_FIXTURE");
     android.content.Context context=activity.getApplicationContext();ClassLoader loader=activity.getClassLoader();
     java.io.File root=new java.io.File(context.getNoBackupFilesDir(),"reelm-update-continuity"),receipt=new java.io.File(context.getNoBackupFilesDir(),"reelm-update-continuity.json");
     java.io.File libraryFile=new java.io.File(context.getFilesDir(),"reelm-drama-library.json");
-    Class<?> cryptoType=loader.loadClass("expo.modules.video.ReelmFileCrypto");
     String id="00000000000000000000000000000000",resource="11111111111111111111111111111111";
-    if(!prepare)require(root.isDirectory()&&receipt.isFile()&&libraryFile.isFile()&&new java.io.File(root,"key-id").isFile()&&new java.io.File(root,id+"."+resource+".bin").isFile(),"CONTINUITY_INPUTS_REQUIRED");
-    if(prepare){require(!root.exists()&&!receipt.exists(),"NO_OVERWRITE_EXISTING_UPDATE_FIXTURE");uiClick("Settings");waitUi("Manage downloads",10000);uiClick("Text size 130 percent");SystemClock.sleep(600);require(library().getJSONObject("preferences").getDouble("fontScale")==1.3,"REAL_PREFERENCE_WRITE_REQUIRED");}
-    Object crypto=cryptoType.getConstructor(java.io.File.class,String.class).newInstance(root,TARGET+".e2e.update.");
-    java.lang.reflect.Method load=null,payload=null;for(java.lang.reflect.Method method:cryptoType.getDeclaredMethods()){if(method.getName().startsWith("load")&&method.getParameterCount()==2)load=method;if(method.getName().startsWith("payload")&&method.getParameterCount()==2)payload=method;}
-    require(load!=null&&payload!=null,"PRODUCT_CRYPTO_METHODS_REQUIRED");load.setAccessible(true);payload.setAccessible(true);
-    java.io.File ciphertext=(java.io.File)payload.invoke(crypto,id,resource);
+    require(root.isDirectory()&&receipt.isFile()&&libraryFile.isFile()&&new java.io.File(root,"key-id").isFile()&&new java.io.File(root,id+"."+resource+".bin").isFile(),"CONTINUITY_INPUTS_REQUIRED");
+    java.io.File ciphertext=new java.io.File(root,id+"."+resource+".bin");
     byte[] expected=new byte[524325];for(int i=0;i<expected.length;i++)expected[i]=(byte)(i*31);
-    if(prepare)cryptoType.getMethod("write",java.io.InputStream.class,java.io.File.class,String.class,String.class,long.class).invoke(crypto,new java.io.ByteArrayInputStream(expected),ciphertext,id,resource,(long)expected.length);
-    Object record=load.invoke(crypto,id,resource);
-    java.io.ByteArrayOutputStream decoded=new java.io.ByteArrayOutputStream();try(java.io.InputStream input=(java.io.InputStream)cryptoType.getMethod("open",record.getClass(),long.class).invoke(crypto,record,0L)){byte[] buffer=new byte[65536];for(int n;(n=input.read(buffer))>=0;)decoded.write(buffer,0,n);}
-    require(sha(decoded.toByteArray()).equals(sha(expected)),"SAME_KEY_CIPHERTEXT_DECRYPT_REQUIRED");
-    JSONObject actual=new JSONObject().put("librarySHA256",sha(java.nio.file.Files.readAllBytes(libraryFile.toPath()))).put("keyIdSHA256",sha(java.nio.file.Files.readAllBytes(new java.io.File(root,"key-id").toPath()))).put("ciphertextSHA256",sha(java.nio.file.Files.readAllBytes(ciphertext.toPath()))).put("plaintextSHA256",sha(decoded.toByteArray())).put("fontScale",library().getJSONObject("preferences").getDouble("fontScale"));
-    if(prepare){java.nio.file.Files.write(receipt.toPath(),actual.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
-      stageUpdateCandidate();stage("update-prepared","PRIVATE_CANDIDATE_AND_ENCRYPTED_CONTINUITY_PREPARED",actual);
-    }else{JSONObject current=library();stage("update-observed","READ_ONLY_POST_UPDATE_FIELDS",new JSONObjectSafe().put("continuity",actual).put("preferences",current.getJSONObject("preferences")).put("savedCount",current.getJSONArray("saved").length()).put("recentCount",current.getJSONArray("recents").length()).put("likedCount",current.getJSONArray("liked").length()).put("progressCount",current.getJSONObject("progress").length()).json);
+    byte[] decoded=readContinuityFixture(root,id,resource);
+    require(sha(decoded).equals(sha(expected)),"SAME_KEY_CIPHERTEXT_DECRYPT_REQUIRED");
+    JSONObject actual=new JSONObject().put("librarySHA256",sha(java.nio.file.Files.readAllBytes(libraryFile.toPath()))).put("keyIdSHA256",sha(java.nio.file.Files.readAllBytes(new java.io.File(root,"key-id").toPath()))).put("ciphertextSHA256",sha(java.nio.file.Files.readAllBytes(ciphertext.toPath()))).put("plaintextSHA256",sha(decoded)).put("fontScale",library().getJSONObject("preferences").getDouble("fontScale"));
+    java.util.Arrays.fill(expected,(byte)0);java.util.Arrays.fill(decoded,(byte)0);
+    JSONObject current=library();stage("update-observed","READ_ONLY_POST_UPDATE_FIELDS",new JSONObjectSafe().put("continuity",actual).put("preferences",current.getJSONObject("preferences")).put("savedCount",current.getJSONArray("saved").length()).put("recentCount",current.getJSONArray("recents").length()).put("likedCount",current.getJSONArray("liked").length()).put("progressCount",current.getJSONObject("progress").length()).json);
       JSONObject original=new JSONObject(new String(java.nio.file.Files.readAllBytes(receipt.toPath()),java.nio.charset.StandardCharsets.UTF_8));
       JSONObject before=continuityJson.isEmpty()?original:new JSONObject(continuityJson);
       require(before.length()==5&&java.util.Arrays.asList(.9,1.0,1.15,1.3).contains(before.getDouble("fontScale")),"BOUNDED_CONTINUITY_CHECKPOINT_REQUIRED");
@@ -287,7 +293,48 @@ public final class OwnActivityProbe extends Instrumentation {
       for(java.util.Iterator<String> keys=before.keys();keys.hasNext();){String key=keys.next();require(key.equals("fontScale")?before.getDouble(key)==actual.getDouble(key):before.getString(key).equals(actual.getString(key)),"UPDATE_PRESERVE_"+key);}
       boolean checkerAbsent=false;try{loader.loadClass("expo.modules.video.ReelmNativeChecks");}catch(ClassNotFoundException expectedAbsent){checkerAbsent=true;}require(checkerAbsent,"RELEASE_NATIVE_CHECKER_MUST_BE_ABSENT");
       android.content.pm.PackageInfo installed=context.getPackageManager().getPackageInfo(TARGET,0);actual.put("installedVersionCode",android.os.Build.VERSION.SDK_INT>=28?installed.getLongVersionCode():(long)installed.versionCode).put("nativeCheckerAbsent",true);
-      stage("update-preserved","LIBRARY_PREFERENCES_CIPHERTEXT_AND_KEY_PRESERVED",actual);}
+      stage("update-preserved","LIBRARY_PREFERENCES_CIPHERTEXT_AND_KEY_PRESERVED",actual);
+  }
+
+  private byte[] readContinuityFixture(java.io.File root,String id,String resource) throws Exception {
+    require(!android.system.OsConstants.S_ISLNK(android.system.Os.lstat(root.getPath()).st_mode),"CONTINUITY_ROOT_REQUIRED");
+    byte[] identity=continuityBytes(root,"key-id",16);require(identity.length==16,"CONTINUITY_KEY_ID_REQUIRED");
+    java.security.KeyStore keys=java.security.KeyStore.getInstance("AndroidKeyStore");keys.load(null);
+    java.security.Key key=keys.getKey(TARGET+".e2e.update."+sha(identity),null);
+    require(key instanceof javax.crypto.SecretKey,"CONTINUITY_KEY_REQUIRED");
+    return decodeContinuityFixture(identity,(javax.crypto.SecretKey)key,continuityBytes(root,id+"."+resource+".meta",65576),continuityBytes(root,id+"."+resource+".bin",524373),id,resource);
+  }
+  private static byte[] continuityBytes(java.io.File root,String name,int cap) throws Exception {
+    java.io.File file=new java.io.File(root,name);
+    require(file.isFile()&&file.getCanonicalFile().getParentFile().equals(root.getCanonicalFile())&&!android.system.OsConstants.S_ISLNK(android.system.Os.lstat(file.getPath()).st_mode)&&file.length()<=cap,"CONTINUITY_FILE_REQUIRED");
+    byte[] bytes=new byte[(int)file.length()];try(java.io.DataInputStream input=new java.io.DataInputStream(new java.io.FileInputStream(file))){input.readFully(bytes);require(input.read()==-1,"CONTINUITY_FILE_LENGTH_REQUIRED");}return bytes;
+  }
+  // ponytail: immutable task9 fixture only; extend this test decoder if its fixture changes.
+  private static byte[] decodeContinuityFixture(byte[] identity,javax.crypto.SecretKey key,byte[] metadata,byte[] payload,String id,String resource) throws Exception {
+    require(identity.length==16&&metadata.length<=65576&&payload.length==524373,"CONTINUITY_FORMAT_REQUIRED");
+    java.io.DataInputStream sealed=new java.io.DataInputStream(new java.io.ByteArrayInputStream(metadata));
+    require(sealed.readInt()==0x52524d31&&sealed.readInt()==1,"CONTINUITY_FORMAT_REQUIRED");
+    byte[] nonce=new byte[12];sealed.readFully(nonce);int length=sealed.readInt();require(length>=16&&length<=65552,"CONTINUITY_METADATA_LENGTH_REQUIRED");
+    byte[] encrypted=new byte[length];sealed.readFully(encrypted);require(sealed.read()==-1,"CONTINUITY_TRAILING_BYTES");
+    byte[] body=continuityDecrypt(key,nonce,continuityAAD(0x52524d31,identity,id,resource,-1,0),encrypted);
+    try {
+      java.io.DataInputStream info=new java.io.DataInputStream(new java.io.ByteArrayInputStream(body)),data=new java.io.DataInputStream(new java.io.ByteArrayInputStream(payload));
+      long total=info.readLong();int count=info.readInt();require(total==524325&&count==3,"CONTINUITY_INVENTORY_REQUIRED");
+      java.io.ByteArrayOutputStream decoded=new java.io.ByteArrayOutputStream((int)total);
+      for(int i=0;i<count;i++) {
+        int size=info.readInt();require(size==Math.min(262144,total-(long)i*262144),"CONTINUITY_CHUNK_LENGTH_REQUIRED");
+        info.readFully(nonce);encrypted=new byte[size+16];data.readFully(encrypted);
+        byte[] chunk=continuityDecrypt(key,nonce,continuityAAD(0x52524331,identity,id,resource,i,size),encrypted);
+        try{require(chunk.length==size,"CONTINUITY_CHUNK_LENGTH_REQUIRED");decoded.write(chunk);}finally{java.util.Arrays.fill(chunk,(byte)0);}
+      }
+      require(info.readLong()==payload.length&&info.read()==-1&&data.read()==-1,"CONTINUITY_PAYLOAD_LENGTH_REQUIRED");return decoded.toByteArray();
+    } finally {java.util.Arrays.fill(body,(byte)0);}
+  }
+  private static byte[] continuityAAD(int domain,byte[] identity,String id,String resource,int index,int length) throws Exception {
+    java.io.ByteArrayOutputStream bytes=new java.io.ByteArrayOutputStream();try(java.io.DataOutputStream output=new java.io.DataOutputStream(bytes)){output.writeInt(domain);output.writeInt(1);output.write(identity);output.writeUTF(id);output.writeUTF(resource);if(index>=0){output.writeInt(index);output.writeInt(length);}}return bytes.toByteArray();
+  }
+  private static byte[] continuityDecrypt(javax.crypto.SecretKey key,byte[] nonce,byte[] aad,byte[] encrypted) throws Exception {
+    javax.crypto.Cipher cipher=javax.crypto.Cipher.getInstance("AES/GCM/NoPadding");cipher.init(javax.crypto.Cipher.DECRYPT_MODE,key,new javax.crypto.spec.GCMParameterSpec(128,nonce));cipher.updateAAD(aad);return cipher.doFinal(encrypted);
   }
 
   private void stageUpdateCandidate() throws Exception {
@@ -320,11 +367,11 @@ public final class OwnActivityProbe extends Instrumentation {
     long seekDeadline=SystemClock.uptimeMillis()+20000;JSONObject seekSample=nativeSnapshot();while((seekSample.getInt("playbackState")!=3||Math.abs(seekSample.getLong("positionMs")-32000)>1000)&&SystemClock.uptimeMillis()<seekDeadline){SystemClock.sleep(250);seekSample=nativeSnapshot();}require(seekSample.getInt("playbackState")==3&&Math.abs(seekSample.getLong("positionMs")-32000)<=1000,"PAUSED32_READY_SETUP_REQUIRED");SystemClock.sleep(1200);stage("saved32-native-paused","INDEPENDENT_NATIVE_GETTERS_AND_OWN_TIMELINE",nativeSnapshot());
     tapLabel("Back to catalogue");require(waitLabel("Settings",5000),"SETTINGS_TAB_REQUIRED");tapLabel("Settings");SystemClock.sleep(600);
     for(String value:new String[]{"1.25","1.5","1.75","2"}) {tapLabel("Hold speed "+value+" times");SystemClock.sleep(500);double actual=library().getJSONObject("preferences").getDouble("holdSpeed");require(Math.abs(actual-Double.parseDouble(value))<.001,"PERSISTED_SPEED_MISMATCH");stage("settings-speed","REAL_OWN_TAP_AND_NATIVE_ATOMIC_FILE",new JSONObjectSafe().put("holdSpeed",actual).json);}
-    tapLabel("Text size 100 percent");SystemClock.sleep(300);float basePixels=settingsFontPixels();
-    for(int value:new int[]{90,100,115,130}) {tapLabel("Text size "+value+" percent");SystemClock.sleep(500);double actual=library().getJSONObject("preferences").getDouble("fontScale");require(Math.abs(actual-value/100.0)<.001,"PERSISTED_FONT_MISMATCH");stage("settings-font","REAL_OWN_TAP_AND_NATIVE_ATOMIC_FILE",new JSONObjectSafe().put("fontScale",actual).put("actualTextSizePx",settingsFontPixels()).put("baseTextSizePx",basePixels).json);require(Math.abs(settingsFontPixels()/basePixels-actual)<.03,"NATIVE_TEXT_SIZE_SCALE_MISMATCH");}
+    tapLabel("Subtitle size 100 percent");SystemClock.sleep(300);float basePixels=settingsFontPixels();
+    for(int value:new int[]{90,100,115,130}) {tapLabel("Subtitle size "+value+" percent");SystemClock.sleep(500);double actual=library().getJSONObject("preferences").getDouble("fontScale");require(Math.abs(actual-value/100.0)<.001,"PERSISTED_FONT_MISMATCH");stage("settings-font","REAL_OWN_TAP_AND_NATIVE_ATOMIC_FILE",new JSONObjectSafe().put("fontScale",actual).put("actualTextSizePx",settingsFontPixels()).put("baseTextSizePx",basePixels).json);require(Math.abs(settingsFontPixels()/basePixels-actual)<.03,"NATIVE_TEXT_SIZE_SCALE_MISMATCH");}
     JSONObject file=library();stage("settings-complete","NATIVE_PERSISTED_LOCAL_SETTINGS",new JSONObjectSafe().put("preferences",file.getJSONObject("preferences")).put("recentCount",file.getJSONArray("recents").length()).json);
     // Return130% to the user-selected default after proving every choice.
-    tapLabel("Text size 100 percent");tapLabel("Hold speed 1.5 times");SystemClock.sleep(500);
+    tapLabel("Subtitle size 100 percent");tapLabel("Hold speed 1.5 times");SystemClock.sleep(500);
   }
   private Object invoke(Object target, String method) throws Exception {
     java.lang.reflect.Method m = target.getClass().getMethod(method); m.setAccessible(true); return m.invoke(target);

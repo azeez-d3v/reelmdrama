@@ -218,7 +218,7 @@ test('memoized subtitle component reuses static outline transforms across cues a
 
 test('App retains caption gate, exact active English cue timing and primitive safe/chrome props', () => {
   assert.match(app, /const cue=source\?\.resolution\.englishSubtitleCues\.find\(c=>snap\.time>=c\.start&&snap\.time<c\.end\)/);
-  assert.match(app, /captionsEnabled&&cue\?<SubtitleOverlay text=\{cue\.text\} bottomInset=\{insets\.bottom\} leftInset=\{insets\.left\} rightInset=\{insets\.right\} chromeVisible=\{chromeVisible\}\/>:null/);
+  assert.match(app, /captionsEnabled&&cue\?<FontScaleContext\.Provider value=\{library\.preferences\.fontScale\}><SubtitleOverlay text=\{cue\.text\} bottomInset=\{insets\.bottom\} leftInset=\{insets\.left\} rightInset=\{insets\.right\} chromeVisible=\{chromeVisible\}\/><\/FontScaleContext\.Provider>:null/);
   assert.doesNotMatch(app, /styles\.captions|styles\.captionText/);
 });
 

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Reelm Drama",
     "slug": "reelm-drama",
-    "version": "0.2.0",
+    "version": "0.2.2",
     "scheme": "reelm-drama",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
@@ -14,7 +14,7 @@
     },
     "android": {
       "package": "org.reelm.drama",
-      "versionCode": 3,
+      "versionCode": 5,
       "permissions": [
         "android.permission.INTERNET",
         "android.permission.ACCESS_NETWORK_STATE"

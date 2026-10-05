@@ -21,8 +21,8 @@ $javaHome=$env:JAVA_HOME
 $androidHome=if($env:ANDROID_HOME){$env:ANDROID_HOME}else{$env:ANDROID_SDK_ROOT}
 if(!$Signing){$Signing=if($Mode -eq 'Release'){'Private'}else{'Legacy'}}
 if($Pilot -and $Signing -ne 'Private'){throw 'Pilot requires private signing'}
-if(!$VersionName){$VersionName=if($Signing -eq 'Legacy'){'0.1.1'}else{'0.2.0'}}
-if(!$VersionCode){$VersionCode=if($Signing -eq 'Legacy'){2}else{3}}
+if(!$VersionName){$VersionName=if($Signing -eq 'Legacy'){'0.1.1'}else{'0.2.2'}}
+if(!$VersionCode){$VersionCode=if($Signing -eq 'Legacy'){2}else{5}}
 if($VersionName -notmatch '^\d+\.\d+\.\d+$'){throw 'Invalid version name'}
 $package=if($Pilot){'org.reelm.drama.pilot'}else{'org.reelm.drama'}
 $keytool=if($javaHome){Join-Path $javaHome 'bin\keytool.exe'}else{'keytool.exe'}
@@ -82,10 +82,11 @@ foreach($relative in $inputs){
 }
 ConvertTo-Json -InputObject @($records) | Set-Content -LiteralPath $manifest
 if($Output){$Output=[IO.Path]::GetFullPath($Output)}
-$environmentNames=@('JAVA_HOME','ANDROID_HOME','Path','EXPO_PUBLIC_E2E','NODE_ENV','REELM_BUILD_SIGNING','REELM_BUILD_PILOT','REELM_BUILD_VERSION_NAME','REELM_BUILD_VERSION_CODE','REELM_RELEASE_CERT_SHA256')
+$environmentNames=@('JAVA_HOME','ANDROID_HOME','ANDROID_SDK_ROOT','Path','EXPO_PUBLIC_E2E','NODE_ENV','REELM_BUILD_SIGNING','REELM_BUILD_PILOT','REELM_BUILD_VERSION_NAME','REELM_BUILD_VERSION_CODE','REELM_RELEASE_CERT_SHA256')
 $originalEnvironment=@{};foreach($name in $environmentNames){$originalEnvironment[$name]=[Environment]::GetEnvironmentVariable($name)}
 $env:JAVA_HOME=$javaHome
 $env:ANDROID_HOME=$androidHome
+$env:ANDROID_SDK_ROOT=$androidHome
 $env:Path="$env:JAVA_HOME\bin;$env:ANDROID_HOME\platform-tools;$env:Path"
 $env:EXPO_PUBLIC_E2E=if($Mode -eq 'E2E'){'1'}else{'0'}
 $env:NODE_ENV='production'

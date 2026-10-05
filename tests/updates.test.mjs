@@ -21,6 +21,13 @@ test('the matching installed display version is advisory current and no release 
  const value=release();value.tag_name='v0.2.0';value.assets[0].browser_download_url=value.assets[0].browser_download_url.replace('v0.2.1','v0.2.0');assert.equal((await check(load(undefined,async()=>response(value)))).status,'current');
  const none=await check(load(undefined,async()=>new Response('',{status:404})));assert.equal(none.status,'current');assert.equal(none.releaseTag,null);assert.equal(none.candidate,null);
 });
+test('older/equal public labels never offer a downgrade; numeric newer labels remain advisory candidates',async()=>{
+ for(const [installed,tag,expected] of [['0.2.1','v0.2.0','current'],['0.2.1','v0.2.1','current'],['0.2.1','v0.2.2','available'],['0.2.10','v0.2.9','current'],['0.2.9','v0.2.10','available'],['1.0.0','v0.99.99','current'],['0.2.1','latest','unverified'],['0.2.1','v0.2.2-beta','unverified'],['0.2.1','v99999999999999999999.0.0','unverified'],['unknown','v0.2.2','unverified']]){
+  const value=release();value.tag_name=tag;value.assets[0].browser_download_url=`https://github.com/azeez-d3v/reelmdrama/releases/download/${tag}/${assetName}`;
+  const result=await check(load({reelmGetInstalledVersion:async()=>({versionName:installed,versionCode:4,updateTrusted:true})},async()=>response(value)));
+  assert.equal(result.status,expected,`${installed} vs ${tag}`);if(expected!=='available')assert.equal(result.candidate,null);
+ }
+});
 test('latest rejects ambiguous APK and missing or invalid digest as unverified',async()=>{
  for(const change of [v=>v.assets.push({...v.assets[0]}),v=>v.assets=[],v=>delete v.assets[0].digest,v=>v.assets[0].digest='sha256:no',v=>v.assets[0].name='ReelmDrama.apk',v=>v.assets[0].state='new']){
   const v=release();change(v);const result=await check(load(undefined,async()=>response(v)));assert.equal(result.status,'unverified');assert.equal(result.candidate,null);

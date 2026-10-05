@@ -3,12 +3,11 @@ import {AppState,StyleSheet} from 'react-native';
 import {useVideoPlayer,VideoView,type VideoSource} from 'expo-video';
 import {record} from './diagnostics';
 import {clampResumeTime,resumeSeekObserved} from './resume-policy';
-import type {DramaCard} from './services/types';
+import type {DramaCard,ResolvedEpisode} from './services/types';
 import {createSpeedBoost} from './speed-boost';
-import type {PlaybackResolution} from './playback-types';
 export type PlayerSnapshot={loadId:string|null;resumePending:boolean;time:number;duration:number;playing:boolean;desiredPlaying:boolean;status:string;dimensions:{width:number;height:number};sourceLoadSeen:boolean;firstFrameRenderEvents:number;appState:string;bufferedPosition:number};
 export const EMPTY_PLAYER:PlayerSnapshot={loadId:null,resumePending:true,time:0,duration:0,playing:false,desiredPlaying:false,status:'idle',dimensions:{width:0,height:0},sourceLoadSeen:false,firstFrameRenderEvents:0,appState:'active',bufferedPosition:0};
-export type ActiveSource={card:DramaCard;uri:string;resolution:PlaybackResolution;loadId:string;sourceSessionId:string;startTime:number;autoplay:boolean;runId:string;releasePrepared?:()=>void};
+export type ActiveSource={card:DramaCard;uri:string;resolution:ResolvedEpisode;loadId:string;sourceSessionId:string;startTime:number;autoplay:boolean;runId:string;releasePrepared?:()=>void};
 export type PlayerControls={play:()=>void;pause:()=>void;seek:(seconds:number)=>void;snapshot:()=>PlayerSnapshot;isDesiredPlaying:()=>boolean;beginSpeedBoost:()=>boolean;endSpeedBoost:()=>void};
 const finite=(v:unknown)=>typeof v==='number'&&Number.isFinite(v)?v:0;
 const sourceURI=(s:VideoSource|null)=>typeof s==='string'?s:s&&typeof s==='object'?'uri'in s?s.uri:null:null;
@@ -31,7 +30,7 @@ export const NativePlayer=forwardRef<PlayerControls,{source:ActiveSource;caching
   const subscriptions=[p.addListener('sourceLoad',e=>{if(sourceURI(e.videoSource)!==source.uri)return;accepted.current=true;emit('sourceLoad',{nativeSourceMatched:true});acceptFrame();start();}),p.addListener('statusChange',e=>{emit('statusChange',e.error?{errorCategory:'NATIVE_PLAYBACK_ERROR'}:{});acceptFrame();start();}),p.addListener('playingChange',()=>emit('playingChange')),p.addListener('timeUpdate',e=>{if(accepted.current&&started.current&&p.status==='readyToPlay'&&resumeTarget.current!==null&&resumeTarget.current>0&&resumeSeekObserved(resumeTarget.current,e.currentTime))resumePending.current=false;emit('timeUpdate',{observedTime:e.currentTime});}),p.addListener('videoTrackChange',()=>emit('videoTrackChange')),p.addListener('playToEnd',()=>{const s=snap();if(accepted.current&&s.duration>0&&s.time>=s.duration-Math.min(1,s.duration*.02)){desired.current=false;emit('playToEnd');callbacks.current.onEnded();}})];
   let backgroundAt:number|null=null,loadBegan:number|null=AppState.currentState==='active'?Date.now():null;
   const app=AppState.addEventListener('change',state=>{if(state!=='active'){boost.end();backgroundAt??=Date.now();loadBegan=null;p.pause();}else {loadBegan=Date.now();const elapsed=backgroundAt===null?0:Date.now()-backgroundAt;backgroundAt=null;if(source.resolution.sourceId==='dramadunyam'&&(elapsed>=30000||Date.now()>=source.resolution.expiresAt-5000)){p.pause();emit('foregroundRecoveryRequested',{backgroundMs:elapsed});callbacks.current.onRecovery(resumePending.current?source.startTime:snap().time,desired.current);}else if(!loadFailed.current&&desired.current&&accepted.current)p.play();}emit('appStateChange',{appState:state});});
-  p.replaceAsync({uri:source.uri,contentType:source.resolution.type==='hls'?'hls':'progressive',useCaching:source.resolution.sourceId!=='offline'&&caching}).catch(()=>emit('statusChange',{errorCategory:'NATIVE_LOAD_ERROR'}));
+  p.replaceAsync({uri:source.uri,contentType:source.resolution.type==='hls'?'hls':'progressive',useCaching:caching}).catch(()=>emit('statusChange',{errorCategory:'NATIVE_LOAD_ERROR'}));
   // Some segment failures leave ExoPlayer retrying before sourceLoad/READY. Bound
   // only that initial foreground wait; a known duration alone is not readiness.
   const timer=setInterval(()=>{if(!started.current&&!loadFailed.current&&AppState.currentState==='active'&&loadBegan!==null&&Date.now()-loadBegan>=20000){loadFailed.current=true;p.pause();emit('statusChange',{errorCategory:'NATIVE_LOAD_TIMEOUT'});void p.replaceAsync(null).catch(()=>emit('nativeStopError',{errorCategory:'NATIVE_STOP_ERROR'}));}emit('nativeSnapshot');},1000);

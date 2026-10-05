@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {spawn, spawnSync} from 'node:child_process';
-import {createHash} from 'node:crypto';
+import {createHash,randomUUID} from 'node:crypto';
 import assert from 'node:assert/strict';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -12,16 +12,15 @@ const options = Object.fromEntries(process.argv.slice(2).reduce((rows, value, i,
 const serial = options.serial, target = options.package, suite = options.suite;
 assert(/^[A-Za-z0-9_-]+$/.test(serial ?? ''), 'Explicit serial required');
 assert(/^[a-z][a-z0-9]*(?:\.[a-z][a-z0-9]*)+$/.test(target ?? ''), 'Exact package required');
-assert(['baseline', 'player', 'settings', 'resume', 'episode', 'download-ui', 'install-ui', 'preferences', 'library', 'crypto', 'downloads', 'migration', 'updates'].includes(suite), 'Unknown check suite');
+assert(['baseline', 'player', 'settings', 'resume', 'episode', 'simplification', 'update-feed', 'install-ui', 'preferences', 'library', 'migration', 'updates'].includes(suite), 'Unknown check suite');
 assert(suite!=='install-ui'||target==='org.reelm.drama.pilot','Install UI requires isolated pilot');
 assert(suite!=='preferences'||target==='org.reelm.drama.pilot','Preferences require isolated pilot');
 const fontPercent=Number(options.font??130);assert([90,100,115,130].includes(fontPercent),'Unsupported text size');
-assert(options['manager-only']===undefined||options['manager-only']==='1'&&suite==='download-ui','Manager-only requires download-ui and value 1');
-const managerOnly=options['manager-only']==='1';
-for(const option of ['prepare-install','verify-upgrade','stage-candidate'])assert(options[option]===undefined||options[option]==='1','Upgrade flags require value 1');
-const prepareInstall=options['prepare-install']==='1',verifyUpgrade=options['verify-upgrade']==='1',stageCandidate=options['stage-candidate']==='1';
-assert((!prepareInstall&&!verifyUpgrade&&!stageCandidate)||suite==='updates'&&target==='org.reelm.drama.pilot','Upgrade actions require isolated pilot');
-assert(Number(prepareInstall)+Number(verifyUpgrade)+Number(stageCandidate)<=1,'Choose one upgrade action');
+assert(options['prepare-install']===undefined,'Continuity fixtures are immutable');
+for(const option of ['verify-upgrade','stage-candidate'])assert(options[option]===undefined||options[option]==='1','Upgrade flags require value 1');
+const verifyUpgrade=options['verify-upgrade']==='1',stageCandidate=options['stage-candidate']==='1';
+assert((!verifyUpgrade&&!stageCandidate)||suite==='updates'&&target==='org.reelm.drama.pilot','Upgrade actions require isolated pilot');
+assert(Number(verifyUpgrade)+Number(stageCandidate)<=1,'Choose one upgrade action');
 assert(!stageCandidate||options['upgrade-apk'],'Staging requires exact higher-code APK');
 let continuityJson='';
 if(options['continuity-json']){
@@ -51,12 +50,12 @@ const quote = value => `'${String(value).replaceAll("'", "''")}'`;
 const source = path.join(root, 'tests/android/OwnActivityProbe.java');
 const driverPackage = `${target}.uiprobe`, driverClass = 'org.reelm.drama.uiprobe.OwnActivityProbe';
 const ordinal=Number(options.episode??20);assert(Number.isInteger(ordinal)&&ordinal>=1&&ordinal<=5000,'Invalid ordinal');
-const uri = suite==='download-ui'?`${scheme}://e2e?runId=download_ui_${Date.now().toString(36)}&action=${managerOnly?'home':'open'}&slug=${options.slug??'my-beggar-husband-is-the-alpha'}`:`${scheme}://watch?slug=${options.slug ?? 'after-rebirth-my-hushand-is-the-sea-god-netshort'}${suite==='resume'?'':'&episode='+ordinal}`;
+const uri = `${scheme}://${suite==='simplification'?'series':'watch'}?slug=${options.slug ?? 'after-rebirth-my-hushand-is-the-sea-god-netshort'}${suite==='resume'||suite==='simplification'?'':'&episode='+ordinal}`;
 assert(/^[a-z0-9-]+$/.test(options.slug ?? 'after-rebirth-my-hushand-is-the-sea-god-netshort'), 'Invalid slug');
 fs.mkdirSync(build, {recursive: true}); fs.mkdirSync(checks, {recursive: true});
 const artifact = path.join(checks, `${suite}.json`);
 const ownedApks=[];
-const record = {suite, managerOnly, serial, target, apk, apkSHA256: hash(fs.readFileSync(apk)), sourceSHA256: hash(fs.readFileSync(source)), startedAt: new Date().toISOString(), receipts};
+const record = {suite, serial, target, apk, apkSHA256: hash(fs.readFileSync(apk)), sourceSHA256: hash(fs.readFileSync(source)), startedAt: new Date().toISOString(), receipts};
 if(continuityJson)record.continuityCheckpointSHA256=hash(continuityJson);
 function execute(exe, args, timeout = 120000, optional = false, env = process.env) {
   const result = spawnSync(exe, args, {windowsHide: true, encoding: 'utf8', timeout, maxBuffer: 2 * 1024 * 1024, env});
@@ -136,19 +135,19 @@ Write-Output 'OWN_ACTIVITY_PROBE_COMPILE: PASS'
   if(options['upgrade-apk']){const remote='/data/local/tmp/reelm-drama-wrong.apk',sha256=record.driverSHA256;execute(adbExe,['-s',serial,'shell','test','-e',remote],120000,true);if(receipts.at(-1).exit===0)assert.equal(adb(['shell','sha256sum',remote]).split(/\s/)[0],sha256,'Unknown wrong-package fixture preserved');else adb(['push',driver,remote]);ownedApks.push({remote,sha256});}
 
   adb(['shell', 'am', 'force-stop', target]);
-  const args = ['-s', serial, 'shell', 'am', 'instrument', '-w', '-e','continuityJson',quote(continuityJson),'-e','fontPercent',String(fontPercent),'-e','stageCandidate',stageCandidate?'1':'0','-e','prepareInstall',prepareInstall?'1':'0','-e','verifyUpgrade',verifyUpgrade?'1':'0', '-e', 'targetPackage', target, '-e', 'consumerUri', `'${uri}'`, '-e', 'suite', suite, '-e', 'managerOnly', managerOnly?'1':'0', `${driverPackage}/${driverClass}`];
+  const captureToken=randomUUID();
+  const args = ['-s', serial, 'shell', 'am', 'instrument', '-w', '-e','captureToken',captureToken,'-e','continuityJson',quote(continuityJson),'-e','fontPercent',String(fontPercent),'-e','stageCandidate',stageCandidate?'1':'0','-e','verifyUpgrade',verifyUpgrade?'1':'0', '-e', 'targetPackage', target, '-e', 'consumerUri', `'${uri}'`, '-e', 'suite', suite, `${driverPackage}/${driverClass}`];
   const framework = {exe: adbExe, args, exit: null, output: '', error: ''}; receipts.push(framework);
   await new Promise((resolve, reject) => {
     const child = spawn(adbExe, args, {windowsHide: true}); let launched = false, resumed = false;
-    const timer = setTimeout(() => {child.kill(); reject(new Error('INSTRUMENTATION_TIMEOUT'));}, 150000);
+    const timer = setTimeout(() => {child.kill(); reject(new Error('INSTRUMENTATION_TIMEOUT'));}, suite==='simplification'?240000:150000);
     child.stdout.on('data', bytes => {
       framework.output += bytes.toString();
-      if(suite==='download-ui'){
+      if(suite==='simplification'||suite==='update-feed'){
         record.captures??=[];
-        const stages=framework.output.split(/\r?\n/).filter(line=>line.startsWith('INSTRUMENTATION_STATUS: probeStage=')).map(line=>{try{return JSON.parse(line.slice('INSTRUMENTATION_STATUS: probeStage='.length));}catch{return null;}}).filter(row=>row?.stage?.startsWith('download-ui-'));
+        const stages=framework.output.split(/\r?\n/).filter(line=>line.startsWith('INSTRUMENTATION_STATUS: probeStage=')).map(line=>{try{return JSON.parse(line.slice('INSTRUMENTATION_STATUS: probeStage='.length));}catch{return null;}}).filter(row=>row?.stage?.startsWith(suite+'-'));
         for(const row of stages)if(!record.captures.some(c=>c.stage===row.stage)){
-          const png=spawnSync(adbExe,['-s',serial,'exec-out','screencap','-p'],{windowsHide:true,timeout:15000,maxBuffer:8*1024*1024});
-          if(png.status===0&&png.stdout.subarray(0,8).toString('hex')==='89504e470d0a1a0a'){const file=path.join(checks,`${row.stage}.png`);fs.writeFileSync(file,png.stdout);record.captures.push({stage:row.stage,file,sha256:hash(png.stdout),bytes:png.stdout.length});}
+          try{const ownFocus=()=>adb(['shell','dumpsys','window']).split(/\r?\n/).find(line=>line.includes('mCurrentFocus'));assert(ownFocus()?.includes(`${target}/${target}.MainActivity`),'Own screenshot focus required');const png=spawnSync(adbExe,['-s',serial,'exec-out','screencap','-p'],{windowsHide:true,timeout:12000,maxBuffer:8*1024*1024});assert.equal(png.status,0);assert.equal(png.stdout.subarray(0,8).toString('hex'),'89504e470d0a1a0a');assert(ownFocus()?.includes(`${target}/${target}.MainActivity`),'Own screenshot focus required');const file=path.join(checks,`${row.stage}.png`);fs.writeFileSync(file,png.stdout);record.captures.push({stage:row.stage,file,sha256:hash(png.stdout),bytes:png.stdout.length});}catch(error){record.captureFailure=error.message;}finally{try{adb(['shell','am','broadcast','-p',target,'-a',`${target}.uiprobe.capture`,'--es','token',captureToken,'--es','stage',row.stage]);}catch(error){record.captureFailure=error.message;}}
         }
       }
       if(suite==='resume'&&!resumed&&framework.output.includes('NATIVE_FILE_RETAINS32_BEFORE_TARGET_OBSERVED')){resumed=true;adb(['shell', `am start -W -n ${target}/.MainActivity -a android.intent.action.VIEW -d '${uri}'`]);}
@@ -158,7 +157,7 @@ Write-Output 'OWN_ACTIVITY_PROBE_COMPILE: PASS'
       }
       if (!launched && framework.output.includes('EXACT_OWN_ACTIVITY_MONITOR_ARMED')) {
         launched = true;
-        const nativeSuite = !['baseline', 'player', 'settings', 'resume', 'episode', 'download-ui'].includes(suite);
+        const nativeSuite = !['baseline', 'player', 'settings', 'resume', 'episode'].includes(suite);
         try {adb(['shell', nativeSuite ? `am start -W -n ${target}/.MainActivity -f 0x10008000` : `am start -W -n ${target}/.MainActivity -a android.intent.action.VIEW -f 0x10008000 -d '${uri}'`]);} catch (error) {child.kill(); reject(error);}
       }
     });
@@ -175,7 +174,13 @@ Write-Output 'OWN_ACTIVITY_PROBE_COMPILE: PASS'
     assert.equal(record.observations?.sha256,hash(fs.readFileSync(path.resolve(root,options['upgrade-apk']))));
     assert(record.observations.versionCode>record.result.stages.find(row=>row.stage==='update-preserved')?.dispatch?.installedVersionCode);
   } else
-  if(suite==='preferences'){record.observations=record.result.stages.find(row=>row.stage==='preferences-set')?.dispatch;assert.equal(record.observations?.fontScale,fontPercent/100);}else if(suite==='install-ui'){record.observations=record.result.stages.find(row=>row.stage==='update-install-opened')?.dispatch;assert(record.observations?.ordinaryInstallButton===true);}else if(suite==='download-ui'){record.observations=record.result.stages.filter(row=>row.stage.startsWith('download-ui-'));assert.equal(record.observations.length,managerOnly?2:4);assert.equal(record.captures?.length,managerOnly?2:4);}else if(suite==='episode'){record.observations=record.result.stages.filter(row=>row.stage==='episode-playing').map(row=>row.dispatch);assert(record.observations.length>=8);assert.equal(record.observations[0].currentMediaHost,'v45e-eu.tiktokcdn.com');assert(record.observations.at(-1).positionMs-record.observations[0].positionMs>6000);assert(record.observations.at(-1).renderedOutputBufferCount>record.observations[0].renderedOutputBufferCount);} else if(suite==='updates'&&verifyUpgrade){record.observations=record.result.stages.find(row=>row.stage==='update-preserved')?.dispatch;assert(record.observations?.ciphertextSHA256);}else if(suite==='resume'){record.observations=record.result.stages.filter(row=>row.stage==='pending-background'||row.stage==='resume-target');assert.equal(record.observations.length,2);} else if (suite !== 'player' && suite !== 'baseline' && suite !== 'settings') {
+  if(suite==='update-feed'){
+    record.observations=record.result.stages.find(row=>row.stage==='update-feed-current')?.dispatch;assert.equal(record.observations?.currentUI,true);assert.equal(record.observations?.libraryUnchanged,true);assert.equal(record.captures?.length,1);assert.equal(record.captureFailure,undefined);
+  } else if(suite==='simplification'){
+    record.observations=record.result.stages.filter(row=>row.stage.startsWith('simplification-'));const expected=['home','library','settings-100','settings-130','transfer','detail','restored'].map(name=>'simplification-'+name);
+    assert.deepEqual(record.observations.map(row=>row.stage),expected);assert.deepEqual(record.captures?.map(row=>row.stage),expected);assert.equal(record.captureFailure,undefined);assert(record.observations.at(-1).dispatch?.preferencesRestored===true);
+  } else
+  if(suite==='preferences'){record.observations=record.result.stages.find(row=>row.stage==='preferences-set')?.dispatch;assert.equal(record.observations?.fontScale,fontPercent/100);}else if(suite==='install-ui'){record.observations=record.result.stages.find(row=>row.stage==='update-install-opened')?.dispatch;assert(record.observations?.ordinaryInstallButton===true);}else if(suite==='episode'){record.observations=record.result.stages.filter(row=>row.stage==='episode-playing').map(row=>row.dispatch);assert(record.observations.length>=8);assert.equal(record.observations[0].currentMediaHost,'v45e-eu.tiktokcdn.com');assert(record.observations.at(-1).positionMs-record.observations[0].positionMs>6000);assert(record.observations.at(-1).renderedOutputBufferCount>record.observations[0].renderedOutputBufferCount);} else if(suite==='updates'&&verifyUpgrade){record.observations=record.result.stages.find(row=>row.stage==='update-preserved')?.dispatch;assert(record.observations?.ciphertextSHA256);}else if(suite==='resume'){record.observations=record.result.stages.filter(row=>row.stage==='pending-background'||row.stage==='resume-target');assert.equal(record.observations.length,2);} else if (suite !== 'player' && suite !== 'baseline' && suite !== 'settings') {
     const report = record.result.stages.find(row => row.stage === 'native-suite')?.dispatch?.nativeReport;
     assert.equal(report?.nativeChecks, `${suite} PASS`);
     assert.equal(report.installed.packageName, target);

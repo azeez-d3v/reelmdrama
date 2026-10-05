@@ -4,70 +4,74 @@
 
 A standalone Android drama player with a dark, lime-accented interface, vertical episode navigation and local watch history.
 
-**[Download Reelm Drama 0.2.0](https://github.com/azeez-d3v/reelmdrama/releases/download/v0.2.0/ReelmDrama-arm64-v8a.apk)** · [All releases](https://github.com/azeez-d3v/reelmdrama/releases)
+**[Download Reelm Drama 0.2.2](https://github.com/azeez-d3v/reelmdrama/releases/download/v0.2.2/ReelmDrama-arm64-v8a.apk)** · [All releases](https://github.com/azeez-d3v/reelmdrama/releases)
 
-Android 7.0 / API 24 or newer; **arm64-v8a**. Package `org.reelm.drama`, version **0.2.0 / code 3**. Complete Android's normal installation and Play Protect flow.
+Android 7.0 / API 24 or newer; **arm64-v8a**. Package `org.reelm.drama`, version **0.2.2 / code 5**. Complete Android's normal installation and Play Protect flow.
 
 ## Features
 
-- Home, Discover, search and runtime platform filters from the source catalogue; empty platforms remain visible.
-- Portrait episode player: tap to pause/resume, vertical swipe, seek, unobtrusive timeline loading, immersive controls and configurable press-and-hold speed.
-- Saved, Recents, exact episode/time resume, local likes, text-size and playback settings.
-- Individual/series download selection, progress, pause, storage management and app-private encrypted offline media using Android Keystore.
-- Metadata-only library export/import and manual, verified GitHub APK update checks.
+- **Home · Library · Settings**. Home combines browsing, inline search and runtime platform filters; empty source platforms remain visible.
+- Portrait player: tap to pause/resume, vertical episode swipe, seek, timeline loading, immersive controls and configurable press-and-hold speed.
+- Saved, Recents, exact episode/time resume and local likes.
+- Subtitle-only text-size settings with a live preview; app text retains system accessibility scaling.
+- Filled library Export/Import buttons and manual, verified GitHub APK updates.
 
-The source is DramaDünyam's normal public catalogue/resolver. Metadata requests originate on the phone; video travels directly from the source/CDN to native playback, without a Reelm video relay. Source availability can change; a catalogue listing is not a playable-stream guarantee.
+**Offline episode downloads are removed.** Playback requires internet; bounded online episode/CDN caches remain. Upgrade cleanup targets only recognized former download files and their exact key, preserving unknown data, library and updater storage.
 
-The catalogue is English-localized. Original audio with English subtitles is supported; only advertised English subtitle tracks are selected. Localization is not a guarantee of English dialogue or captions on every title.
+The source is DramaDünyam's normal public catalogue/resolver. Requests originate on the phone; video travels directly from the source/CDN to native playback, without a Reelm video relay. Source availability can change; a catalogue listing is not a playable-stream guarantee.
 
-Library/preferences are on this device only. There is no app account, cloud sync, D1, payment or premium entitlement in this app. Transfer documents contain library metadata, not encrypted media, credentials or keys.
+The catalogue is English-localized. Original audio with English subtitles is supported; only advertised English subtitle tracks are selected. Localization does not guarantee English dialogue or captions on every title.
 
-## Upgrading from the old development-signed app
-
-Version 0.2.0 starts private release signing. Android cannot install it over an older differently signed app.
-
-1. Use the **Legacy migration APK** linked in the 0.2.0 release notes to add library transfer to the older installation; do not uninstall first.
-2. In Settings → Library transfer, export and retain the document. Confirm the app reports **Library export verified** before proceeding.
-3. Uninstall the Legacy app, install the private 0.2.0 APK, then import that document through Settings → Library transfer.
-
-**Uninstall deletes the old encrypted downloads and their Keystore key. Redownload those episodes afterward.** Keep the exported document until Saved, Recents, resume points and preferences are verified in the new app. Complete OS prompts normally; do not disable device protection.
-
-Already on the private release? Keep this installation; do not repeat that migration. Future updates must match the installed package/private signer and have a higher native versionCode.
+Library/preferences are on this device only. There is no app account, cloud sync, D1, payment or premium entitlement. Transfer documents contain library metadata, not media, credentials or keys.
 
 ## App updates
 
-Settings → App updates → Check reads public GitHub Releases without a client token. A published candidate requires exactly one asset named `ReelmDrama-arm64-v8a.apk` and a SHA256 digest. Native code verifies bytes, package, signer and increasing versionCode before handing installation to Android. Version labels alone cannot authorize an update. Version 0.2.0 correctly reports current on an installed private 0.2.0 app.
+Settings → App updates → Check reads public GitHub Releases without a client token. Older/equal numeric release versions are not offered; unknown labels are unverified. The checker no longer offers 0.2.0 to a phone already running 0.2.1. A fresh successful current check clears that obsolete downgrade failure, not unrelated failures. Optional native status failures do not discard a successful feed check.
+
+A newer candidate requires exactly one asset named `ReelmDrama-arm64-v8a.apk` and a published SHA256 digest. Native code independently verifies bytes, package, private signer and **strictly increasing versionCode** before Android asks for installation confirmation. A version label alone never authorizes installation.
+
+Already on a private-signed release? Install this update in place; do not uninstall or repeat the signing migration.
+
+### Old development-signed installations
+
+Private release signing started with 0.2.0. Android does not install a differently signed APK over the old app.
+
+1. Use the Legacy migration APK in the [0.2.0 release](https://github.com/azeez-d3v/reelmdrama/releases/tag/v0.2.0) to add library transfer to the older installation. Do not uninstall first.
+2. Export in Settings → Library transfer. Retain the document and confirm **Library export verified**.
+3. Uninstall the Legacy app, install the current private APK, and import that document.
+
+Uninstall removes app-private data and old encrypted media/keys; media is not exported. Offline downloads are not supported in the current app. Keep the export until Saved, Recents, resume points and preferences are checked.
 
 ## Development
 
-This repository is the standalone source export. The canonical development app remains in the parent Reelm project's `drama-mobile/`; do not develop in archived staging copies. Read `AGENTS.md` before building or creating files.
+This is the curated standalone source export. Canonical development remains in the parent Reelm project's `drama-mobile/`. Read `AGENTS.md` before building or creating files; reuse matching dependencies and one bounded staging directory.
 
 ```powershell
-# Node 24; install only when the lockfile does not match existing dependencies.
+# Node 24; install only when dependencies do not match the lockfile.
 npm ci --no-audit --no-fund
 npm run typecheck
 npm test
 ```
 
-`npm test` includes both `tests/*.test.mjs` and `ui/*.test.mjs`. Public catalogue fixtures live in `tests/fixtures/`; they contain no viewing cookies, signed streams or personal library records. The canonical 0.2.0 checks passed 348/348 plus TypeScript before export; see Actions for checks of this exact exported commit.
+`npm test` includes `tests/*.test.mjs` and `ui/*.test.mjs`. Sanitized public source fixtures are in `tests/fixtures/`, without viewing cookies, signed streams or personal library records. See Actions for checks of this exact exported commit.
 
-Android builds use PowerShell 7, an existing JDK and Android SDK 36 via `JAVA_HOME` and `ANDROID_HOME`. The native module requires an Android development build, not Expo Go.
+Android builds use PowerShell 7, an existing Java 21 JDK and Android SDK 36 via `JAVA_HOME` and `ANDROID_HOME`. This native app does not run in Expo Go.
 
 ```powershell
-# An authorized release publisher must already have the existing private signer.
+# Authorized publishers must already possess the existing private signer.
 New-Item -ItemType Directory -Path dist -Force | Out-Null
 pwsh -File scripts/Build-Android.ps1 -Mode Release `
   -Output (Join-Path (Get-Location) 'dist/ReelmDrama-arm64-v8a.apk')
 ```
 
-The public repository intentionally contains no production signing key, recovery password or DPAPI material. Private builds fail closed without the existing signer; they never silently switch to development signing. Preserve that signer and its independently encrypted recovery backup outside the repository. A local developer build uses a separate development identity/key; it is not a compatible production update.
+No production key, recovery passphrase or DPAPI signing material is published. Private builds fail closed without the existing signer; they never silently switch to development signing. Keep the signer and its encrypted recovery backup outside this repository.
 
 ## Release verification
 
-0.2.0 SHA256: `9c3f0127c1cd3e89dc8a247cabb46b639fda59f2f998ac0d222d7bd9048159a3`.
+0.2.2 APK SHA256: `665041e8e9f3bf91ac12f9084b6ce230249a4060681ceb77be93ae3e46c5f758`.
 
 Private signer certificate SHA256: `2372f2597582f24c23d620adc3102522e59ec10e25bde39ed68a5817b0e8b7b7`.
 
-The release APK has diagnostics disabled and is not debuggable. A representative online NetShort Episode 20 test on the physical Android phone measured 8.852 seconds continuous playback, 11.696 seconds media advancement, 282 rendered frames and maximum timeline drift 0.812 seconds; hold 1.5× restored 1×. This does not certify every platform, title, language, speed or offline format on this APK. Earlier all-format offline evidence applies to its separately recorded APK, not automatically to this release.
+Canonical checks passed **338/338**, TypeScript and the fresh reused-dependency release build. This APK is not debuggable; diagnostics and obsolete offline APIs are absent. Physical-phone updater and representative NetShort Episode 20 playback checks are release gates; these do not certify every platform, title or audio language, nor an Android updater-confirmation installation. See the release notes for the completed checks.
 
 Bundled Geist font licences are included in `assets/`.

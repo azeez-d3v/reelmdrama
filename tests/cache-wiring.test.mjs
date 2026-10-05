@@ -91,7 +91,7 @@ test('Android disk cache stays bounded and initializes before any active or warm
   assert.match(app, /prepareVideoCache\(\)\.then\(enabled=>\{if\(alive\)setCacheSetup\(enabled\);\}\)/);
   assert.match(app, /\(ready\|\|error\)&&cacheSetup!==null&&libraryLoaded\?<ReelmApp videoCaching=\{cacheSetup\}/);
   assert.match(app, /source=\{source\} caching=\{videoCaching\}/);
-  assert.match(player, /replaceAsync\(\{uri:source\.uri,contentType:source\.resolution\.type==='hls'\?'hls':'progressive',useCaching:source\.resolution\.sourceId!=='offline'&&caching\}\)/);
+  assert.match(player, /replaceAsync\(\{uri:source\.uri,contentType:source\.resolution\.type==='hls'\?'hls':'progressive',useCaching:caching\}\)/);
   assert.doesNotMatch(player, /setVideoCacheSizeAsync/);
   assert.match(app, /entry instanceof File&&\/\^reelm-prepared-/);
 });

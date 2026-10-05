@@ -8,7 +8,7 @@ import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 const require = createRequire(import.meta.url);
 const root = path.resolve(import.meta.dirname, '..');
-test('strict offline composition precedes cache and reverses both supported modes', () => {
+test('native data composition preserves stock streaming and reverses historical offline routes', () => {
   const {composeDataSource, baselineDataSource, hash} = require('../plugins/withReelmNative.cjs');
   const stock = fs.readFileSync(path.join(root, 'node_modules/expo-video/android/src/main/java/expo/modules/video/utils/DataSourceUtils.kt'), 'utf8');
   const observer = fs.readFileSync(path.join(root, 'tests/fixtures/native-observer/DataSourceUtils.MODIFIED.kt'), 'utf8');
@@ -16,9 +16,10 @@ test('strict offline composition precedes cache and reverses both supported mode
     const product = composeDataSource(base, e2e);
     assert.equal(composeDataSource(product, e2e), product);
     assert.equal(baselineDataSource(product), base);
-    assert.ok(product.indexOf('ReelmEncryptedDataSource.Factory') < product.indexOf('buildCacheDataSourceFactory(context, videoSource)'));
-    assert.match(product, /videoSource\.uri\?\.scheme == "reelm-offline"/);
-    assert.equal(product.includes('ReelmEncryptedDataSource.Factory(context, NativeProbeTransferListener())'), e2e);
+    assert.equal(product,base);
+    assert.doesNotMatch(product,/ReelmEncryptedDataSource|reelm-offline/);
+    const historical=base.replace('  val dataSourceFactory = if (videoSource.useCaching) {',`  val dataSourceFactory = if (videoSource.uri?.scheme == "reelm-offline") {\n    ReelmEncryptedDataSource.Factory(context${e2e?', NativeProbeTransferListener()':''})\n  } else if (videoSource.useCaching) {`);
+    assert.equal(composeDataSource(historical,e2e),base);
     assert.throws(() => composeDataSource(product + '\n// unknown', e2e), /Unknown/);
   }
   assert.equal(hash(baselineDataSource(composeDataSource(observer, true))), hash(observer));
@@ -48,8 +49,8 @@ test('native product composition is idempotent and rejects unknown input', () =>
   assert.match(modified, /finally \{ reelmBridge.destroy\(\) \}/);
   assert.equal((modified.match(/OnActivityEntersBackground/g) ?? []).length,1);
   assert.equal((modified.match(/OnActivityEntersForeground/g) ?? []).length,1);
-  assert.match(modified,/finally \{ reelmBridge.setNativeDownloadsForeground\(false\) \}/);
-  assert.match(modified,/VideoManager.onAppForegrounded\(\)\n      reelmBridge.setNativeDownloadsForeground\(true\)/);
+  assert.match(modified,/VideoManager.onModuleCreated\(appContext\)\n      reelmBridge.retireDownloads\(appContext\)/);
+  assert.doesNotMatch(modified,/setNativeDownloadsForeground|setDownloadsActive/);
 });
 test('deleted stage source is reconciled', () => {
   const build = fs.readFileSync(path.join(root, 'scripts/Build-Android.ps1'), 'utf8');
@@ -121,7 +122,7 @@ test('actual source sync reconciles declared deletion and preserves unknown inpu
 });
 test('Release removes observer but retains product', () => {
   const {sourceNames} = require('../plugins/withReelmNative.cjs');
-  assert.deepEqual(sourceNames(false), ['ReelmVideoBridge.kt', 'ReelmLibraryStore.kt', 'ReelmFileCrypto.kt', 'ReelmDownloadStore.kt', 'ReelmEncryptedDataSource.kt', 'ReelmApkUpdater.kt', 'ReelmLibraryTransfer.kt']);
+  assert.deepEqual(sourceNames(false), ['ReelmVideoBridge.kt', 'ReelmLibraryStore.kt', 'ReelmDownloadRetirement.kt', 'ReelmApkUpdater.kt', 'ReelmLibraryTransfer.kt']);
   assert.deepEqual(sourceNames(true), [...sourceNames(false), 'ReelmNativeChecks.kt']);
   const prepare = fs.readFileSync(path.join(root, 'scripts/prepare-reelm-native.mjs'), 'utf8');
   assert.match(prepare, /8ffd704064677f8862f093b43a14c20584c6235b9602384979a0e5498cb943ee/);
@@ -133,7 +134,7 @@ test('real native composition round trip removes only recognized E2E source', t 
   const directory = path.join(fixture, 'node_modules/expo-video/android/src/main/java/expo/modules/video');
   t.after(() => {
     // Only this tiny fixture's explicitly written files; never recursive removal.
-    const files = ['.reelm-native.json', '.reelm-stock-data-source.kt', 'node_modules/expo-video/package.json', ...sourceNames(false).map(name => `native/android/${name}`), 'tests/android/ReelmNativeChecks.kt'];
+    const files = ['.reelm-native.json', '.reelm-stock-data-source.kt', ...['ReelmFileCrypto.kt','ReelmDownloadStore.kt','ReelmEncryptedDataSource.kt'].map(name=>path.relative(fixture,path.join(directory,name))), 'node_modules/expo-video/package.json', ...sourceNames(false).map(name => `native/android/${name}`), 'tests/android/ReelmNativeChecks.kt'];
     files.push(path.relative(fixture, path.join(directory, 'utils/DataSourceUtils.kt')));
     files.push(...['VideoModule.kt', 'ReelmBuildConfig.kt', ...sourceNames(true)].map(name => path.relative(fixture, path.join(directory, name))));
     for (const file of files) if (fs.existsSync(path.join(fixture, file))) fs.unlinkSync(path.join(fixture, file));
@@ -180,6 +181,14 @@ test('real native composition round trip removes only recognized E2E source', t 
   assert.equal(reset().status, 0);
   assert.equal(hash(fs.readFileSync(dataFile)), hash(stockData));
   inject(fixture, false);
+  const obsolete=path.join(directory,'ReelmDownloadStore.kt');
+  fs.writeFileSync(obsolete,'recognized previous injection');
+  const receiptFile=path.join(fixture,'.reelm-native.json');
+  const receipt=JSON.parse(fs.readFileSync(receiptFile));receipt.inputs['ReelmDownloadStore.kt']=hash(fs.readFileSync(obsolete));fs.writeFileSync(receiptFile,JSON.stringify(receipt));
+  inject(fixture,false);assert.equal(fs.existsSync(obsolete),false);
+  fs.writeFileSync(obsolete,'unknown previous injection');
+  assert.throws(()=>inject(fixture,false),/Unknown retired source/);assert.equal(fs.readFileSync(obsolete,'utf8'),'unknown previous injection');
+  fs.unlinkSync(obsolete);
   fs.appendFileSync(dataFile, '\n// unknown');
   assert.throws(() => inject(fixture, false), /Unknown DataSourceUtils/);
   fs.writeFileSync(dataFile, stockData);

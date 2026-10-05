@@ -5,7 +5,7 @@ import {componentHarness} from './ui-harness.mjs';
 import {createSpeedBoost} from '../speed-boost.ts';
 import {clampResumeTime,resumeSeekObserved} from '../resume-policy.ts';
 
-function fixture({autoplay=true,startTime=86.999,offline=false,caching=false}={}) {
+function fixture({autoplay=true,startTime=86.999,caching=false}={}) {
   let now=0,tick=null,appChange=null,replacements=0;
   const listeners=new Map(),snapshots=[],events=[],seekWrites=[];
   const app={currentState:'active',addEventListener:(_,callback)=>{appChange=callback;return {remove(){appChange=null;}};}};
@@ -14,7 +14,7 @@ function fixture({autoplay=true,startTime=86.999,offline=false,caching=false}={}
     play(){this.playing=true;},pause(){this.playing=false;},replaceAsync(value){replacements++;this.assigned=value;return Promise.resolve();},
     addListener(name,callback){listeners.set(name,callback);return {remove:()=>listeners.delete(name)};}};
   Object.defineProperty(p,'currentTime',{get:()=>time,set:value=>{seekWrites.push(value);time=value;}});
-  const source={uri:'file:///owned/reelm-prepared-1-1.m3u8',startTime,autoplay,loadId:'one',sourceSessionId:'one',runId:'one',resolution:{sourceId:offline?'offline':'dramadunyam',type:'hls',identity:{slug:'godforged-ten-scraps-of-iron',episodeNumber:1},expiresAt:100000}};
+  const source={uri:'file:///owned/reelm-prepared-1-1.m3u8',startTime,autoplay,loadId:'one',sourceSessionId:'one',runId:'one',resolution:{sourceId:'dramadunyam',type:'hls',identity:{slug:'godforged-ten-scraps-of-iron',episodeNumber:1},expiresAt:100000}};
   const h=componentHarness('../player.tsx',{'react-native':{AppState:app},'expo-video':{VideoView:'Video',useVideoPlayer:()=>p},'./diagnostics':{record:(event,fields)=>events.push({event,...fields})},'./speed-boost':{createSpeedBoost},'./resume-policy':{clampResumeTime,resumeSeekObserved}},[],
     {Date:{now:()=>now},setInterval:callback=>{tick=callback;return 1;},clearInterval:()=>{tick=null;}});
   const recoveries=[],ref={current:null},props={ref,source,caching,holdSpeed:1.5,onSnapshot:s=>snapshots.push(s),onEnded(){},onRecovery:(...args)=>recoveries.push(args)};
@@ -67,5 +67,3 @@ test('actual App retry handler preserves paused intent, pending saved resume and
     assert.deepEqual(calls,[['delete','exact-key'],['load',d,1,startTime,matching?!paused:true]]);
   }
 });
-
- test('offline foreground never refreshes and offline playback never enables Expo cache',()=>{const f=fixture({offline:true,caching:true,startTime:0});try{assert.equal(f.p.assigned.useCaching,false);f.ready();f.state('background');f.advance(1000000);f.state('active');assert.deepEqual(f.recoveries,[]);assert.equal(f.p.playing,true);f.ref.current.pause();f.state('background');f.advance(1000000);f.state('active');assert.equal(f.p.playing,false);assert.deepEqual(f.recoveries,[]);}finally{f.h.cleanup();}});

@@ -13,6 +13,16 @@ export const cancelUpdate=()=>native.reelmCancelUpdate();
 export const getUpdateStatus=()=>native.reelmGetUpdateStatus();
 export const installVerifiedUpdate=()=>native.reelmInstallVerifiedUpdate();
 
+export function releaseVersionStatus(tag:string,installed:string):UpdateCheck['status']{
+ const parse=(value:string)=>{
+  if(!/^v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test(value))return null;
+  const parts=value.replace(/^v/,'').split('.').map(Number);return parts.every(Number.isSafeInteger)?parts:null;
+ };
+ const next=parse(tag),current=parse(installed);if(!next||!current)return 'unverified';
+ for(let i=0;i<3;i++)if(next[i]!==current[i])return next[i]>current[i]?'available':'current';
+ return 'current';
+}
+
 function approvedURL(value:string){
  const url=new URL(value);
  if(value.length>16384||/[\u0000-\u0020\u007f]/.test(value)||url.protocol!=='https:'||url.username||url.password||url.port||url.hash||!HOSTS.includes(url.hostname))throw Error('UPDATE_REDIRECT');
@@ -50,8 +60,8 @@ function select(value:unknown,versionName:string):Omit<UpdateCheck,'checkedAt'>{
  if(asset.state!=='uploaded'||!Number.isSafeInteger(asset.size)||(asset.size as number)<1||(asset.size as number)>268435456||typeof asset.digest!=='string'||!/^sha256:[a-f0-9]{64}$/i.test(asset.digest)||typeof asset.browser_download_url!=='string')return result;
  let url:URL;try{url=approvedURL(asset.browser_download_url);}catch{return result;}
  if(url.hostname!=='github.com'||url.search||url.pathname!==`/azeez-d3v/reelmdrama/releases/download/${encodeURIComponent(tag)}/${ASSET}`)return result;
- // Release labels only inform the UI. Native archive versionCode/signature decide install eligibility.
- if(tag.replace(/^v/,'')===versionName)return {status:'current',candidate:null,releaseTag:tag};
+ // Labels can suppress old offers, never authorize installation: native archive code/signature still decide.
+ const status=releaseVersionStatus(tag,versionName);if(status!=='available')return {status,candidate:null,releaseTag:tag};
  return {status:'available',releaseTag:tag,candidate:{releaseTag:tag,assetName:ASSET,url:url.href,bytes:asset.size as number,sha256:asset.digest.slice(7).toLowerCase()}};
 }
 export async function checkForUpdate(signal:AbortSignal):Promise<UpdateCheck>{

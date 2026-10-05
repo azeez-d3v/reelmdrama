@@ -25,7 +25,7 @@ function composeDataSource(text, e2e) {
   const base = baselineDataSource(text);
   if (hash(base) !== (e2e ? DATA_OBSERVER : DATA_STOCK)) throw Error('DataSourceUtils mode mismatch');
   if (base.split(dataAnchor).length !== 2) throw Error('Unknown DataSourceUtils anchor');
-  return base.replace(dataAnchor, dataPatch(e2e));
+  return base;
 }
 const legacyPatches = [
   ['class VideoModule : Module() {', 'class VideoModule : Module() {\n  private val reelmBridge = ReelmVideoBridge()'],
@@ -36,13 +36,16 @@ const readinessLegacyPatches = [...legacyPatches,
   ['      VideoManager.onAppForegrounded()', '      VideoManager.onAppForegrounded()\n      reelmBridge.setDownloadsActive(true)'],
   ['      VideoManager.onAppBackgrounded()', '      try { VideoManager.onAppBackgrounded() } finally { reelmBridge.setDownloadsActive(false) }'],
 ];
-const patches = [...legacyPatches,
+const foregroundLegacyPatches = [...legacyPatches,
   ['      VideoManager.onAppForegrounded()', '      VideoManager.onAppForegrounded()\n      reelmBridge.setNativeDownloadsForeground(true)'],
   ['      VideoManager.onAppBackgrounded()', '      try { VideoManager.onAppBackgrounded() } finally { reelmBridge.setNativeDownloadsForeground(false) }'],
 ];
+const patches = [...legacyPatches,
+  ['      VideoManager.onModuleCreated(appContext)', '      VideoManager.onModuleCreated(appContext)\n      reelmBridge.retireDownloads(appContext)'],
+];
 function baseline(text) {
   if (hash(text) === STOCK) return text;
-  for (const variant of [patches, readinessLegacyPatches, legacyPatches]) {
+  for (const variant of [patches, foregroundLegacyPatches, readinessLegacyPatches, legacyPatches]) {
     let original = text;
     for (const [before, after] of variant) {
       if (original.split(after).length !== 2) break;
@@ -60,7 +63,17 @@ function compose(text) {
   }
   return text;
 }
-const sourceNames = e2e => ['ReelmVideoBridge.kt', 'ReelmLibraryStore.kt', 'ReelmFileCrypto.kt', 'ReelmDownloadStore.kt', 'ReelmEncryptedDataSource.kt', 'ReelmApkUpdater.kt', 'ReelmLibraryTransfer.kt', ...(e2e ? ['ReelmNativeChecks.kt'] : [])];
+const sourceNames = e2e => ['ReelmVideoBridge.kt', 'ReelmLibraryStore.kt', 'ReelmDownloadRetirement.kt', 'ReelmApkUpdater.kt', 'ReelmLibraryTransfer.kt', ...(e2e ? ['ReelmNativeChecks.kt'] : [])];
+const obsoleteSources = ['ReelmFileCrypto.kt', 'ReelmDownloadStore.kt', 'ReelmEncryptedDataSource.kt'];
+function retiredSources(directory, prior) {
+  return obsoleteSources.flatMap(name => {
+    const file = path.join(directory, name);
+    let stat;
+    try { stat = fs.lstatSync(file); } catch (error) { if (error.code === 'ENOENT') return []; throw error; }
+    if (!stat.isFile() || stat.isSymbolicLink() || prior?.inputs?.[name] !== hash(fs.readFileSync(file))) throw Error(`Unknown retired source ${name}; preserved`);
+    return [file];
+  });
+}
 function dependenciesMatch(locked, installed, exists, platform = process.platform, architecture = process.arch) {
   return Object.entries(locked.packages).every(([name, item]) => {
     if (!name) return true; // npm's hidden lock intentionally omits the root.
@@ -80,6 +93,7 @@ function inject(root, e2e) {
   const text = fs.readFileSync(file, 'utf8'), output = compose(text);
   const receiptFile = path.join(root, '.reelm-native.json');
   const prior = fs.existsSync(receiptFile) ? JSON.parse(fs.readFileSync(receiptFile)) : null;
+  const retired = retiredSources(directory, prior);
   const inputs = {};
   const writes = [];
   const pin = process.env.REELM_RELEASE_CERT_SHA256 ?? '';
@@ -103,6 +117,7 @@ function inject(root, e2e) {
   }
   for (const [destination, input] of writes) fs.writeFileSync(destination, input);
   if (!e2e && fs.existsSync(check)) fs.unlinkSync(check);
+  for (const file of retired) fs.unlinkSync(file);
   fs.writeFileSync(file, output);
   fs.writeFileSync(dataFile, dataOutput);
   fs.writeFileSync(receiptFile, JSON.stringify({version: '55.0.21', base: STOCK, output: hash(output), dataSource, inputs, e2e}, null, 2) + '\n');
@@ -117,4 +132,4 @@ module.exports = config => withDangerousMod(withAndroidManifest(config,config=>{
 }), ['android', async config => {
   inject(config.modRequest.projectRoot, process.env.EXPO_PUBLIC_E2E === '1'); return config;
 }]);
-Object.assign(module.exports, {compose, baseline, composeDataSource, baselineDataSource, inject, sourceNames, hash, dependenciesMatch});
+Object.assign(module.exports, {compose, baseline, composeDataSource, baselineDataSource, inject, sourceNames, hash, dependenciesMatch, retiredSources});

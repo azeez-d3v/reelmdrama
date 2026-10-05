@@ -4,12 +4,13 @@ import {componentHarness,byID,nodes} from '../tests/ui-harness.mjs';
 import * as theme from '../theme.ts';
 import {safeInset} from './format.ts';
 const tick=()=>new Promise(setImmediate),idle={state:'idle',bytes:0,total:null,errorCode:null};
+const {releaseVersionStatus}=componentHarness('../updates.ts',{'./native':{native:{}},'expo/fetch':{fetch(){}}}).exports;
 const candidate={releaseTag:'v0.2.1',assetName:'ReelmDrama-arm64-v8a.apk',url:'https://github.com/azeez-d3v/reelmdrama/releases/download/v0.2.1/ReelmDrama-arm64-v8a.apk',bytes:1000,sha256:'a'.repeat(64)};
 function setup(){
  const events=[],alerts=[],state={status:idle,version:{versionName:'0.2.0',versionCode:3,updateTrusted:true},result:{status:'available',candidate,releaseTag:'v0.2.1',checkedAt:1234567890000},last:null},listeners=new Set(),timers=new Set();
- const api={getLastUpdateCheck:()=>state.last,checkForUpdate:async signal=>{events.push('check');assert(!signal.aborted);state.last=state.result;return state.result;},getUpdateStatus:async()=>state.status,downloadUpdate:async value=>{events.push(['download',value]);state.status={state:'downloading',bytes:250,total:1000,errorCode:null};},cancelUpdate:async()=>{events.push('cancel');state.status=idle;},installVerifiedUpdate:async()=>{events.push('install');state.status={state:'installing',bytes:1000,total:1000,errorCode:null};}};
- const h=componentHarness('../ui/SettingsScreen.tsx',{'./ScaledText':{ScaledText:'Text'},'../theme':theme,'./Primitives':{ActionButton:'ActionButton',IconButton:'IconButton'},'./Navigation':{BrandedHeader:'Header',BottomTabs:'Tabs'},'./Motion':{useReducedMotion:()=>false},'./format':{safeInset},'./measurement':{MeasurementProvider:'Measurements',NativeMeasurementRoot:'MeasurementRoot'},'../downloads':{listDownloads:async()=>[],downloadStorageBytes:async()=>0,groupDownloads:()=>[]},'../updates':api,'../native':{native:{reelmGetInstalledVersion:async()=>{events.push('version');return state.version;}}},'react-native':{Alert:{alert:(...args)=>alerts.push(args)},FlatList:'FlatList',ScrollView:'ScrollView',Modal:'Modal',useWindowDimensions:()=>({height:800,width:360}),AppState:{currentState:'active',addEventListener:(name,fn)=>{listeners.add(fn);return {remove:()=>listeners.delete(fn)};}}}},[],{AbortController,Date,setInterval:fn=>{timers.add(fn);return fn;},clearInterval:fn=>timers.delete(fn)});
- const props={preferences:{holdSpeed:1.5,fontScale:1},insets:{top:28,bottom:24},onChange(){},onTabChange(){},onWatchDownload(){},onDeleteDownloads:async()=>{}};
+ const api={releaseVersionStatus,getLastUpdateCheck:()=>state.last,checkForUpdate:async signal=>{events.push('check');assert(!signal.aborted);state.last=state.result;return state.result;},getUpdateStatus:async()=>state.status,downloadUpdate:async value=>{events.push(['download',value]);state.status={state:'downloading',bytes:250,total:1000,errorCode:null};},cancelUpdate:async()=>{events.push('cancel');state.status=idle;},installVerifiedUpdate:async()=>{events.push('install');state.status={state:'installing',bytes:1000,total:1000,errorCode:null};}};
+ const h=componentHarness('../ui/SettingsScreen.tsx',{'./ScaledText':{ScaledText:'Text',FontScaleContext:{Provider:'FontScale'}},'./SubtitleOverlay':{SubtitleOverlay:'SubtitleOverlay'},'../theme':theme,'./Primitives':{ActionButton:'ActionButton',IconButton:'IconButton'},'./Navigation':{BrandedHeader:'Header',BottomTabs:'Tabs'},'./Motion':{useReducedMotion:()=>false},'./format':{safeInset},'./measurement':{MeasurementProvider:'Measurements',NativeMeasurementRoot:'MeasurementRoot'},'../updates':api,'../native':{native:{reelmGetInstalledVersion:async()=>{events.push('version');return state.version;}}},'react-native':{Alert:{alert:(...args)=>alerts.push(args)},FlatList:'FlatList',ScrollView:'ScrollView',Modal:'Modal',useWindowDimensions:()=>({height:800,width:360}),AppState:{currentState:'active',addEventListener:(name,fn)=>{listeners.add(fn);return {remove:()=>listeners.delete(fn)};}}}},[],{AbortController,Date,setInterval:fn=>{timers.add(fn);return fn;},clearInterval:fn=>timers.delete(fn)});
+ const props={preferences:{holdSpeed:1.5,fontScale:1},insets:{top:28,bottom:24},onChange(){},onTabChange(){}};
  const render=()=>h.render('SettingsScreen',props),flush=async()=>{await tick();return render();},poll=async()=>{for(const fn of timers)fn();return flush();},foreground=async()=>{for(const fn of listeners)fn('active');return flush();};
  return {h,api,state,events,alerts,props,render,flush,poll,foreground,listeners,timers};
 }
@@ -33,7 +34,18 @@ test('install permission and cancellation remain verified with explicit recovery
  for(const code of ['UPDATE_PERMISSION_REQUIRED','INSTALL_CANCELLED']){const f=setup();try{f.state.status={state:'verified',bytes:1000,total:1000,errorCode:code};f.render();const tree=await f.flush();assert(byID(tree,'updates-install'));assert.match(text(tree),code==='UPDATE_PERMISSION_REQUIRED'?/allow installs/i:/cancelled/i);assert.doesNotMatch(text(tree),/installed successfully/i);}finally{f.h.cleanup();}}
 });
 test('returning after same-label native upgrade clears stale candidate without another network check',async()=>{
- const f=setup();try{f.render();await f.flush();await byID(f.render(),'updates-check').props.onPress();await f.flush();assert(byID(f.render(),'updates-download'));f.state.version={...f.state.version,versionName:'0.2.1',versionCode:4};const tree=await f.foreground();assert(!byID(tree,'updates-download'));assert.match(text(tree),/matches the latest/);assert.equal(f.events.filter(v=>v==='check').length,1);}finally{f.h.cleanup();}
+ const f=setup();try{f.render();await f.flush();await byID(f.render(),'updates-check').props.onPress();await f.flush();assert(byID(f.render(),'updates-download'));f.state.version={...f.state.version,versionName:'0.2.1',versionCode:4};const tree=await f.foreground();assert(!byID(tree,'updates-download'));assert.match(text(tree),/No newer public release/);assert.equal(f.events.filter(v=>v==='check').length,1);}finally{f.h.cleanup();}
+});
+test('cached older release is not offered and a successful current check clears only obsolete downgrade failure',async()=>{
+ const f=setup();try{
+  f.state.version={...f.state.version,versionName:'0.2.2',versionCode:5};f.state.last=f.state.result;f.state.status={state:'failed',bytes:0,total:null,errorCode:'UPDATE_DOWNGRADE'};
+  f.render();let tree=await f.flush();assert(!byID(tree,'updates-download'));assert(!byID(tree,'updates-retry'));
+  f.state.result={status:'current',candidate:null,releaseTag:'v0.2.0',checkedAt:1234567890001};await byID(tree,'updates-check').props.onPress();tree=await f.flush();
+  assert(f.events.includes('cancel'));assert.match(text(tree),/No newer public release/);assert.doesNotMatch(text(tree),/Update failed|matches the latest/);assert(!byID(tree,'updates-retry'));
+ }finally{f.h.cleanup();}
+});
+test('successful current feed check survives a failed optional native status refresh',async()=>{
+ const f=setup();try{f.render();await f.flush();f.state.result={status:'current',candidate:null,releaseTag:'v0.2.0',checkedAt:1234567890001};f.api.getUpdateStatus=async()=>{throw Error('native status unavailable');};await byID(f.render(),'updates-check').props.onPress();const tree=await f.flush();assert.match(text(tree),/No newer public release/);assert.doesNotMatch(text(tree),/Update check failed/);assert.match(text(tree),/status.*retry/i);}finally{f.h.cleanup();}
 });
 test('pending native transfer keeps cancel usable and a cancelled original promise never restores install',async()=>{
  const f=setup();let finish;const transfer=new Promise(resolve=>finish=resolve);
@@ -54,4 +66,17 @@ test('late rejected download cannot clear a replacement download lock or show it
 test('optional library transfer dispatches only confirmed import and reports picker cancellation without success',async()=>{
  const f=setup(),calls=[];let finish;const pending=new Promise(resolve=>finish=resolve);
  try{f.render();await f.flush();assert(!byID(f.render(),'library-export'));f.props.onExportLibrary=async()=>{calls.push('export');return pending;};f.props.onImportLibrary=async()=>{calls.push('import');return true;};f.props.preferences.fontScale=1.3;let tree=f.render();const exp=byID(tree,'library-export'),imp=byID(tree,'library-import');assert.equal(exp.type,'ActionButton');assert.equal(exp.props.accessibilityLabel,'Export library and preferences');assert.equal(imp.props.accessibilityLabel,'Import library and preferences');assert(nodes(tree).some(n=>n.type==='ScrollView'));assert(nodes(tree).some(n=>n.props.style?.flexWrap==='wrap'&&n.props.children.includes(exp)));exp.props.onPress();tree=await f.flush();assert(byID(tree,'library-export').props.disabled);assert(byID(tree,'library-import').props.disabled);finish(false);tree=await f.flush();assert.match(text(tree),/Transfer cancelled. Your library is unchanged./);assert.doesNotMatch(text(tree),/export verified/);byID(tree,'library-import').props.onPress();assert.deepEqual(calls,['export']);assert.equal(f.alerts.length,1);assert.equal(f.alerts[0][2].find(v=>v.style==='cancel').onPress,undefined);f.alerts[0][2].find(v=>v.text==='Import').onPress();tree=await f.flush();assert.deepEqual(calls,['export','import']);assert.match(text(tree),/Library imported/);}finally{finish(false);f.h.cleanup();}
+});
+
+test('unmounted Settings ignores late transfer and update check results and removes polling',async()=>{
+ const f=setup();let finishTransfer,finishCheck;
+ const transfer=new Promise(resolve=>finishTransfer=resolve),check=new Promise(resolve=>finishCheck=resolve);
+ try{
+  f.props.onExportLibrary=()=>transfer;f.props.onImportLibrary=async()=>true;f.api.checkForUpdate=()=>check;
+  f.render();await f.flush();byID(f.render(),'library-export').props.onPress();byID(f.render(),'updates-check').props.onPress();
+  f.h.cleanup();assert.equal(f.listeners.size,0);assert.equal(f.timers.size,0);
+  finishTransfer(true);finishCheck(f.state.result);const tree=await f.flush();
+  assert.doesNotMatch(text(tree),/export verified|Release v0\.2\.1 is available/i);
+  assert(!byID(tree,'updates-download'),'late check must not revive an update offer');
+ }finally{finishTransfer(false);finishCheck(f.state.result);f.h.cleanup();}
 });

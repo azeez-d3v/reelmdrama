@@ -26,7 +26,7 @@ test('controlled preference probe is isolated, validates supported sizes and use
  for(const font of ['99','130foo']){const invalid=spawnSync(process.execPath,[fileURLToPath(runner),'--serial','fixture','--package','org.reelm.drama.pilot','--suite','preferences','--font',font],{encoding:'utf8',windowsHide:true});assert.notEqual(invalid.status,0);assert.match(invalid.stderr,/Unsupported text size/);}
  const source=fs.readFileSync(new URL('android/OwnActivityProbe.java',import.meta.url),'utf8');
  assert.match(source,/"preferences"\.equals\(suite\)/);
- assert.match(source,/uiClick\("Text size "\+fontPercent\+" percent"\)/);
+ assert.match(source,/uiClick\("Subtitle size "\+fontPercent\+" percent"\)/);
  assert.match(source,/PERSISTED_FONT_REQUIRED/);
 });
 
@@ -34,7 +34,8 @@ test('continuity failure emits bounded observed fields before strict comparison 
  const source=fs.readFileSync(new URL('android/OwnActivityProbe.java',import.meta.url),'utf8');
  const body=source.slice(source.indexOf('private void updateContinuity('),source.indexOf('private JSONObject library()'));
  assert.match(body,/CONTINUITY_INPUTS_REQUIRED/);
- assert(body.indexOf('CONTINUITY_INPUTS_REQUIRED')<body.indexOf('newInstance(root,TARGET+'));
+ assert(body.indexOf('CONTINUITY_INPUTS_REQUIRED')<body.indexOf('readContinuityFixture(root,id,resource)'));
+ assert.doesNotMatch(source,/ReelmFileCrypto|generator\.generateKey\(|newInstance\(root,TARGET/);
  assert.match(body,/stage\("update-observed","READ_ONLY_POST_UPDATE_FIELDS"/);
  assert(body.indexOf('READ_ONLY_POST_UPDATE_FIELDS')<body.indexOf('UPDATE_PRESERVE_'));
  assert.match(body,/"savedCount"/);

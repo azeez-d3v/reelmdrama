@@ -1,7 +1,4 @@
 import {requireNativeModule} from 'expo';
-import type {DramaDetail,ResolvedEpisode} from './services/types';
-import type {DownloadSummary,DownloadClaim} from './downloads';
-import type {OfflineMetadata} from './playback-types';
 import type {UpdateCandidate,UpdateStatus} from './updates';
 export type InstalledVersion = {packageName: string; versionName: string; versionCode: number; certificateSHA256: string;updateTrusted:boolean};
 export const native = requireNativeModule<{
@@ -14,19 +11,4 @@ export const native = requireNativeModule<{
   reelmCancelUpdate():Promise<void>;
   reelmGetUpdateStatus():Promise<UpdateStatus>;
   reelmInstallVerifiedUpdate():Promise<void>;
-  reelmListDownloads(): Promise<DownloadSummary[]>;
-  reelmEnqueueDownloads(detail:DramaDetail,ordinals:readonly number[]): Promise<void>;
-  reelmClaimNextDownload(): Promise<DownloadClaim|null>;
-  reelmStartDownload(ticket:string,detail:DramaDetail,resolved:ResolvedEpisode): Promise<void>;
-  reelmFailDownload(ticket:string,code:string): Promise<void>;
-  reelmPauseDownloads(): Promise<void>;
-  reelmResumeDownloads(): Promise<void>;
-  reelmSetDownloadsActive(active:boolean): Promise<void>;
-  reelmCancelDownloads(ids:readonly string[]): Promise<void>;
-  reelmRetryDownloads(ids:readonly string[]): Promise<void>;
-  reelmDeleteDownloads(ids:readonly string[]): Promise<void>;
-  reelmAcquireOffline(downloadId:string): Promise<{downloadId:string;leaseId:string;rootUri:string;contentType:string}>;
-  reelmReadOfflineMetadata(leaseId:string): Promise<OfflineMetadata>;
-  reelmReleaseOffline(leaseId:string): Promise<void>;
-  reelmDownloadStorageBytes(): Promise<number>;
 }>('ExpoVideo');
