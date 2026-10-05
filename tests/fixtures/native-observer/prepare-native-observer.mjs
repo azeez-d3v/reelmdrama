@@ -1,0 +1,11 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {createHash} from 'node:crypto';
+import {fileURLToPath} from 'node:url';
+const dir=path.dirname(fileURLToPath(import.meta.url)),file=path.resolve(dir,'../../../.local/drama2/node_modules/expo-video/android/src/main/java/expo/modules/video/utils/DataSourceUtils.kt');
+const sha=b=>createHash('sha256').update(b).digest('hex');
+const state=JSON.parse(await fs.readFile(path.join(dir,'native-network-instrumentation.json'),'utf8'));
+const current=await fs.readFile(file),modified=await fs.readFile(path.join(dir,'DataSourceUtils.MODIFIED.kt'));
+if(sha(modified)!==state.modifiedSha256)throw Error('Observer artifact changed');
+if(sha(current)!==state.baselineSha256&&sha(current)!==state.modifiedSha256)throw Error('Unexpected expo-video source; no patch applied');
+await fs.writeFile(file,modified);console.log('NATIVE_OBSERVER_READY: pinned source verified; path/query/header/body logging=0');

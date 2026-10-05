@@ -1,5 +1,6 @@
+import {ScaledText as Text} from './ScaledText';
 import React, {memo, useCallback} from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet,  View} from 'react-native';
 import {colors, fonts, layout, type, type MainTab} from '../theme';
 import {Icon, ReelmMark, type IconName} from './Icon';
 import {IconButton} from './Primitives';
@@ -18,7 +19,7 @@ export const BrandedHeader = memo(function BrandedHeader({topInset = 0, title = 
   </View>;
 });
 
-const tabs: readonly {key: MainTab; label: string; icon: IconName}[] = [{key: 'home', label: 'Home', icon: 'home'}, {key: 'discover', label: 'Discover', icon: 'search'}, {key: 'saved', label: 'Saved', icon: 'bookmark'}];
+const tabs: readonly {key: MainTab; label: string; icon: IconName}[] = [{key: 'home', label: 'Home', icon: 'home'}, {key: 'discover', label: 'Discover', icon: 'search'}, {key: 'saved', label: 'Library', icon: 'bookmark'}, {key: 'settings', label: 'Settings', icon: 'settings'}];
 const NavigationTab = memo(function NavigationTab({tab, active, onChange}: {tab: typeof tabs[number]; active: boolean; onChange: (tab: MainTab) => void}) {
   const handlePress = useCallback(() => onChange(tab.key), [onChange, tab.key]);
   const measured = useNativeMeasurement(`tab-${tab.key}`, {safeAreaRequired: true, interactive: true});

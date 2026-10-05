@@ -1,16 +1,17 @@
+import {ScaledText as Text} from './ScaledText';
 import React, {memo} from 'react';
-import {Animated, Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle} from 'react-native';
+import {Animated, Pressable, StyleSheet,  View, type StyleProp, type ViewStyle} from 'react-native';
 import {colors, layout, radius, type} from '../theme';
 import {Icon, type IconName} from './Icon';
 import {useNativeMeasurement} from './measurement';
 import {LoadingSignal, usePressFeedback} from './Motion';
 
-export interface ActionButtonProps {label: string; onPress: () => void; icon?: IconName; disabled?: boolean; tone?: 'primary' | 'secondary' | 'quiet'; testID?: string; style?: StyleProp<ViewStyle>}
-export const ActionButton = memo(function ActionButton({label, onPress, icon, disabled = false, tone = 'primary', testID, style}: ActionButtonProps) {
+export interface ActionButtonProps {label: string; accessibilityLabel?: string; onPress: () => void; icon?: IconName; disabled?: boolean; selected?: boolean; tone?: 'primary' | 'secondary' | 'quiet'; testID?: string; style?: StyleProp<ViewStyle>}
+export const ActionButton = memo(function ActionButton({label, accessibilityLabel = label, onPress, icon, disabled = false, selected, tone = 'primary', testID, style}: ActionButtonProps) {
   const primary = tone === 'primary';
   const feedback = usePressFeedback();
   const measured = useNativeMeasurement(testID, {interactive: true, safeAreaRequired: true});
-  return <Pressable {...measured} onPressIn={feedback.onPressIn} onPressOut={feedback.onPressOut} accessibilityRole="button" accessibilityLabel={label} accessibilityState={{disabled}} testID={testID} disabled={disabled} onPress={onPress} android_ripple={{color: colors.ripple}}
+  return <Pressable {...measured} onPressIn={feedback.onPressIn} onPressOut={feedback.onPressOut} accessibilityRole="button" accessibilityLabel={accessibilityLabel} accessibilityState={{disabled, selected}} testID={testID} disabled={disabled} onPress={onPress} android_ripple={{color: colors.ripple}}
     style={({pressed}) => [styles.button, primary ? styles.primary : tone === 'secondary' ? styles.secondary : styles.quiet, disabled ? styles.disabled : null, pressed && !disabled ? styles.pressed : null, style]}>
     <Animated.View pointerEvents="none" style={[styles.buttonContent, {transform: [{scale: feedback.scale}]}]}>
     {icon ? <Icon name={icon} size={20} color={primary ? colors.onSignal : colors.text} filled={icon === 'play'} /> : null}

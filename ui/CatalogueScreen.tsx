@@ -1,15 +1,20 @@
+import {ScaledText as Text,ScaledTextInput as TextInput} from './ScaledText';
 import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
-import {FlatList, Image, Pressable, RefreshControl, ScrollView, StyleSheet, Text, TextInput, View, useWindowDimensions, type ImageStyle, type ListRenderItemInfo} from 'react-native';
+import {FlatList, Image, Pressable, RefreshControl, ScrollView, StyleSheet, View, useWindowDimensions, type ImageStyle, type ListRenderItemInfo} from 'react-native';
 import type {DramaCard, DramaPlatform} from '../services/types';
 import {colors, fonts, layout, radius, type, type MainTab, type ScreenInsets} from '../theme';
 import {Icon} from './Icon';
 import {BrandedHeader, BottomTabs} from './Navigation';
 import {ActionButton, IconButton, StatePanel} from './Primitives';
+import type {WatchProgress} from '../library-policy';
+import {formatTime} from './format';
 import {safeInset} from './format';
 import {MeasurementProvider} from './measurement';
+import {useAppActive} from './Motion';
 
 export interface CatalogueScreenProps {
   tab: MainTab;
+  collection?:'saved'|'recents';onCollectionChange?:(value:'saved'|'recents')=>void;progress?:Record<string,WatchProgress>;
   items: readonly DramaCard[];
   platforms: readonly DramaPlatform[];
   platformsLoading?: boolean;
@@ -36,13 +41,14 @@ export interface CatalogueScreenProps {
 
 const Cover = memo(function Cover({uri, title, style}: {uri: string | null; title: string; style: Pick<ImageStyle, 'width' | 'height' | 'aspectRatio' | 'flex'>}) {
   const [failed, setFailed] = useState(false);
-  useEffect(() => setFailed(false), [uri]);
+  const active = useAppActive();
+  useEffect(() => {if (active) setFailed(false);}, [uri, active]);
   const onError = useCallback(() => setFailed(true), []);
   if (!uri || failed) return <View style={[styles.coverFallback, style]}><Icon name="episodes" size={28} color={colors.muted} /><Text style={styles.artworkUnavailable}>Artwork unavailable</Text></View>;
   return <Image source={{uri}} accessibilityLabel={`${title} poster`} resizeMode="cover" style={style} onError={onError} />;
 });
 
-const PosterCard = memo(function PosterCard({card, width, saved, onOpen}: {card: DramaCard; width: number; saved: boolean; onOpen: (card: DramaCard) => void}) {
+const PosterCard = memo(function PosterCard({card, width, saved, onOpen,progress}: {progress?:WatchProgress;card: DramaCard; width: number; saved: boolean; onOpen: (card: DramaCard) => void}) {
   const open = useCallback(() => onOpen(card), [onOpen, card]);
   return <Pressable onPress={open} accessibilityRole="button" accessibilityLabel={`Open ${card.title}, ${card.platform}, ${card.totalEpisodes} episodes${saved ? ', saved on this device' : ''}`} testID={`series-${card.id}`}
     android_ripple={{color: colors.ripple}} style={({pressed}) => [styles.posterCard, {width}, pressed ? styles.pressed : null]}>
@@ -52,11 +58,12 @@ const PosterCard = memo(function PosterCard({card, width, saved, onOpen}: {card:
     </View>
     <Text style={styles.posterTitle} numberOfLines={2}>{card.title}</Text>
     <Text style={styles.posterMeta} numberOfLines={1}>{card.platform}</Text>
+    {progress?<Text style={styles.posterMeta}>Ep {progress.episode} · {formatTime(progress.time)}</Text>:null}
     <Text style={styles.posterCount}>{card.countWarning ? 'Episode counts unverified' : `${card.totalEpisodes} episodes`}</Text>
   </Pressable>;
 });
 
-const FeaturedCard = memo(function FeaturedCard({card, onWatch, onOpen}: {card: DramaCard; onWatch: (card: DramaCard) => void; onOpen: (card: DramaCard) => void}) {
+const FeaturedCard = memo(function FeaturedCard({card, onWatch, onOpen,progress}: {progress?:WatchProgress;card: DramaCard; onWatch: (card: DramaCard) => void; onOpen: (card: DramaCard) => void}) {
   const watch = useCallback(() => onWatch(card), [card, onWatch]);
   const open = useCallback(() => onOpen(card), [card, onOpen]);
   return <View style={styles.feature}>
@@ -85,14 +92,15 @@ export const CatalogueScreen = memo(function CatalogueScreen(props: CatalogueScr
   const cardWidth = Math.floor((width - horizontalGutter - 12 * (columns - 1)) / columns);
   const feature = props.tab === 'home' && !props.query && !props.selectedPlatform ? props.items[0] : undefined;
   const listItems = useMemo(() => feature ? props.items.slice(1) : props.items, [feature, props.items]);
-  const renderItem = useCallback(({item}: ListRenderItemInfo<DramaCard>) => <PosterCard card={item} width={cardWidth} saved={props.savedIds.has(item.id)} onOpen={props.onOpenSeries} />, [cardWidth, props.savedIds, props.onOpenSeries]);
+  const renderItem = useCallback(({item}: ListRenderItemInfo<DramaCard>) => <PosterCard card={item} width={cardWidth} saved={props.savedIds.has(item.id)} onOpen={props.tab==='saved'?props.onWatch:props.onOpenSeries} progress={props.progress?.[item.slug]} />, [cardWidth, props.savedIds, props.onOpenSeries, props.onWatch, props.tab, props.progress]);
   const searchTab = useCallback(() => props.onTabChange('discover'), [props.onTabChange]);
   const clearQuery = useCallback(() => props.onQueryChange(''), [props.onQueryChange]);
   const loadMore = useCallback(() => {if (props.hasMore && !props.loading && !props.refreshing && !props.error) props.onLoadMore();}, [props.hasMore, props.loading, props.refreshing, props.error, props.onLoadMore]);
-  const title = props.tab === 'home' ? 'Stories worth\nstaying for.' : props.tab === 'saved' ? 'Your saved reels.' : 'Find your next story.';
+  const title = props.tab === 'home' ? 'Stories worth\nstaying for.' : props.tab === 'saved' ? props.collection==='recents'?'Your recent reels.':'Your saved reels.' : 'Find your next story.';
   const saved = props.tab === 'saved';
   const header = <View style={styles.listHeader}>
     <Text style={styles.screenTitle}>{title}</Text>
+    {saved?<View style={styles.collectionTabs}>{(['saved','recents'] as const).map(value=><ActionButton key={value} label={value==='saved'?'Saved':'Recents'} onPress={()=>props.onCollectionChange?.(value)} testID={`library-${value}`} tone="secondary" selected={props.collection===value} style={props.collection===value?styles.collectionTabSelected:undefined}/>)}</View>:null}
     {saved ? <Text style={styles.supporting}>Saved on this device. Ready when you are.</Text> : <Text style={styles.supporting}>English catalogue. Original or dubbed audio, as provided.</Text>}
     {!saved ? <View style={styles.search}>
       <Icon name="search" size={20} color={colors.muted} />
@@ -121,7 +129,7 @@ export const CatalogueScreen = memo(function CatalogueScreen(props: CatalogueScr
       contentContainerStyle={[styles.list, {paddingHorizontal: layout.gutter + safeInset(props.insets.left), paddingRight: layout.gutter + safeInset(props.insets.right)}]}
       ListHeaderComponent={header} ListEmptyComponent={!props.loading && !props.error && !feature ? <StatePanel kind="empty" title={saved ? 'Keep a few stories for later.' : 'No reels found.'} message={saved ? 'Open a story and save it to build your collection.' : 'Try another title or choose a different platform.'} /> : null}
       ListFooterComponent={props.items.length > 0 && props.hasMore ? <View style={styles.footer}><ActionButton label={props.loading ? 'Loading more…' : 'Load more stories'} tone="secondary" onPress={props.onLoadMore} disabled={props.loading || props.refreshing} testID="catalogue-load-more" /></View> : <View style={styles.footerSpace} />}
-      refreshControl={<RefreshControl refreshing={props.refreshing} onRefresh={props.onRefresh} tintColor={colors.signal} colors={[colors.signal]} progressBackgroundColor={colors.surface} />}
+      refreshControl={saved?undefined:<RefreshControl refreshing={props.refreshing} onRefresh={props.onRefresh} tintColor={colors.signal} colors={[colors.signal]} progressBackgroundColor={colors.surface} />}
       onEndReached={loadMore} onEndReachedThreshold={0.3} initialNumToRender={6} maxToRenderPerBatch={6} windowSize={5} removeClippedSubviews keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag" showsVerticalScrollIndicator={false} />
     <BottomTabs active={props.tab} onChange={props.onTabChange} bottomInset={props.insets.bottom} />
   </View></MeasurementProvider>;
@@ -149,6 +157,8 @@ const styles = StyleSheet.create({
   featureMeta: {...type.measure, color: colors.muted},
   featureArtwork: {width: '40%', height: 264},
   featureImage: {width: '100%', flex: 1},
+  collectionTabs: {flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', gap: 12, flexWrap: 'wrap'},
+  collectionTabSelected: {borderColor: colors.signal},
   collectionHeading: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, marginTop: 8},
   collectionTitle: {...type.title, color: colors.text, flex: 1},
   collectionCount: {...type.measure, color: colors.muted},

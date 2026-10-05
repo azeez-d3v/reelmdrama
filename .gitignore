@@ -1,6 +1,6 @@
 node_modules/
-android/
-ios/
+/android/
+/ios/
 .expo/
 .build/
 .local/
@@ -18,3 +18,7 @@ coverage/
 *.log
 .DS_Store
 Thumbs.db
+
+*.idsig
+*.dpapi
+reelm-release.recovery.json

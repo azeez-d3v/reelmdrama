@@ -24,22 +24,22 @@ export type DramaHome = Readonly<{
   platforms:readonly DramaPlatform[];receipt:SourceReceipt;cached:boolean;
 }>;
 export type SourceRequestReceipt = Readonly<{
-  lane:'guest-config'|'platforms'|'catalogue'|'search'|'home'|'detail'|'manifest'|'subtitle-index'|'english-subtitle';
-  host:'dramadunyam.com';pathSHA256:string;status:number;bytesRead:number;bodySHA256:string;
+  lane:'guest-config'|'platforms'|'catalogue'|'search'|'home'|'detail'|'manifest'|'episode-resolver'|'subtitle-index'|'english-subtitle';
+  host:string;pathSHA256:string;status:number;bytesRead:number;bodySHA256:string;
 }>;
 export type SourceReceipt = Readonly<{requestId:string;requestProfile:'observed-desktop-UA';requests:readonly SourceRequestReceipt[];freshGuestSessionReceived:boolean;cached:boolean}>;
 export type SubtitleCue = Readonly<{start:number;end:number;text:string}>;
 export type ResolvedEpisode = Readonly<{
   sourceId:'dramadunyam';identity:Readonly<{seriesId:string;slug:string;platform:string;episodeNumber:number}>;
-  title:string;episodeNumber:number;type:'hls';manifestBody:string;manifestSHA256:string;
+  title:string;episodeNumber:number;
   referenceHosts:readonly string[];referenceCount:number;expiresAt:number;
   englishSubtitleCues:readonly SubtitleCue[];subtitleStatus:'english-sidecar'|'no-english-sidecar'|'unavailable';
-  receipt:SourceReceipt;transport:'app-cache-manifest-direct-https-segments';
+  receipt:SourceReceipt;
   cdnCredentialsAttached:false;languageQualification:string;
-}>;
+}&({type:'hls';manifestBody:string;manifestSHA256:string;transport:'app-cache-manifest-direct-https-segments'|'app-cache-master-direct-https-playlists-and-segments'}|{type:'mp4';uri:string;manifestBody:null;manifestSHA256:null;transport:'direct-https-mp4'})>;
 export type CatalogueOptions = Readonly<{platform?:string;page?:number}>;
 export type SearchOptions = Readonly<{page?:number}>;
-export type SourceFailureCode = 'ABORTED'|'DEADLINE_EXCEEDED'|'NETWORK_ERROR'|'BODY_LIMIT'|'INVALID_JSON'|'INVALID_CONTENT_TYPE'|'REDIRECT_REJECTED'|'FRESH_GUEST_SESSION_MISSING'|'INVALID_PLATFORM'|'INVALID_CARD'|'INVALID_PAGE'|'INVALID_DETAIL'|'DETAIL_IDENTITY_MISMATCH'|'DETAIL_NOT_ISSUED'|'INVALID_EPISODE'|'EPISODE_NOT_ADVERTISED'|'INVALID_MANIFEST'|'UNSUPPORTED_MANIFEST'|'UNSAFE_MEDIA_REFERENCE'|'INVALID_SUBTITLE'|'INVALID_SEARCH'|'INVALID_HOME'|`HTTP_${number}`;
+export type SourceFailureCode = 'ABORTED'|'DEADLINE_EXCEEDED'|'NETWORK_ERROR'|'BODY_LIMIT'|'INVALID_JSON'|'INVALID_CONTENT_TYPE'|'REDIRECT_REJECTED'|'FRESH_GUEST_SESSION_MISSING'|'INVALID_PLATFORM'|'INVALID_CARD'|'INVALID_PAGE'|'INVALID_DETAIL'|'DETAIL_IDENTITY_MISMATCH'|'DETAIL_NOT_ISSUED'|'INVALID_EPISODE'|'EPISODE_NOT_ADVERTISED'|'INVALID_EPISODE_RESOLVER'|'INVALID_MANIFEST'|'UNSUPPORTED_MANIFEST'|'UNSAFE_MEDIA_REFERENCE'|'INVALID_SUBTITLE'|'INVALID_SEARCH'|'INVALID_HOME'|`HTTP_${number}`;
 export class SourceError extends Error {
   readonly code:SourceFailureCode;readonly receipt:SourceReceipt|null;
   constructor(code:SourceFailureCode,receipt:SourceReceipt|null=null){super(code);this.name='SourceError';this.code=code;this.receipt=receipt;}

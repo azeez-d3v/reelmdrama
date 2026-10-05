@@ -32,4 +32,4 @@ export const type = Object.freeze({
 });
 
 export interface ScreenInsets {top: number; bottom: number; left?: number; right?: number}
-export type MainTab = 'home' | 'discover' | 'saved';
+export type MainTab = 'home' | 'discover' | 'saved' | 'settings';

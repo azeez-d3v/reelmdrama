@@ -1,116 +1,73 @@
-<img src="assets/icon.png" width="80" alt="Reelm Drama logo">
+<p align="center"><img src="assets/icon.png" width="88" alt="Reelm Drama logo"></p>
 
 # Reelm Drama
 
-A portrait-first Android app for discovering short dramas and watching episodes in an immersive, swipeable native player. Built with React Native and Expo, with Reelm's dark-and-lime identity.
+A standalone Android drama player with a dark, lime-accented interface, vertical episode navigation and local watch history.
 
-## Download
+**[Download Reelm Drama 0.2.0](https://github.com/azeez-d3v/reelmdrama/releases/download/v0.2.0/ReelmDrama-arm64-v8a.apk)** · [All releases](https://github.com/azeez-d3v/reelmdrama/releases)
 
-**[Download Reelm Drama v0.1.0 APK](https://github.com/azeez-d3v/reelmdrama/releases/download/v0.1.0/ReelmDrama-v0.1.0-arm64-v8a.apk)**
-
-[All releases](https://github.com/azeez-d3v/reelmdrama/releases) · [SHA-256 checksum](https://github.com/azeez-d3v/reelmdrama/releases/download/v0.1.0/SHA256SUMS.txt)
-
-- Android **7.0 / API 24 or newer**; **64-bit ARM (arm64-v8a)** devices.
-- Download the APK, open it on your phone and follow Android's normal installation prompts. If prompted, grant installation access to the browser or file manager you are using.
-- This initial APK is a **development-signed build** distributed through GitHub, not a Google Play release. Rebuilding locally can produce a different signing identity.
-
-APK SHA-256:
-
-```text
-f3c7db22807082f957118e676f6d4659d0b43a65d9ca6b9ac71e8606bf34ca76
-```
+Android 7.0 / API 24 or newer; **arm64-v8a**. Package `org.reelm.drama`, version **0.2.0 / code 3**. Complete Android's normal installation and Play Protect flow.
 
 ## Features
 
-- Home, Discover and Saved views with catalogue search, pagination, series details and episode selection.
-- Browse the source's live platform directory. The latest check returned **43 platforms**; counts and availability can change.
-- Full-screen portrait playback, vertical episode paging, seek and next/previous controls, with safe-area-aware system bars.
-- Tap to reveal controls; hold during playback for **1.5× speed with pitch preservation**, then release to restore normal speed.
-- English subtitles when supplied by the source: centered, larger white text, black outline and no caption background. Original-language audio is also supported.
-- Bounded episode preparation cache, conditional next-episode prefetch and native video caching. Temporary caching does not provide offline downloads.
-- Saved titles, likes and watch progress stored **on the device**.
-- Animated Reelm launch screen, reduced-motion handling, loading states and recoverable platform-list errors.
+- Home, Discover, search and runtime platform filters from the source catalogue; empty platforms remain visible.
+- Portrait episode player: tap to pause/resume, vertical swipe, seek, unobtrusive timeline loading, immersive controls and configurable press-and-hold speed.
+- Saved, Recents, exact episode/time resume, local likes, text-size and playback settings.
+- Individual/series download selection, progress, pause, storage management and app-private encrypted offline media using Android Keystore.
+- Metadata-only library export/import and manual, verified GitHub APK update checks.
 
-There is no app login, payment system, subscription entitlement, advertising integration or cross-device account sync. English catalogue metadata does not guarantee English dialogue or subtitles on every episode. A platform listing does not guarantee every title will play.
+The source is DramaDünyam's normal public catalogue/resolver. Metadata requests originate on the phone; video travels directly from the source/CDN to native playback, without a Reelm video relay. Source availability can change; a catalogue listing is not a playable-stream guarantee.
 
-## Architecture
+The catalogue is English-localized. Original audio with English subtitles is supported; only advertised English subtitle tracks are selected. Localization is not a guarantee of English dialogue or captions on every title.
 
-```text
-Android app → DramaDünyam catalogue / detail / episode resolver
-            → validated HLS playlist in private app cache
-Native player → HTTPS CDN video segments directly
-Android app → optional advertised English subtitle file
-```
+Library/preferences are on this device only. There is no app account, cloud sync, D1, payment or premium entitlement in this app. Transfer documents contain library metadata, not encrypted media, credentials or keys.
 
-The app depends on **DramaDünyam's catalogue and resolver**; it does not run an independent resolver for every original platform. No Reelm server or Cloudflare Worker proxies video segments. Upstream failures, missing episodes, decoder compatibility and signed-URL expiry can affect playback.
+## Upgrading from the old development-signed app
 
-The source client validates identities, episode ordinals, response sizes and media hosts. It bounds concurrency, supports cancellation and caches metadata briefly. Viewing cookies stay in operation memory and are not supplied as custom CDN playback headers.
+Version 0.2.0 starts private release signing. Android cannot install it over an older differently signed app.
 
-## Develop
+1. Use the **Legacy migration APK** linked in the 0.2.0 release notes to add library transfer to the older installation; do not uninstall first.
+2. In Settings → Library transfer, export and retain the document. Confirm the app reports **Library export verified** before proceeding.
+3. Uninstall the Legacy app, install the private 0.2.0 APK, then import that document through Settings → Library transfer.
 
-Requirements: **Node.js 24+**, npm, and an Android device/emulator. Native builds additionally require Java **17 or 21**, Android SDK **36**, Build Tools **36.0.0**, and configured `JAVA_HOME` and `ANDROID_HOME` (or `ANDROID_SDK_ROOT`).
+**Uninstall deletes the old encrypted downloads and their Keystore key. Redownload those episodes afterward.** Keep the exported document until Saved, Recents, resume points and preferences are verified in the new app. Complete OS prompts normally; do not disable device protection.
 
-```sh
-git clone https://github.com/azeez-d3v/reelmdrama.git
-cd reelmdrama
-npm ci
+Already on the private release? Keep this installation; do not repeat that migration. Future updates must match the installed package/private signer and have a higher native versionCode.
+
+## App updates
+
+Settings → App updates → Check reads public GitHub Releases without a client token. A published candidate requires exactly one asset named `ReelmDrama-arm64-v8a.apk` and a SHA256 digest. Native code verifies bytes, package, signer and increasing versionCode before handing installation to Android. Version labels alone cannot authorize an update. Version 0.2.0 correctly reports current on an installed private 0.2.0 app.
+
+## Development
+
+This repository is the standalone source export. The canonical development app remains in the parent Reelm project's `drama-mobile/`; do not develop in archived staging copies. Read `AGENTS.md` before building or creating files.
+
+```powershell
+# Node 24; install only when the lockfile does not match existing dependencies.
+npm ci --no-audit --no-fund
 npm run typecheck
 npm test
 ```
 
-`npm test` includes logic and UI contract tests. The initial public export passed **174 tests** and TypeScript checks. Sanitized fixtures in `tests/fixtures/` make tests independent of the original Reelm workspace and live network access.
+`npm test` includes both `tests/*.test.mjs` and `ui/*.test.mjs`. Public catalogue fixtures live in `tests/fixtures/`; they contain no viewing cookies, signed streams or personal library records. The canonical 0.2.0 checks passed 348/348 plus TypeScript before export; see Actions for checks of this exact exported commit.
 
-```sh
-npm start
-# Separate terminal, with Android SDK configured:
-npx expo run:android
-```
-
-Diagnostics default to off. `.env.example` contains only the public diagnostics switch; a normal build needs no credentials. The original local diagnostics broker and device-instrumentation helpers are not distributed here.
-
-## Build an APK
-
-On Windows, configure the prerequisites above, then run:
+Android builds use PowerShell 7, an existing JDK and Android SDK 36 via `JAVA_HOME` and `ANDROID_HOME`. The native module requires an Android development build, not Expo Go.
 
 ```powershell
-npm.cmd ci
-npm.cmd run typecheck
-npm.cmd test
-& .\scripts\Build-Android.ps1
+# An authorized release publisher must already have the existing private signer.
+New-Item -ItemType Directory -Path dist -Force | Out-Null
+pwsh -File scripts/Build-Android.ps1 -Mode Release `
+  -Output (Join-Path (Get-Location) 'dist/ReelmDrama-arm64-v8a.apk')
 ```
 
-The script stages source in a fresh directory under `.build/android`, uses locked dependencies, generates Android with Expo and forces a fresh release JavaScript bundle. Output:
+The public repository intentionally contains no production signing key, recovery password or DPAPI material. Private builds fail closed without the existing signer; they never silently switch to development signing. Preserve that signer and its independently encrypted recovery backup outside the repository. A local developer build uses a separate development identity/key; it is not a compatible production update.
 
-```text
-dist/ReelmDrama.apk
-```
+## Release verification
 
-Custom output:
+0.2.0 SHA256: `9c3f0127c1cd3e89dc8a247cabb46b639fda59f2f998ac0d222d7bd9048159a3`.
 
-```powershell
-& .\scripts\Build-Android.ps1 -Output 'C:\builds\ReelmDrama.apk'
-```
+Private signer certificate SHA256: `2372f2597582f24c23d620adc3102522e59ec10e25bde39ed68a5817b0e8b7b7`.
 
-The script forces diagnostics and automation off. Generated directories, caches, APKs, local environment files and signing material are ignored by Git. Production/store signing is a separate step; the generated release configuration currently uses development signing.
+The release APK has diagnostics disabled and is not debuggable. A representative online NetShort Episode 20 test on the physical Android phone measured 8.852 seconds continuous playback, 11.696 seconds media advancement, 282 rendered frames and maximum timeline drift 0.812 seconds; hold 1.5× restored 1×. This does not certify every platform, title, language, speed or offline format on this APK. Earlier all-format offline evidence applies to its separately recorded APK, not automatically to this release.
 
-## Project map
-
-| Path | Purpose |
-| --- | --- |
-| `App.tsx` | Catalogue, navigation and episode orchestration |
-| `services/source.ts` | Validated catalogue, detail, HLS and subtitle requests |
-| `player.tsx` | Native player lifecycle and pitch-preserving speed boost |
-| `episode-cache.ts` | Bounded prepared-episode cache and prefetch |
-| `platform-directory.ts` | Platform loading, retry and stale-request protection |
-| `ui/` | Screens, controls, motion, splash and subtitles |
-| `plugins/` | Expo Android splash/network configuration |
-| `tests/` | Logic tests and self-contained fixtures |
-| `scripts/Build-Android.ps1` | Standalone Windows APK build |
-
-## Verification and issues
-
-The downloadable APK is byte-identical to the subtitle-refinement build installed and visually checked on a Redmi Note 11 running Android 13. English multiline subtitles were checked on episode 20 of two titles, with controls visible and hidden. Platform browsing was separately checked with 43 directory names and an actual ShortMax selection. These are bounded checks, not a whole-catalogue playback guarantee.
-
-[Report an issue](https://github.com/azeez-d3v/reelmdrama/issues) with the APK version, Android version, platform/title, episode number and visible error. Do not include credentials, cookies or signed stream URLs.
-
-Geist and Geist Mono font licenses are included in `assets/Geist-OFL.txt` and `assets/GeistMono-OFL.txt`. Video content and source services are not included in this repository.
+Bundled Geist font licences are included in `assets/`.

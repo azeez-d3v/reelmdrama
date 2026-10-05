@@ -2,8 +2,9 @@ import React, {memo} from 'react';
 import Svg, {Circle, Path, Rect} from 'react-native-svg';
 import {colors} from '../theme';
 
-export type IconName = 'home' | 'search' | 'bookmark' | 'play' | 'pause' | 'back' | 'close' | 'heart' | 'episodes' | 'next' | 'previous' | 'retry' | 'volume' | 'muted' | 'check' | 'chevron' | 'captions' | 'download';
+export type IconName = 'home' | 'search' | 'bookmark' | 'play' | 'pause' | 'back' | 'close' | 'heart' | 'episodes' | 'next' | 'previous' | 'retry' | 'volume' | 'muted' | 'check' | 'chevron' | 'captions' | 'download' | 'settings';
 const paths: Record<IconName, string> = {
+  settings: 'M4 6h16M4 12h16M4 18h16M8 3v6M16 9v6M10 15v6',
   home: 'M3 10.5 12 3l9 7.5V21h-6v-7H9v7H3V10.5Z',
   search: 'M16.5 16.5 21 21',
   bookmark: 'M6 3h12v18l-6-4-6 4V3Z',

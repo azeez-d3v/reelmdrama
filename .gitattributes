@@ -1,0 +1,2 @@
+# Preserve source and fixture bytes for hash-bound release verification.
+* -text

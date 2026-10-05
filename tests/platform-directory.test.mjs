@@ -130,7 +130,7 @@ test('App keeps platform directory errors independent of unrelated catalogue sta
 
 test('App pull refresh refreshes both directory and catalogue, and unmount disposes the loader', () => {
   const app = read('../App.tsx');
-  assert.match(app, /onRefresh=\{refreshCatalogue\}/);
+  assert.match(app, /onRefresh=\{tab==='saved'\?\(\)=>\{\}:refreshCatalogue\}/);
   const refresh = app.match(/const refreshCatalogue=useCallback\(\(\)=>\{([\s\S]*?)\},\[directoryLoader,loadCatalogue\]\);/)?.[1]; assert(refresh);
   assert.match(refresh, /clearSourceCache\(\)/); assert.match(refresh, /\.refresh\(\)/); assert.match(refresh, /loadCatalogue\(\{refresh:true\}\)/);
   assert.match(app, /mounted\.current=false;directoryLoader\.dispose\(\)/);

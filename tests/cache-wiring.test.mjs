@@ -8,7 +8,7 @@ test('prepared episode identity includes series, slug, platform, ordinal and Eng
   const app = read('../App.tsx');
   assert.match(app, /const episodeCacheKey=.*?\[d\.id,d\.slug,d\.platform,n,'en'\]\.join\('\|'\)/);
   assert.match(app, /createEpisodeCache<ResolvedEpisode>\(\{capacity:5,safetyMs:5000/);
-  assert.match(app, /release:entry=>\{try\{const f=new File\(entry\.uri\);if\(f\.exists\)f\.delete\(\);\}catch\{\}/);
+  assert.match(app, /release:entry=>\{if\(!entry\.uri\.startsWith\('file:'\)\)return;try\{const f=new File\(entry\.uri\);if\(f\.exists\)f\.delete\(\);\}catch\{\}/);
 });
 
 test('preparation writes a unique local manifest while preserving source-issued expiration and value', () => {
@@ -16,6 +16,7 @@ test('preparation writes a unique local manifest while preserving source-issued 
   const prepare = app.match(/async function prepareEpisode[\s\S]*?\n\}/)?.[0];
   assert(prepare);
   assert.match(prepare, /await resolveEpisode\(d,n,signal\);if\(signal\.aborted\)throw new SourceError\('ABORTED'\)/);
+  assert.match(prepare, /if\(value\.type==='mp4'\)return \{key:episodeCacheKey\(d,n\),uri:value\.uri,expiresAt:value\.expiresAt,value\}/);
   assert.match(prepare, /'reelm-prepared-'\+Date\.now\(\)\+'-'\+\(\+\+preparedSequence\)\+'\.m3u8'/);
   assert.match(prepare, /f\.create\(\{overwrite:false\}\);f\.write\(value\.manifestBody\)/);
   assert.match(prepare, /key:episodeCacheKey\(d,n\),uri:f\.uri,expiresAt:value\.expiresAt,value/);
@@ -25,7 +26,7 @@ test('preparation writes a unique local manifest while preserving source-issued 
 
 test('selected navigation consumes cache and releases an uncommitted stale result', () => {
   const app = read('../App.tsx');
-  const load = app.match(/const loadEpisode=useCallback\(async[\s\S]*?\},\[remember,reveal,endHold,episodeCache(?:,[^\]]+)?\]\);/)?.[0];
+  const load = app.match(/const loadEpisode=useCallback\(async[\s\S]*?\},\[remember,flush,reveal,endHold,episodeCache(?:,[^\]]+)?\]\);/)?.[0];
   assert(load);
   assert.match(load, /await episodeCache\.load\(episodeCacheKey\(d,n\),signal=>prepareEpisode\(d,n,signal\),\{signal:ctrl\.signal\}\)/);
   assert.match(load, /releasePrepared=result\.releasePin/);
@@ -36,7 +37,7 @@ test('selected navigation consumes cache and releases an uncommitted stale resul
   assert.match(load, /preparedLease\.current=releasePrepared;[\s\S]*?active\.current=next;setSource\(next\)/);
   assert.match(app, /const preparedLease=useRef<\(\(\)=>void\)\|null>\(null\)/);
   assert.match(app, /const release=preparedLease\.current;preparedLease\.current=null;if\(release\)setTimeout\(release,1000\)/);
-  assert.match(load, /endHold\(\);clearPrepared\(\);mediaRequest/);
+  assert.match(load, /endHold\(\);clearPrepared\(\);[^]*?mediaRequest/);
   assert.doesNotMatch(app, /useEffect\(\(\)=>\(\)=>\{if\(source\?\.releasePrepared/);
 });
 
@@ -46,7 +47,7 @@ test('explicit retry and native credential recovery invalidate only the selected
   const recover = app.match(/const recover=useCallback[\s\S]*?\},\[loadEpisode,episodeCache\]\);/)?.[0];
   assert(retry); assert(recover);
   for (const fn of [retry, recover]) {
-    assert.match(fn, /episodeCache\.delete\(episodeCacheKey\(d,episodeRef\.current\)\);void loadEpisode\(d,episodeRef\.current/);
+    assert.match(fn, /episodeCache\.delete\(episodeCacheKey\(d,(?:episodeRef\.current|n)\)\);[\s\S]*?loadEpisode\(d,(?:episodeRef\.current|n)/);
     assert.doesNotMatch(fn, /episodeCache\.clear/);
   }
   assert.match(recover, /position,autoplay\)/);
@@ -54,7 +55,7 @@ test('explicit retry and native credential recovery invalidate only the selected
 
 test('only one advertised next episode prefetches after foreground playback has a healthy buffer', () => {
   const app = read('../App.tsx');
-  assert.match(app, /const mayPrefetch=videoCaching&&mayAutoHide&&snap\.sourceLoadSeen&&snap\.bufferedPosition-snap\.time>=5/);
+  assert.match(app, /const mayPrefetch=[^;]*?videoCaching&&mayAutoHide&&snap\.sourceLoadSeen&&snap\.bufferedPosition-snap\.time>=5/);
   const prefetch = app.match(/useEffect\(\(\)=>\{\s*if\(!mayPrefetch[\s\S]*?\},\[mayPrefetch,source\?\.loadId,detail,episodeCache,clearWarmup\]\);/)?.[0];
   assert(prefetch);
   assert.match(prefetch, /const n=source\.resolution\.episodeNumber\+1/);
@@ -70,13 +71,13 @@ test('parent owns the warm manifest lease before scheduling a native child, incl
   assert.match(app, /const warmLease=useRef<\(\(\)=>void\)\|null>\(null\)/);
   assert.match(app, /const releaseLease=episodeCache\.pin\(result\.entry\);warmLease\.current=releaseLease;setWarmSource/);
   assert.match(app, /const release=warmLease\.current;warmLease\.current=null;if\(release\)setTimeout\(release,1000\)/);
-  assert.match(app, /useEffect\(\(\)=>\(\)=>\{clearPrepared\(\);clearWarmup\(\);episodeCache\.clear\(\);\}/);
-  assert.match(app, /<NextEpisodeWarmup key=\{warmSource\.entry\.uri\} uri=\{warmSource\.entry\.uri\}/);
+  assert.match(app, /useEffect\(\(\)=>\(\)=>\{clearPrepared\(\);clearWarmup\(\);[^]*?episodeCache\.clear\(\);\}/);
+  assert.match(app, /<NextEpisodeWarmup key=\{warmSource\.entry\.uri\} uri=\{warmSource\.entry\.uri\} type=\{warmSource\.entry\.value\.type\}/);
   assert.match(warmup, /p\.muted = true/);
   assert.match(warmup, /p\.staysActiveInBackground = false/);
   assert.match(warmup, /preferredForwardBufferDuration: 6/);
   assert.match(warmup, /maxBufferBytes: 2 \* 1024 \* 1024/);
-  assert.match(warmup, /replaceAsync\(\{uri, contentType: 'hls', useCaching: true\}\)/);
+  assert.match(warmup, /replaceAsync\(\{uri, contentType: type === 'hls' \? 'hls' : 'progressive', useCaching: true\}\)/);
   assert.match(warmup, /return \(\) => \{alive = false; try \{player\.pause\(\);\} catch \{\}\}/);
   assert.doesNotMatch(warmup, /VideoView|releaseLease|releasePin|episodeCache|\.play\(/);
 });
@@ -88,9 +89,9 @@ test('Android disk cache stays bounded and initializes before any active or warm
   assert.match(cache, /setVideoCacheSizeAsync\(VIDEO_CACHE_BYTES\)\.then\(\(\) => true, \(\) => false\)/);
   assert.match(app, /\[cacheSetup,setCacheSetup\]=useState<boolean\|null>\(null\)/);
   assert.match(app, /prepareVideoCache\(\)\.then\(enabled=>\{if\(alive\)setCacheSetup\(enabled\);\}\)/);
-  assert.match(app, /\(ready\|\|error\)&&cacheSetup!==null\?<ReelmApp videoCaching=\{cacheSetup\}/);
+  assert.match(app, /\(ready\|\|error\)&&cacheSetup!==null&&libraryLoaded\?<ReelmApp videoCaching=\{cacheSetup\}/);
   assert.match(app, /source=\{source\} caching=\{videoCaching\}/);
-  assert.match(player, /replaceAsync\(\{uri:source\.uri,contentType:'hls',useCaching:caching\}\)/);
+  assert.match(player, /replaceAsync\(\{uri:source\.uri,contentType:source\.resolution\.type==='hls'\?'hls':'progressive',useCaching:source\.resolution\.sourceId!=='offline'&&caching\}\)/);
   assert.doesNotMatch(player, /setVideoCacheSizeAsync/);
   assert.match(app, /entry instanceof File&&\/\^reelm-prepared-/);
 });

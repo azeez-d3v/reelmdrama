@@ -64,7 +64,7 @@ test('splash reuses the incumbent mark and locally loaded fonts on a matching da
 test('splash exit is native-only, finite and cleanup invalidates before stopping callbacks', () => {
   const ui = read('../ui/LaunchSplash.tsx');
   assert.equal((ui.match(/useNativeDriver: true/g) ?? []).length, 2);
-  assert(ui.includes('lifetime.invalidate();\n      animation.stop();'));
+  assert.match(ui,/lifetime\.invalidate\(\);\s+animation\.stop\(\);/);
   assert(ui.includes('lifetime.complete(ticket, finished)'));
   assert(!ui.includes('setTimeout'));assert(!ui.includes('Animated.loop'));
 });
@@ -81,7 +81,7 @@ test('live reduced-motion change resets scale before the opacity-only exit start
 test('app mounts the same normal controller immediately beneath a sibling launch overlay', () => {
   const app = read('../App.tsx');
   assert(app.includes('isLaunchReady(ready,!!error,cacheSetup)'));
-  assert(app.includes('{(ready||error)&&cacheSetup!==null?<ReelmApp videoCaching={cacheSetup}/>:null}'));
+  assert(app.includes('{(ready||error)&&cacheSetup!==null&&libraryLoaded?<ReelmApp videoCaching={cacheSetup} library={library} setLibrary={setLibrary} loadError={loadError}/>:null}'));
   assert(app.includes('<LaunchSplash ready={appReady}'));
   assert.equal((app.match(/Linking\.getInitialURL\(\)/g) ?? []).length, 1);
   assert(!app.includes('Preparing your viewing desk'));

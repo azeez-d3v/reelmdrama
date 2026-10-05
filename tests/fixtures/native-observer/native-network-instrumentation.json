@@ -1,0 +1,6 @@
+{
+  "baselineSha256": "8ffd704064677f8862f093b43a14c20584c6235b9602384979a0e5498cb943ee",
+  "modifiedSha256": "6b13ffee57e97c915933d0c5b3df38d30660276650bb90657cf18a2366fcfba7",
+  "package": "expo-video@55.0.21",
+  "scope": "isolated prototype build only; host/kind/bytes/status; no signed URLs or headers"
+}

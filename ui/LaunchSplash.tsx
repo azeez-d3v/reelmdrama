@@ -1,5 +1,6 @@
+import {ScaledText as Text} from './ScaledText';
 import React, {useEffect, useRef, useState} from 'react';
-import {Animated, Easing, StyleSheet, Text, View} from 'react-native';
+import {Animated, Easing, StyleSheet,  View} from 'react-native';
 import {colors, fonts} from '../theme';
 import {createLaunchLifetime, launchPresentation} from '../splash-policy';
 import {ReelmMark} from './Icon';

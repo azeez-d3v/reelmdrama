@@ -3,13 +3,14 @@ export function createSpeedBoost(getRate: () => number, setRate: (rate: number) 
   let previous: number | null = null;
   return {
     isActive: () => previous !== null,
-    begin(): boolean {
+    begin(requested = 1.5): boolean {
       if (previous !== null) return true;
+      if (![1.25, 1.5, 1.75, 2].includes(requested)) return false;
       let rate: number;
       try {
         rate = getRate();
         if (!Number.isFinite(rate) || rate <= 0 || rate > 16) return false;
-        setRate(1.5);
+        setRate(requested);
       } catch {return false;}
       previous = rate;
       return true;

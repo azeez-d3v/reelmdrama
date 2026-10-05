@@ -1,0 +1,20 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {createRequire} from 'node:module';
+const {baseline, baselineDataSource, hash} = createRequire(import.meta.url)('../plugins/withReelmNative.cjs');
+const root = process.cwd();
+const directory = path.join(root, 'node_modules/expo-video/android/src/main/java/expo/modules/video');
+const video = path.join(directory, 'VideoModule.kt');
+const data = path.join(directory, 'utils/DataSourceUtils.kt');
+const stockHash = '8ffd704064677f8862f093b43a14c20584c6235b9602384979a0e5498cb943ee';
+const observerHash = '6b13ffee57e97c915933d0c5b3df38d30660276650bb90657cf18a2366fcfba7';
+const saved = path.join(root, '.reelm-stock-data-source.kt');
+if (JSON.parse(fs.readFileSync(path.join(root, 'node_modules/expo-video/package.json'))).version !== '55.0.21') throw Error('Unknown expo-video version');
+const bytes = baselineDataSource(fs.readFileSync(data, 'utf8')), digest = hash(bytes);
+const originalVideo = baseline(fs.readFileSync(video, 'utf8'));
+if (fs.existsSync(saved) && hash(fs.readFileSync(saved)) !== stockHash) throw Error('Unknown stock recovery bytes');
+if (digest === stockHash) { fs.writeFileSync(saved, bytes); fs.writeFileSync(data, bytes); }
+else if (digest === observerHash && fs.existsSync(saved) && hash(fs.readFileSync(saved)) === stockHash) fs.writeFileSync(data, fs.readFileSync(saved));
+else throw Error('Unknown DataSourceUtils input or missing verified stock recovery bytes');
+fs.writeFileSync(video, originalVideo);
+console.log('REELM_NATIVE_RESET: verified stock inputs');

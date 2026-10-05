@@ -30,24 +30,37 @@ export function MotionProvider({children}: {children: React.ReactNode}) {
 export const useReducedMotion = () => useContext(MotionContext).reduced;
 export const useAppActive = () => useContext(MotionContext).active;
 
-/** The Reelm signal rail: real indeterminate motion, never invented progress. */
-export const LoadingSignal = memo(function LoadingSignal({compact = false}: {compact?: boolean}) {
+function useSignalMotion(travel: number, enabled = true) {
   const reduced = useReducedMotion(), active = useAppActive();
-  const travel = compact ? 24 : 78;
   const phase = useRef(new Animated.Value(0.25)).current;
   const position = useMemo(() => phase.interpolate(pingPongOffsets(travel)), [phase, travel]);
   useEffect(() => {
-    if (reduced || !active) {phase.setValue(0.25); return;}
+    if (reduced || !active || !enabled || travel <= 0) {phase.setValue(0.25); return;}
     phase.setValue(0);
     const loop = Animated.loop(Animated.timing(phase, {
       toValue: 1, duration: 2200, easing: Easing.linear, useNativeDriver: true, isInteraction: false,
     }));
     loop.start();
     return () => {loop.stop(); phase.stopAnimation();};
-  }, [phase, reduced, active]);
+  }, [phase, reduced, active, enabled, travel]);
+  return position;
+}
+
+/** The Reelm signal rail: real indeterminate motion, never invented progress. */
+export const LoadingSignal = memo(function LoadingSignal({compact = false}: {compact?: boolean}) {
+  const position = useSignalMotion(compact ? 24 : 78);
   return <View testID="loading-signal-track" accessible={false} pointerEvents="none" style={[styles.signalTrack, compact ? styles.compactTrack : null]}>
     <Animated.View testID="loading-signal-playhead" style={[styles.signalPlayhead, compact ? styles.compactPlayhead : null, {transform: [{translateX: position}]}]} />
   </View>;
+});
+
+/** Clipped by the real timeline; the last native position remains independent. */
+export const TimelineSweep = memo(function TimelineSweep({loading, width}: {loading: boolean; width: number}) {
+  const span = Math.max(0, width) / 4;
+  const position = useSignalMotion(span * 3, loading);
+  if (!loading) return null;
+  return <Animated.View testID="player-timeline-loading-sweep" accessible={false} pointerEvents="none"
+    style={[styles.signalPlayhead, {position: 'absolute', width: span, transform: [{translateX: position}]}]} />;
 });
 
 /** The hidden chrome never blocks swipes or exposes invisible a11y controls. */

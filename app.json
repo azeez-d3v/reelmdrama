@@ -2,7 +2,7 @@
   "expo": {
     "name": "Reelm Drama",
     "slug": "reelm-drama",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "scheme": "reelm-drama",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
@@ -14,7 +14,7 @@
     },
     "android": {
       "package": "org.reelm.drama",
-      "versionCode": 1,
+      "versionCode": 3,
       "permissions": [
         "android.permission.INTERNET",
         "android.permission.ACCESS_NETWORK_STATE"
@@ -60,7 +60,8 @@
         }
       ],
       "./plugins/withLoopbackNetworkSecurity.cjs",
-      "./plugins/withReelmSplash.cjs"
+      "./plugins/withReelmSplash.cjs",
+      "./plugins/withReelmNative.cjs"
     ],
     "backgroundColor": "#0b0f0c",
     "androidStatusBar": {

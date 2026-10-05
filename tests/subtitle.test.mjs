@@ -4,6 +4,8 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import {createRequire} from 'node:module';
 import {SUBTITLE_METRICS, SUBTITLE_OUTLINE_OFFSETS, subtitleFrame} from '../subtitle-policy.ts';
+import {componentHarness} from './ui-harness.mjs';
+import {normalizePreferences} from '../library-policy.ts';
 import {fonts} from '../theme.ts';
 
 const read = relative => fs.readFileSync(new URL(relative, import.meta.url), 'utf8');
@@ -21,11 +23,14 @@ const output = ts.transpileModule(source, {compilerOptions: {
 }}).outputText;
 const exports = {};
 const absoluteFillObject = Object.freeze({position: 'absolute', left: 0, right: 0, top: 0, bottom: 0});
-const element = (type, props, key) => ({type, props, key});
+let scale=1;
+const wrappers=componentHarness('../ui/ScaledText.tsx',{'../library-policy':{normalizePreferences},react:{useContext:()=>scale,createElement:(type,props,...children)=>({type,props:{...props,...(children.length?{children:children.length===1?children[0]:children}:{})}})},'react-native':{TextInput:'TextInput',StyleSheet:{flatten:style=>Object.assign({},...[style].flat(Infinity).filter(Boolean))}}});
+const element = (type, props, key) => typeof type==='function'?wrappers.render('ScaledText',props):({type, props, key});
 vm.runInNewContext(output, {exports, require: name => {
   if (name === 'react') return {memo: component => Object.assign(component, {memoized: true})};
   if (name === 'react/jsx-runtime') return {jsx: element, jsxs: element};
   if (name === 'react-native') return {View: 'View', Text: 'Text', StyleSheet: {create: styles => styles, absoluteFillObject}};
+  if(name==='./ScaledText')return wrappers.exports;
   if (name === '../theme') return {fonts};
   if (name === '../subtitle-policy') return {SUBTITLE_METRICS, SUBTITLE_OUTLINE_OFFSETS, subtitleFrame};
   throw new Error(`Unexpected subtitle dependency: ${name}`);
@@ -203,11 +208,11 @@ test('memoized subtitle component reuses static outline transforms across cues a
   const one = textNodes(render({text: 'One.', chromeVisible: false}));
   const two = textNodes(render({text: 'Two.\nContinued.', chromeVisible: true}));
   for (let i = 0; i < 8; ++i) {
-    assert.equal(one[i].props.style[0], two[i].props.style[0]);
-    assert.equal(one[i].props.style[1], two[i].props.style[1]);
-    assert.equal(one[i].props.style[2], two[i].props.style[2]);
+    assert.deepEqual(normalize(one[i].props.style),normalize(two[i].props.style));
+
+
   }
-  assert.equal(one.at(-1).props.style, two.at(-1).props.style);
+  assert.deepEqual(normalize(one.at(-1).props.style),normalize(two.at(-1).props.style));
   assert.doesNotMatch(source, /useState|useEffect|useWindowDimensions|onTextLayout|onLayout|requestAnimationFrame|setInterval/);
 });
 
@@ -219,8 +224,11 @@ test('App retains caption gate, exact active English cue timing and primitive sa
 
 test('subtitle implementation has only rendering/policy dependencies and no media/source/cache logic', () => {
   const imports = [...source.matchAll(/from ['"]([^'"]+)['"]/g)].map(match => match[1]).sort();
-  assert.deepEqual(imports, ['../subtitle-policy', '../theme', 'react', 'react-native'].sort());
+  assert.deepEqual(imports, ['./ScaledText','../subtitle-policy', '../theme', 'react', 'react-native'].sort());
   assert.doesNotMatch(source, /fetch\(|resolveEpisode|loadEpisode|episodeCache|NativePlayer|setPlaybackRate|currentTime|\.seek\(/);
   const policy = read('../subtitle-policy.ts');
   assert.doesNotMatch(policy, /fetch\(|resolveEpisode|loadEpisode|episodeCache|NativePlayer|setPlaybackRate|\.seek\(/);
 });
+
+
+test('all nine subtitle layers preserve OS scaling and scale font and line height equally',()=>{scale=1.3;try{const layers=textNodes(render());assert.equal(layers.length,9);for(const layer of layers){const style=flattenStyle(layer.props.style);assert.equal(style.fontSize,22*1.3);assert.equal(style.lineHeight,29*1.3);assert.notEqual(layer.props.allowFontScaling,false);}}finally{scale=1;}});

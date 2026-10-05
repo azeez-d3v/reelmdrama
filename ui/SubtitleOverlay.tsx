@@ -1,5 +1,6 @@
+import {ScaledText as Text} from './ScaledText';
 import React, {memo} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet,  View} from 'react-native';
 import {fonts} from '../theme';
 import {SUBTITLE_METRICS, SUBTITLE_OUTLINE_OFFSETS, subtitleFrame} from '../subtitle-policy';
 
