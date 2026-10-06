@@ -21,8 +21,8 @@ $javaHome=$env:JAVA_HOME
 $androidHome=if($env:ANDROID_HOME){$env:ANDROID_HOME}else{$env:ANDROID_SDK_ROOT}
 if(!$Signing){$Signing=if($Mode -eq 'Release'){'Private'}else{'Legacy'}}
 if($Pilot -and $Signing -ne 'Private'){throw 'Pilot requires private signing'}
-if(!$VersionName){$VersionName=if($Signing -eq 'Legacy'){'0.1.1'}else{'0.2.2'}}
-if(!$VersionCode){$VersionCode=if($Signing -eq 'Legacy'){2}else{5}}
+if(!$VersionName){$VersionName=if($Signing -eq 'Legacy'){'0.1.1'}else{'0.2.3'}}
+if(!$VersionCode){$VersionCode=if($Signing -eq 'Legacy'){2}else{6}}
 if($VersionName -notmatch '^\d+\.\d+\.\d+$'){throw 'Invalid version name'}
 $package=if($Pilot){'org.reelm.drama.pilot'}else{'org.reelm.drama'}
 $keytool=if($javaHome){Join-Path $javaHome 'bin\keytool.exe'}else{'keytool.exe'}

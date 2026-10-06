@@ -112,3 +112,12 @@ test('relative resolver compatibility never accepts other namespaces, traversal,
   const f=setup({play});await assert.rejects(f.resolve(),e=>e.code==='INVALID_EPISODE_RESOLVER');assert.equal(requests(f,'/hls/145057/1/playlist.m3u8').length,0);assert.equal(f.seen.filter(x=>x.u.pathname.startsWith('/vr/')).length,0);
  }
 });
+
+// Regression: Little Chef E1 is issued as a direct PineDrama MP4 on this exact CDN.
+test('issued Little Chef PineDrama v58e MP4 reaches cookie-free HEAD without a legacy fallback',async()=>{
+ const url='https://v58e.tiktokcdn.com/fixture/video?mime_type=video_mp4&fixture=exact';
+ const f=setup({play:{...envelope,type:'mp4',url},media:()=>({status:200,url,headers:new Headers({'content-type':'video/mp4'}),text(){throw Error('No MP4 body download');}})});
+ const r=await f.resolve();assert.equal(r.type,'mp4');assert.equal(r.uri,url);
+ assert.equal(requests(f,'/hls/145057/1/playlist.m3u8').length,0);assert.equal(requests(f,'/play/145057/1').length,1);
+ const req=f.seen.find(x=>x.u.href===url);assert.equal(req.options.method,'HEAD');assert.equal(req.options.headers.Cookie,undefined);assert.equal(req.options.headers.Authorization,undefined);assert.equal(r.receipt.requests.find(x=>x.host==='v58e.tiktokcdn.com').bytesRead,0);
+});

@@ -4,9 +4,16 @@
 
 A standalone Android drama player with a dark, lime-accented interface, vertical episode navigation and local watch history.
 
-**[Download Reelm Drama 0.2.2](https://github.com/azeez-d3v/reelmdrama/releases/download/v0.2.2/ReelmDrama-arm64-v8a.apk)** · [All releases](https://github.com/azeez-d3v/reelmdrama/releases)
+**[Download Reelm Drama 0.2.3](https://github.com/azeez-d3v/reelmdrama/releases/download/v0.2.3/ReelmDrama-arm64-v8a.apk)** · [All releases](https://github.com/azeez-d3v/reelmdrama/releases)
 
-Android 7.0 / API 24 or newer; **arm64-v8a**. Package `org.reelm.drama`, version **0.2.2 / code 5**. Complete Android's normal installation and Play Protect flow.
+Android 7.0 / API 24 or newer; **arm64-v8a**. Package `org.reelm.drama`, version **0.2.3 / code 6**. Complete Android's normal installation and Play Protect flow.
+
+## Playback repair — 0.2.3
+
+- Accepts the source's observed exact `v58e.tiktokcdn.com` CDN. Little Chef, Five Daddies previously failed before requesting its valid MP4.
+- Private-signed Android code6; same production signer, in-place update. APK SHA256 `b3abeb4d18123be7679c60d2fafc786b231d5310fff8336a6b7841917387365c`.
+- Canonical341 tests and standalone345 Windows checks, TypeScript and fresh diagnostics-off native build passed. Real phone Little Chef episodes1,21,50 passed native frame/time progression, hold-speed/timeline and return to1×. These are sampled playback checks, not whole-catalogue or audio-language certification.
+- Modern Journey of an Ancient Queen currently resolves its playlist but its source segments return504; the source's alternate CDN returned522. This upstream failure is not fixed by this release.
 
 ## Features
 
